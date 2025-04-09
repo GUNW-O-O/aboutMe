@@ -1,0 +1,69 @@
+@font-face {
+    font-family: "Song Myung";
+    src: url('CSS\Fonts\SongMyung-Regular.ttf');
+}
+body {
+    background-color: royalblue;
+    font-family: "Song Myung", serif;
+}
+
+.container {
+    width: 350px;
+    height: 500px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border-radius: 10px;
+}
+
+.input {
+    position: relative;
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    border: none;
+    border-bottom: 1px solid black;
+    outline: none;
+    width: 230px;
+}
+
+input::placeholder {
+    font-family: "Song Myung", serif;
+}
+
+
+.idblock .id{
+    position: relative;
+    display: inline;
+    left: 16%;
+    margin-bottom: 20px;
+}
+
+.logo {
+    position: relative;
+    margin: 0 auto;
+    display: block;
+    top: 20px;
+    margin-bottom: 40px;
+    width: 270px;
+}
+
+.btnblock input{
+    position: relative;
+    display: block;
+    margin: 0 auto;
+    width: 200px;
+    height: 40px;
+    margin-bottom: 10px;
+    color: white;
+    font-weight: bold;
+    background-color: rgb(88, 122, 225);
+    border-radius: 0.2cm;
+}
+
+.sign {
+    font-size: 13px;
+    text-align: center;
+}
