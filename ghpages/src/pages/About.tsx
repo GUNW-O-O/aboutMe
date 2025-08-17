@@ -1,7 +1,7 @@
 import React from 'react'
 import '../App.css'
 import myPhoto from '../assets/gunwoo.jpg'
-import ProfileCard from '../shared/ProfileCard'
+// import ProfileCard from '../shared/ProfileCard'
 import Skills from '../widgets/Skills'
 import History from '../widgets/History'
 import ProjectCard from '../widgets/ProjectCard'

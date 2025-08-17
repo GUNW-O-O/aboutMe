@@ -1,11 +1,13 @@
 import React from 'react'
 import { projectObjs } from '../entities/ProjectObj'
-import { useParams } from 'react-router-dom'
 import '../App.css'
 
-const ProjectDetail: React.FC = () => {
+type ProjectDetailProps = {
+  id: string | undefined;
+};
 
-  const { id } = useParams<{ id: string }>()
+const ProjectDetail: React.FC<ProjectDetailProps> = ({id}) => {
+
   const project = projectObjs.find(p => p.id === Number(id))
 
 
