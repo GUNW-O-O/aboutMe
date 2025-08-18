@@ -132,20 +132,23 @@
   width: 450px;
   height: 200px;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   flex-direction: row;
   align-items: center;
   text-align: center;
   border-radius: 10px;
-  gap: 5px;
+  padding: 10px;
+}
+.about .project-card img {
+  display: flex;
+  object-fit: cover;
+  border-radius: 10px;
+  width: 150px;
 }
 .about .project-info {
   display: flex;
   flex-direction: column;
   gap: 5px;
-}
-.about .project-card img {
-  width: 200px;
 }
 
 .project-wrapper {
@@ -173,6 +176,7 @@
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+  padding: 10px;
 }
 .project-wrapper .head .desc {
   display: flex;
@@ -233,4 +237,16 @@
 }
 .box .ref {
   padding-left: 10px;
+}
+
+/* 페이드 */
+.fade-in {
+  opacity: 0;
+  filter: blur(10px);
+  transition: opacity 0.5s ease, filter 0.5s ease;
+}
+
+.fade-in.loaded {
+  opacity: 1;
+  filter: blur(0);
 }

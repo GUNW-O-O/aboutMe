@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import '../App.css'
 import myPhoto from '../assets/gunwoo.jpg'
 // import ProfileCard from '../shared/ProfileCard'
@@ -8,6 +8,9 @@ import ProjectCard from '../widgets/ProjectCard'
 
 
 const About: React.FC = () => {
+
+  const [isLoaded, setIsLoaded] = useState(false);
+
   return (
     <>
       <div className="about">
@@ -43,7 +46,9 @@ const About: React.FC = () => {
                 enableMobileTilt={false}
                 onContactClick={() => console.log('Contact clicked')}
               /> */}
-                <img src={myPhoto} alt="#" />
+                <img src={myPhoto} alt="profile"
+                className={`fade-in ${isLoaded ? 'loaded' : ''}`}
+                onLoad={() => setIsLoaded(true)} />
               </div>
             </div>
           </div>

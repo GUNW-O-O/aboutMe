@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { projectObjs } from '../entities/ProjectObj'
 import '../App.css'
 
@@ -6,7 +6,9 @@ type ProjectDetailProps = {
   id: string | undefined;
 };
 
-const ProjectDetail: React.FC<ProjectDetailProps> = ({id}) => {
+const ProjectDetail: React.FC<ProjectDetailProps> = ({ id }) => {
+  
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const project = projectObjs.find(p => p.id === Number(id))
 
@@ -22,7 +24,9 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({id}) => {
               <a className='btn' href={project?.repo} target="_blank" rel="noopener noreferrer">프로젝트 리포지토리</a>
             </div>
             <div className="logo">
-              <img src={project?.projectLogo} alt="" />
+              <img src={project?.projectLogo} alt=""
+                className={`fade-in ${isLoaded ? 'loaded' : ''}`}
+                onLoad={() => setIsLoaded(true)} />
             </div>
           </div>
         </div>
@@ -31,7 +35,9 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({id}) => {
             <h2>담당역할</h2>
             {project?.images.map((img, idx) => (
               <div key={idx} className="image-box">
-                <img src={img} alt={project.imgDesc[idx]} />
+                <img src={img} alt={project.imgDesc[idx]}
+                  className={`fade-in ${isLoaded ? 'loaded' : ''}`}
+                  onLoad={() => setIsLoaded(true)} />
                 <p className="img-desc">{project.imgDesc[idx]}</p>
               </div>
             ))}
