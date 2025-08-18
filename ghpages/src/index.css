@@ -1,6 +1,7 @@
-body { background-color: #151515;}
+body { background-color: #121212; color:#e0e0e0;}
 
-.bg {background-color: #303030; border-radius: 10px;}
+.bg {background-color: #222222; border-radius: 10px;}
+
 
 * {margin: 0; padding: 0; box-sizing: border-box; }
 

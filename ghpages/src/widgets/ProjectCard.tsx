@@ -16,7 +16,7 @@ const ProjectCard: React.FC = () => {
           <Link className="project-card bg" to={`/projects/${ref.id}`}>
             <img src={ref.projectLogo} alt="" />
             <div className='project-info'>
-              <h3>{ref.title}</h3>
+              <h3 className='headline'>{ref.title}</h3>
               <p>{ref.serviceTarget}</p>
               <p>{ref.description}</p>
             </div>

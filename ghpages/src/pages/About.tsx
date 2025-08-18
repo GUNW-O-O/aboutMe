@@ -16,7 +16,7 @@ const About: React.FC = () => {
       <div className="about">
         <div className="container">
           <div className="title">
-            <h2>개발자 고건우 입니다.</h2>
+            <h2 className='headline'>개발자 고건우 입니다.</h2>
           </div>
           <div className="info">
             <div className="bg">
@@ -52,7 +52,7 @@ const About: React.FC = () => {
               </div>
             </div>
           </div>
-          <div className="skills">
+          <div className="skills headline">
             <div className="bg">
               <h2>Skills</h2>
               <div className="stacks">
