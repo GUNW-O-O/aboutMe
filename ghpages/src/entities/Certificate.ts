@@ -1,4 +1,5 @@
 import SQLD from '../assets/certificate/SQLD.png'
+import webd from '../assets/certificate/webd.png'
 
 export type Certificate = {
   id : number;
@@ -28,6 +29,6 @@ export const certificates : Certificate[] = [
     title : '웹디자인개발기능사',
     date : '2025.06.27',
     issuer : '한국산업인력공단',
-    img : 'todo'
+    img : webd
   },
 ]

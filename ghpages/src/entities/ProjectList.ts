@@ -23,11 +23,11 @@ export const references : Reference[] = [
     serviceTarget : "사용자 투표 기반 음악 커뮤니티",
     description : "JAVA Spring React Mybatis"
   },
-  {
-    id: 3,
-    projectLogo : resonosLogo,
-    title : "퀴즈웍스",
-    serviceTarget : "타이핑 단어사전 서비스",
-    description : "TS NestJS React"
-  },
+  // {
+  //   id: 3,
+  //   projectLogo : resonosLogo,
+  //   title : "퀴즈웍스",
+  //   serviceTarget : "타이핑 단어사전 서비스",
+  //   description : "TS NestJS React"
+  // },
 ]

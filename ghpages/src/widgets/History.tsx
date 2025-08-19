@@ -1,18 +1,29 @@
 import React, { useState } from 'react'
-import { certificates } from '../entities/Certificate'
+import { certificates, type Certificate } from '../entities/Certificate'
 
 const History: React.FC = () => {
 
-  const [selectedCer, setSelectedCer] = useState<typeof certificates[0] | null>(null)
+  const [selectedCer, setSelectedCer] = useState<Certificate | null>(null);
+  const [isVisible, setIsVisible] = useState(false);
 
-  const handleClick = (cer: typeof certificates[0]) => {
-    // 이미 열려있는 항목을 다시 클릭하면 닫기
+  const handleClick = (cer: Certificate) => {
     if (selectedCer?.title === cer.title) {
-      setSelectedCer(null)
+      closeModal();
     } else {
-      setSelectedCer(cer)
+      openModal(cer);
     }
-  }
+  };
+
+  const openModal = (cer: Certificate) => {
+    setSelectedCer(cer);
+    // DOM이 생성된 뒤에 opacity transition 시작
+    setTimeout(() => setIsVisible(true), 10);
+  };
+
+  const closeModal = () => {
+    setIsVisible(false); // 페이드 아웃
+    setTimeout(() => setSelectedCer(null), 300); // transition 끝난 뒤 제거
+  };
 
   return (
     <div className="history">
@@ -55,25 +66,12 @@ const History: React.FC = () => {
         </div>
         {selectedCer && (
           <div
-            className="modal"
-            onClick={() => setSelectedCer(null)} // 이미지 클릭 시 닫힘
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              background: "rgba(255,255,255,0.95)",
-              padding: "20px",
-              borderRadius: "12px",
-              boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
-              zIndex: 100,
-              cursor: "pointer"
-            }}
+            className={`cer-modal ${isVisible ? "show" : ""}`}
+            onClick={closeModal}
           >
             <img
               src={selectedCer.img}
               alt={selectedCer.title}
-              style={{ width: "500px", height: "auto", display: "block" }}
             />
           </div>
         )}
