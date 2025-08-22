@@ -26,7 +26,6 @@ const Info: React.FC = () => {
           </div>
           <div className="contact">
             <p><strong>Contact</strong></p>
-            <p>Phone : 010-7544-9196</p>
             <p>Email : rhrjsdn12@naver.com</p>
           </div>
         </div>
