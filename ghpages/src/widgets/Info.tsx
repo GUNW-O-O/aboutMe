@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import DecryptedText from '../shared/DecryptText'
 import myPhoto from '../assets/gunwoo.jpg'
 import CircularText from '../features/CircularText';
+import HrefButton from '../features/HrefButton';
 
 const Info: React.FC = () => {
 
@@ -28,6 +29,7 @@ const Info: React.FC = () => {
             <p><strong>Contact</strong></p>
             <p>Email : rhrjsdn12@naver.com</p>
           </div>
+          <HrefButton />
         </div>
         <div className="my-img">
           {!isLoaded && (
