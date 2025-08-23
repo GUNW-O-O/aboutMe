@@ -14,7 +14,7 @@ const Info: React.FC = () => {
       <div className="bg">
         <div className="introduce">
           <div className="appeal">
-            <p><strong>Junior Developer</strong></p>
+            <h3><strong>Junior Developer</strong></h3>
             <DecryptedText
               text="프로그래머는 기능을 구현하는 사람이고,개발자는 서비스의 전체적인 흐름을 고민하며 개발하고 능동적으로 문제를 해결한다고 생각합니다."
               animateOn="view"
@@ -26,10 +26,10 @@ const Info: React.FC = () => {
             />
           </div>
           <div className="contact">
-            <p><strong>Contact</strong></p>
+            <h3><strong>Contact</strong></h3>
             <p>Email : rhrjsdn12@naver.com</p>
           </div>
-          <HrefButton />
+          <HrefButton link={"123"} text={"123으로"} />
         </div>
         <div className="my-img">
           {!isLoaded && (

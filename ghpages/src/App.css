@@ -78,6 +78,17 @@
   padding: 10px;
   justify-content: space-evenly;
 }
+.about .my-img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 265px;
+  width: 198px;
+  border-radius: 5px;
+  border: 3px solid #3B82F6;
+  overflow: hidden;
+  object-fit: cover;
+}
 .about .my-img img {
   width: 200px;
 }

@@ -1,8 +1,8 @@
 import React from 'react'
 import DarkVeil from '../shared/DarkVeil';
-import '../App.css'
-import { Link } from 'react-router-dom';
 import TrueFocus from '../shared/TrueFocus';
+import HrefButton from '../features/HrefButton';
+import '../App.css'
 
 const Welcome: React.FC = () => {
 
@@ -27,7 +27,7 @@ const Welcome: React.FC = () => {
           />
         </div>
         <div className="link">
-          <Link className='btn' to="/main">포트폴리오</Link>
+          <HrefButton link={"/main"} text={"포트폴리오"} />
           <a className='btn' href="https://github.com/GUNW-O-O/" target="_blank" rel="noopener noreferrer">깃허브</a>
         </div>
       </div>
