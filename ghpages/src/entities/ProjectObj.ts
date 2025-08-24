@@ -72,6 +72,10 @@ export const projectObjs: ProjectObj[] = [
     imgDesc: ["유튜브 API와 Spotify API 를 활용하여 트랙 인기순 정렬과, 인기1위 곡의 뮤직비디오를 임베드 하였습니다.",
       "앨범페이지에서는 해당앨범이 포함된 플레이리스트들과, 리뷰관리기능들과 앨범의 6요소 투표 시각화를 하였습니다.",
       "트랙페이지에서는 투표된 분위기의 시각화, 해당트랙을 플레이리스트에 추가하고, 투표된 분위기로 다른노래를 찾을수 있도록 하였습니다."],
-    repo: "https://github.com/Lee-0210/Resonos_React"
+    repo: "https://github.com/Lee-0210/Resonos_React",
+    troubles: [
+      "초반에는 맡았던페이지를 풀스택으로 개발하였으나, 커뮤니티 기능을 구현할때는 분업을해보며 개발된 기능이 정상작동 하는지 테스트하기가 힘든점",],
+    solution: [
+      "스웨거나 Postman, ThunderClient 등을 사용하며 프로젝트 진행효율을 높였습니다."]
   }
 ];

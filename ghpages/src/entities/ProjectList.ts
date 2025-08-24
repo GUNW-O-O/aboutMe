@@ -19,14 +19,14 @@ export const references : Reference[] = [
   {
     id: 2,
     projectLogo : resonosLogo,
-    title : "RESONOS",
+    title : "RESONOS Spring",
     serviceTarget : "사용자 투표 기반 음악 커뮤니티",
     description : "JAVA Spring Thymeleaf Mybatis"
   },
   {
     id: 3,
     projectLogo : resonosLogo,
-    title : "RESONOS",
+    title : "RESONOS React",
     serviceTarget : "사용자 투표 기반 음악 커뮤니티",
     description : "JAVA Spring React Mybatis"
   },
