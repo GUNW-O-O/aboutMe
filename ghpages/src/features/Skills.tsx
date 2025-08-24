@@ -1,23 +1,19 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { usually, knowledge, etc, type Skills } from '../entities/Skills'
 
 type SkillsProps = {
-  a: number;
+  category: 'usually' | 'knowledge' | 'etc';
 };
 
-const Skills: React.FC<SkillsProps> = ({ a }) => {
+const Skills: React.FC<SkillsProps> = ({ category }) => {
 
-  const stack: Skills[] = [
+  const stack: Record<SkillsProps['category'], Skills> = {
     usually,
     knowledge,
     etc
-  ]
+  };
 
-  const [skills, setSkills] = useState<Skills>([])
-
-  useEffect(() => {
-    setSkills(stack[a]);
-  }, [a]);
+  const skills = stack[category];
 
   return (
     <>
