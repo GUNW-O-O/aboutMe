@@ -17,6 +17,8 @@ export type ProjectObj = {
   images: string[];
   imgDesc: string[];
   repo: string;
+  troubles? : string | string[];
+  solution? : string | string[];
 }
 export const projectObjs: ProjectObj[] = [
   {
@@ -35,26 +37,35 @@ export const projectObjs: ProjectObj[] = [
     imgDesc: ["운동기구 관리 부분입니다. 상단버튼을 통해 기구들 등록할수있고, 해당 기구를 클릭하면 상세페이지로 넘어가며, 수정과 삭제가 가능합니다.",
        "트레이너별 매출을 관리하는 부분입니다. 클릭을 하게되면 아코디언탭으로 펼쳐지며, 해당 트레이너에 대해 매출을 등록,수정이 가능합니다",
        "왼쪽 하단의 트레이너 버튼을 클릭해 원하는 트레이너별 매출확인이 가능하고, 상단버튼으로 기간조회가 가능합니다."],
-    repo: "https://github.com/ruff1376/AI3_MINI1_TEAM3"
+    repo: "https://github.com/ruff1376/AI3_MINI1_TEAM3",
+    troubles: "매출 등록시 음수로 등록하면 매출 차트 표기가 이상하게 되는점",
+    solution: "ㅇㄷㅇㄷ에서 예외처리를 해서 못하게 막아놨다. 이로인해 사용자들이 항상 개발자가 원하는대로만 행동하지 않는다는것을 느꼈습니다."
   },
   {
     id: 2,
     projectLogo: resLogo,
     title: "Resonos Spring",
-    description: "Spring + Thymeleaf로 구현후 -> Spring + React로 변경하였습니다.",
+    description: "Spring + Thymeleaf로 SSR MVC-2패턴을 구현하였습니다.",
     reflections: "풀스택 개발을하며 프로젝트가 커질수록 초반 설계의 중요성과 코드의 가독성, 재사용성의 중요성을 깨달았고 API의 개념과 스프링,리액트에 익숙해지는 시간이었습니다.",
     improvements: "YouTube API 한번의 호출로 검색결과를 필터링해서 전부 사용하도록 변경하면 좋을것 같습니다. 추가적으로 마이바티스의 DB 호출을 설계적으로 재구성하면 유지보수가 좋아질것같습니다.",
     images: [res1, res2, res3],
     imgDesc: ["유튜브 API와 Spotify API 를 활용하여 트랙 인기순 정렬과, 인기1위 곡의 뮤직비디오를 임베드 하였습니다.",
       "앨범페이지에서는 해당앨범이 포함된 플레이리스트들과, 리뷰관리기능들과 앨범의 6요소 투표 시각화를 하였습니다.",
       "트랙페이지에서는 투표된 분위기의 시각화, 해당트랙을 플레이리스트에 추가하고, 투표된 분위기로 다른노래를 찾을수 있도록 하였습니다."],
-    repo: "https://github.com/Lee-0210/Resonos_React"
+    repo: "https://github.com/ruff1376/Resonos",
+    troubles:[ "로컬호스트 환경이 아닐때, 유튜브 에서 외부 임베드가 불가한 영상들이 존재",
+        "노래 재생후 리뷰작성, 좋아요 등 상호작용시 새로고침되며 노래가 끊김",
+        "유튜브 API 호출시 연관없는 동영상이 선택되는 현상" ],
+    solution : [
+      "스포티파이 임베드 아이프레임 추가로 유튜브 임베드가 안될시에도 노래를 들을수있도록 기능을 추가하였습니다.",
+      "ㅁㄴㅇ",
+    ]
   },
   {
     id: 3,
     projectLogo: resLogo,
     title: "Resonos React",
-    description: "Spring + Thymeleaf로 구현후 -> Spring + React로 변경하였습니다.",
+    description: "Spring + React로 변경하였습니다.",
     reflections: "풀스택 개발을하며 프로젝트가 커질수록 초반 설계의 중요성과 코드의 가독성, 재사용성의 중요성을 깨달았고 API의 개념과 스프링,리액트에 익숙해지는 시간이었습니다.",
     improvements: "YouTube API 한번의 호출로 검색결과를 필터링해서 전부 사용하도록 변경하면 좋을것 같습니다. 추가적으로 마이바티스의 DB 호출을 설계적으로 재구성하면 유지보수가 좋아질것같습니다.",
     images: [res1, res2, res3],
