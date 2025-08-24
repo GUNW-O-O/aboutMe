@@ -16,7 +16,7 @@ const Info: React.FC = () => {
           <div className="appeal">
             <h3><strong>Junior Developer</strong></h3>
             <DecryptedText
-              text="프로그래머는 기능을 구현하는 사람이고,개발자는 서비스의 전체적인 흐름을 고민하며 개발하고 능동적으로 문제를 해결한다고 생각합니다."
+              text="프로그래머는 기능을 구현하는 사람이고, 개발자는 서비스의 전체적인 흐름을 고민하며 개발하고 능동적으로 문제를 해결한다고 생각합니다."
               animateOn="view"
               revealDirection='start'
               useOriginalCharsOnly={true}
