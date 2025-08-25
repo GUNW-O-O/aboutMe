@@ -4,6 +4,7 @@ import { HashRouter as Router, Route, Routes } from 'react-router-dom'
 import Projects from './pages/Projects'
 import About from './pages/About'
 import ScrollToTop from './features/ScrollToTop'
+import PortFolio from './pages/PortFolio'
 
 const App: React.FC = () => {
   return (
@@ -12,6 +13,7 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/" element={<Welcome />} />
         <Route path="/main" element={<About />} />
+        <Route path="/main/more" element={<PortFolio />} />
         <Route path="/projects/:id" element={<Projects />} />
       </Routes>
     </Router>

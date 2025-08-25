@@ -38,7 +38,7 @@ const History: React.FC = () => {
           <h3>동인천 고등학교 졸업</h3>
           <div className="date-info">
             <p>2013 ~ 2016</p>
-            <p>이공계열</p>
+            <p>이과계열</p>
           </div>
         </div>
         <div className="work">

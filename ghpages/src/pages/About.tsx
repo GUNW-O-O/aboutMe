@@ -25,7 +25,7 @@ const About: React.FC = () => {
           <SlideIn delay={0.2} direction="up">
             <Info />
           </SlideIn>
-          <SlideIn delay={0.7} direction="up">
+          {/* <SlideIn delay={0.7} direction="up">
             <div className="skills headline">
               <div className="bg">
                 <h2>Skills</h2>
@@ -37,8 +37,8 @@ const About: React.FC = () => {
           </SlideIn>
           <SlideIn delay={1.0} direction="up">
             <History />
-          </SlideIn>
-          <SlideIn delay={1.3} direction="up">
+          </SlideIn> */}
+          <SlideIn delay={0.8} direction="up">
             <ProjectCard />
           </SlideIn>
         </div>

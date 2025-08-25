@@ -29,7 +29,7 @@ const Info: React.FC = () => {
             <h3><strong>Contact</strong></h3>
             <p>Email : rhrjsdn12@naver.com</p>
           </div>
-          <HrefButton link={"123"} text={"123으로"} />
+          <HrefButton link={"more"} text={"포트폴리오"} />
         </div>
         <div className="my-img">
           {!isLoaded && (
