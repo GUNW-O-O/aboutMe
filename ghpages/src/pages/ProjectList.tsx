@@ -13,10 +13,15 @@ const ProjectList: React.FC = () => {
 
   const [project, setProject] = useState<ProjectObj | null>(null)
   const [isLoaded, setIsLoaded] = useState(false)
+  const [trigger, setTrigger] = useState(0)
 
   const handleProjectList = (id: number) => {
-    setProject(null)
     setIsLoaded(false)
+    if (project?.id === id) {
+      setProject(null)
+      return
+    }
+    setTrigger(prev => prev + 1)
     setProject(projectObjs[id - 1])
   }
 
@@ -51,8 +56,11 @@ const ProjectList: React.FC = () => {
             </Swiper>
           </div>
         </SlideIn>
+        {!project && (
+          <h1 className='headline'>프로젝트를 선택해주세요.</h1>
+        )}
         {project && (
-          <div className="project-detail" key={project.title}>
+          <div className="project-detail" key={trigger}>
             <SlideIn delay={0.2} direction="down">
               <div className="detail-header bg">
                 <div className="title">
@@ -85,24 +93,23 @@ const ProjectList: React.FC = () => {
             <div className="detail-footer bg">
               <h2 className='headline'>프로젝트시 겪었던 문제</h2>
               <Swiper
-              modules={[Navigation, Pagination]}
-              // navigation
-              pagination={{ clickable: true }}
-              slidesPerView={1}
-            >
-              {project?.troubles.map((sol,idx) => (
-                <SwiperSlide key={idx}>
-                  <div className="project-troubles">
-                    <div className="trouble">
-                      {sol}
+                modules={[Navigation, Pagination]}
+                pagination={{ clickable: true }}
+                slidesPerView={1}
+              >
+                {project?.troubles.map((sol, idx) => (
+                  <SwiperSlide key={idx}>
+                    <div className="project-troubles">
+                      <div className="trouble">
+                        {sol}
+                      </div>
+                      <div className="solution">
+                        {project?.solution[idx]}
+                      </div>
                     </div>
-                    <div className="solution">
-                      {project?.solution[idx]}
-                    </div>
-                  </div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
             </div>
           </div>
         )}
