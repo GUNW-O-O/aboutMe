@@ -28,8 +28,8 @@ const Info: React.FC = () => {
           <div className="contact">
             <h3><strong>Contact</strong></h3>
             <p>Email : rhrjsdn12@naver.com</p>
+          <HrefButton link={"/projects"} text={"프로젝트"} />
           </div>
-          <HrefButton link={"more"} text={"포트폴리오"} />
         </div>
         <div className="my-img">
           {!isLoaded && (

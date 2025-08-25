@@ -1,5 +1,5 @@
 import React from 'react'
-import History from '../widgets/History'
+import History from './History'
 import SlideIn from '../shared/SlideIn'
 import Skills from '../features/Skills'
 

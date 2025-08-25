@@ -1,9 +1,8 @@
 import React from 'react'
 import '../App.css'
-import ProjectCard from '../widgets/ProjectCard'
 import Info from '../widgets/Info'
 import SlideIn from '../shared/SlideIn'
-import PortFolio from './PortFolio'
+import PortFolio from '../widgets/PortFolio'
 
 
 const About: React.FC = () => {
@@ -25,9 +24,9 @@ const About: React.FC = () => {
             <Info />
           </SlideIn>
           <PortFolio />
-          <SlideIn delay={0.8} direction="up">
+          {/* <SlideIn delay={0.8} direction="up">
             <ProjectCard />
-          </SlideIn>
+          </SlideIn> */}
         </div>
       </div>
     </>
