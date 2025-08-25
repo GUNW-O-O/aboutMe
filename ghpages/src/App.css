@@ -20,6 +20,9 @@
   width: 100%;
   justify-content: center;
 }
+.bg {
+  padding: 20px 10px;
+}
 .btn {
   padding: 10px 20px;
   border-radius: 10px;
@@ -47,8 +50,7 @@
   align-items: center;
   flex-direction: column;
   max-width: 1350px;
-  padding-top: 100px;
-  gap: 30px;
+  /* gap: 30px; */
 }
 .about .introduce {
   display: flex;
@@ -67,11 +69,11 @@
 }
 .about .info {
   width: 100%;
-  min-width: 900px;
   display: flex;
   padding: 10px;
 }
 .about .info .bg {
+  min-width: 900px;
   border-radius: 10px;
   width: 100%;
   display: flex;
@@ -142,6 +144,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 30px;
 }
 .port-folio .history {
   display: flex;
@@ -152,12 +155,52 @@
 }
 .port-folio .history .bg {
   display: flex;
-  gap: 30px;
+  /* gap: 30px; */
   padding: 10px;
   min-width: 900px;
-  justify-content: center;
+  justify-content: space-evenly;
 }
-
+.port-folio .history .date-info {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+.port-folio .stacks {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  max-width: 900px;
+}
+.stacks .usually-knowledge {
+  display: flex;
+  gap: 30px;
+}
+.port-folio .usually {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  max-width: 450px;
+}
+.port-folio .knowledge {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  max-width: 450px;
+}
+.port-folio .etc {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  max-width: 900px;
+}
 
 .project-wrapper {
   width: 100%;

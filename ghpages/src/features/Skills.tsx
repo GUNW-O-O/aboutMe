@@ -1,5 +1,5 @@
 import React from 'react'
-import { usually, knowledge, etc, type Skills } from '../entities/Skills'
+import { usually, knowledge, etc, type Stacks } from '../entities/Skills'
 
 type SkillsProps = {
   category: 'usually' | 'knowledge' | 'etc';
@@ -7,7 +7,7 @@ type SkillsProps = {
 
 const Skills: React.FC<SkillsProps> = ({ category }) => {
 
-  const stack: Record<SkillsProps['category'], Skills> = {
+  const stack: Record<SkillsProps['category'], Stacks> = {
     usually,
     knowledge,
     etc
