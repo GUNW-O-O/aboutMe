@@ -1,9 +1,8 @@
-import React, { useState } from 'react'
-import { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 
 const ScrollToTop: React.FC = () => {
-
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
@@ -19,7 +18,7 @@ const ScrollToTop: React.FC = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 1000) { // 300px 이상 내려오면 버튼 표시
+      if (window.scrollY > 1000) {
         setIsVisible(true);
       } else {
         setIsVisible(false);
@@ -39,61 +38,77 @@ const ScrollToTop: React.FC = () => {
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: "smooth", // 부드럽게 스크롤
+      behavior: "smooth",
     });
   };
 
   const goBack = () => {
     navigate(-1);
-  }
-
+  };
 
   return (
     <>
-      {isVisible && (
-        <button
-          onClick={scrollToTop}
-          style={{
-            position: "fixed",
-            bottom: "5%",
-            right: "5%",
-            padding: "20px 20px",
-            borderRadius: "50%",
-            border: "1px solid white",
-            backgroundColor: "gray",
-            color: "black",
-            cursor: "pointer",
-            zIndex: "1000",
-          }}
-        >
-          👆
-        </button>
-      )}
-      {atTop && (
-        <button
-          onClick={goBack}
-          style={{
-            position: "fixed",
-            bottom: "90%",
-            right: "90%",
-            padding: "15px 15px",
-            borderRadius: "30%",
-            border: "1px solid white",
-            backgroundColor: "gray",
-            color: "black",
-            cursor: "pointer",
-            zIndex: "1000",
-            display: "flex",
-            textAlign: "center",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          👈
-        </button>
-      )}
+      {/* 👆 스크롤 올리기 버튼 */}
+      <AnimatePresence>
+        {isVisible && (
+          <motion.button
+            key="scrollToTopBtn"
+            onClick={scrollToTop}
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.5 }}
+            transition={{ duration: 0.3 }}
+            style={{
+              position: "fixed",
+              bottom: "5%",
+              right: "5%",
+              padding: "20px 20px",
+              borderRadius: "50%",
+              border: "1px solid white",
+              backgroundColor: "gray",
+              color: "black",
+              cursor: "pointer",
+              zIndex: "1000",
+            }}
+          >
+            👆
+          </motion.button>
+        )}
+      </AnimatePresence>
+
+      {/* 👈 뒤로가기 버튼 */}
+      <AnimatePresence>
+        {atTop && (
+          <motion.button
+            key="goBackBtn"
+            onClick={goBack}
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 30 }}
+            transition={{ duration: 0.3 }}
+            style={{
+              position: "fixed",
+              bottom: "90%",
+              right: "90%",
+              padding: "15px 15px",
+              borderRadius: "30%",
+              border: "1px solid white",
+              backgroundColor: "gray",
+              color: "black",
+              cursor: "pointer",
+              zIndex: "1000",
+              display: "flex",
+              textAlign: "center",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            👈
+          </motion.button>
+        )}
+      </AnimatePresence>
     </>
   );
-}
+};
 
-export default ScrollToTop
+export default ScrollToTop;
