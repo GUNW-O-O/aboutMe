@@ -2,10 +2,12 @@ import React from 'react'
 import History from './History'
 import SlideIn from '../shared/SlideIn'
 import Skills from '../features/Skills'
+import ScrollToTop from '../features/ScrollToTop'
 
 const PortFolio: React.FC = () => {
   return (
     <>
+      <ScrollToTop />
       <div className="port-folio">
         <SlideIn delay={0.5} direction="up">
           <History />

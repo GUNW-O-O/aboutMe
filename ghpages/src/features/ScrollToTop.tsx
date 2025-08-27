@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const ScrollToTop: React.FC = () => {
 
   const { pathname } = useLocation();
+  const navigate = useNavigate();
 
   const [isVisible, setIsVisible] = useState(false);
+  const [atTop, setAtTop] = useState(true);
 
   useEffect(() => {
     if ("scrollRestoration" in window.history) {
@@ -22,9 +24,15 @@ const ScrollToTop: React.FC = () => {
       } else {
         setIsVisible(false);
       }
+      if (window.scrollY < 300) {
+        setAtTop(true);
+      } else {
+        setAtTop(false);
+      }
     };
 
     window.addEventListener("scroll", handleScroll);
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -34,6 +42,10 @@ const ScrollToTop: React.FC = () => {
       behavior: "smooth", // 부드럽게 스크롤
     });
   };
+
+  const goBack = () => {
+    navigate(-1);
+  }
 
 
   return (
@@ -47,14 +59,37 @@ const ScrollToTop: React.FC = () => {
             right: "5%",
             padding: "20px 20px",
             borderRadius: "50%",
-            border: "none",
-            backgroundColor: "white",
+            border: "1px solid white",
+            backgroundColor: "gray",
             color: "black",
             cursor: "pointer",
             zIndex: "1000",
           }}
         >
           👆
+        </button>
+      )}
+      {atTop && (
+        <button
+          onClick={goBack}
+          style={{
+            position: "fixed",
+            bottom: "90%",
+            right: "90%",
+            padding: "15px 15px",
+            borderRadius: "30%",
+            border: "1px solid white",
+            backgroundColor: "gray",
+            color: "black",
+            cursor: "pointer",
+            zIndex: "1000",
+            display: "flex",
+            textAlign: "center",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          👈
         </button>
       )}
     </>

@@ -8,6 +8,7 @@ import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import SlideIn from '../shared/SlideIn'
 import SlideInOnView from '../shared/SlideInOnView'
+import ScrollToTop from '../features/ScrollToTop'
 
 const ProjectList: React.FC = () => {
 
@@ -29,6 +30,7 @@ const ProjectList: React.FC = () => {
 
   return (
     <>
+      <ScrollToTop />
       <div className="project-wrapper">
         <SlideIn delay={0.2} direction="down">
           <div className="project-slider bg">
