@@ -50,7 +50,7 @@
   align-items: center;
   flex-direction: column;
   max-width: 1350px;
-  padding-top: 30px;
+  padding-top: 10px;
   /* gap: 30px; */
 }
 .about .introduce {
@@ -91,7 +91,7 @@
   border-radius: 10px;
   width: 100%;
   display: flex;
-  padding: 10px;
+  padding: 20px 10px;
   justify-content: space-evenly;
 }
 .about .my-img {
@@ -348,4 +348,25 @@
   width: 500px;
   height: auto;
   display: block;
+}
+
+/* 스크롤바 제거 */
+/* Firefox */
+html {
+  scrollbar-width: none;   /* 스크롤바 두께 제거 */
+}
+
+/* IE 10+, 구형 Edge(EdgeHTML) */
+html {
+  -ms-overflow-style: none; /* 스크롤바 숨김 */
+}
+
+/* WebKit 계열 (Chrome, Safari, 신형 Edge, Opera) */
+html::-webkit-scrollbar {
+  display: none;            /* 스크롤바 숨김 */
+}
+
+/* 스크롤은 유지 (필요 시) */
+body {
+  overflow: auto; /* 또는 overflow-y: auto; */
 }
