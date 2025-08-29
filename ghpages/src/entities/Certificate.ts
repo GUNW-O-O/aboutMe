@@ -1,5 +1,7 @@
 import SQLD from '../assets/certificate/SQLD.png'
 import webd from '../assets/certificate/webd.png'
+import adspTemp from '../assets/certificate/adspTemp.png'
+
 
 export type Certificate = {
   id : number;
@@ -20,9 +22,9 @@ export const certificates : Certificate[] = [
   {
     id : 2,
     title : 'ADsP',
-    date : '2025.06.27',
+    date : '2025.09.07',
     issuer : 'K-DATA',
-    img : 'todo'
+    img : adspTemp
   },
   {
     id : 3,
