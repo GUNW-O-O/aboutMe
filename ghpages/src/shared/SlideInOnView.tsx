@@ -22,7 +22,7 @@ const SlideInOnView: React.FC<SlideInOnViewProps> = ({ children, delay = 0, dire
       variants={variants}
       initial="hidden"
       whileInView="visible" // 👈 뷰포트 감지
-      viewport={{ once: true, amount: 0.5 }} // 20% 보이면 실행
+      viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.8, delay, ease: "easeOut" }}
     >
       {children}

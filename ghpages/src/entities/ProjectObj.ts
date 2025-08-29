@@ -16,6 +16,18 @@ import res7 from '../assets/resonosSpring/reviewmore.png'
 import res8 from '../assets/resonosSpring/blind.png'
 import res9 from '../assets/resonosSpring/plAdd.png'
 import res10 from '../assets/resonosSpring/plAddOk.png'
+import resr from '../assets/resonosReact/welcome.png'
+import resr1 from '../assets/resonosSpring/artist.png'
+import resr2 from '../assets/resonosSpring/album.png'
+import resr3 from '../assets/resonosSpring/track.png'
+import resr4 from '../assets/resonosReact/comRefactoring.png'
+import resr5 from '../assets/resonosReact/comMain.png'
+import resr6 from '../assets/resonosReact/comPostEdit.png'
+import resr7 from '../assets/resonosReact/comNonMember.png'
+import resr8 from '../assets/resonosReact/comPost.png'
+import resr9 from '../assets/resonosReact/comVote.png'
+import resr10 from '../assets/resonosReact/comComments.png'
+
 
 export type ProjectObj = {
   id : number;
@@ -81,19 +93,28 @@ export const projectObjs: ProjectObj[] = [
     id: 3,
     title: "Resonos React",
     description: "Spring + React로 변경, 커뮤니티와 게시글에서 투표기능을 추가하였습니다.",
-    reflections: "프로젝트가 커질수록 초반 설계의 중요성과 코드의 가독성과 재사용성의 중요성을 깨달았고, 커뮤니티 기능을 개발하며 프론트엔드와 백엔드를 나누어 진행을 해보며 협업에대한 이해도를 높일수있었습니다.",
+    reflections: "커뮤니티 기능을 개발하며 프론트엔드와 백엔드를 나누어 진행을 해보며 협업에대한 이해도를 높일수있었습니다. 또한, 비회원기능의 추가로 여러가지 상황의 수를 자바스크립트로 해결하며 리액트를 좀더 잘 다룰수있게 되었습니다.",
     improvements: "커뮤니티 게시글에 이미지 첨부기능을 추가하면 더 유저친화적인 기능이 될것같습니다.",
-    images: [res1, res2, res3],
-    imgDesc: ["유튜브 API와 Spotify API 를 활용하여 트랙 인기순 정렬과, 인기1위 곡의 뮤직비디오를 임베드 하였습니다.",
-      "앨범페이지에서는 해당앨범이 포함된 플레이리스트들과, 리뷰관리기능들과 앨범의 6요소 투표 시각화를 하였습니다.",
-      "트랙페이지에서는 투표된 분위기의 시각화, 해당트랙을 플레이리스트에 추가하고, 투표된 분위기로 다른노래를 찾을수 있도록 하였습니다."],
+    images: [resr, resr1, resr2, resr3, resr4, resr5, resr6, resr7, resr8, resr9, resr10],
+    imgDesc: ["다크/라이트모드 기능 추가시에 기존 배경이 유저경험을 저해할 것이라고 판단, 현재 모드를 감지후 각각 다른 배경을 보여줄수있도록 하였습니다.",
+      "월요일 이미지 수정1.",
+      "월요일 이미지 수정2.",
+      "월요일 이미지 수정3.",
+      "기존 컨트롤러의 코드 리팩토링 전/후 입니다. 파사드 패턴을 적용하여 컨트롤러와 서비스단의 역할을 분리하였고, 코드의 가독성을 높이고 안정성을 높일 수 있는 구조로 리팩토링 하였습니다.",
+      "리액트로 변경하며 추가한 커뮤니티 기능의 메인페이지 입니다.",
+      "비회원 기능도 추가하여 임시비밀번호를 등록한 후, 게시글과 댓글작성이 가능합니다.",
+      "비회원의 게시글, 댓글은 작성시 등록한 비밀번호가 일치하면 삭제나 수정이 가능합니다.",
+      "유저들이 원하는 항목들로 등록, 수정, 삭제가 가능하며 로그인시 투표가 가능합니다.",
+      "투표를 하게되면 chart.js그래프로 표기가 되며, 투표시 하단의 버튼이 재투표하기 버튼으로 변경됩니다.",
+      "유저가 상호작용한 버튼은 표기가 되며, 게시글이나 댓글의 작성자라면 수정, 삭제가 가능합니다."
+    ],
     troubles: [
-      "초반에는 맡았던페이지를 풀스택으로 개발하였으나, 커뮤니티 기능을 구현할때는 분업을해보며 개발된 기능이 정상작동 하는지 테스트하기가 힘든점",
+      "초반에는 맡았던페이지를 풀스택으로 개발하였으나, 커뮤니티 기능을 구현할때는 분업을해보며 개발된 기능이 작동이 안될시 문제 파악이 힘든점",
       "커뮤니티 댓글 작성시 댓글작성시 useState로만 관리시에 페이지네이션을 무시하고 댓글이 계속 현재 댓글 리스트에 추가되는현상",
       "밴즈인타운스크립트의 로드시점과 리액트의 DOM준비 시점이 맞지않고, 위젯이 정상적으로 표시되지 않음."],
     solution: [
-      "스웨거나 Postman, ThunderClient 등을 사용하여 API 명세를 정확하게 파악후, 정상작동을 하지않는 기능중 백엔드나 프론트엔드중 어느쪽 코드에 문제가있는지 파악하며 프로젝트를 진행하였습니다.",
-      "페이지네이션 구현후 댓글등록시 마지막페이지로 이동하도록 변경후 추가적으로 현재 페이지의 댓글리스트의 길이가 페이지의크기로 나눈 나머지가 0이라면 다음페이지를 가져오는 함수를 실행하고, 삭제후 댓글리스트의 길이가 0이라면 이전페이지를 가져오는 함수실행후 페이지네이션 객체를 최신화하도록 하였습니다.",
-      "리액트에서 DOM 을 렌더링 후 body 태그에 스크립트를 동적으로 추가하고 스크립트 로드가 완료되면 init() 을 호출하도록 변경하고, 스크립트의 객체 존재여부로 로딩여부를 판단하는 로직을 제거했습니다."]
+      "스웨거를 도입후 API 명세를 정확하게 파악후, 정상작동을 하지않는 기능중 백엔드나 프론트엔드중 어느쪽 코드에 문제가있는지 파악하며 프로젝트를 진행하였습니다.",
+      "페이지네이션 구현후 댓글등록시 마지막페이지로 이동하도록 로직변경후 추가적으로 현재 페이지의 댓글리스트의 길이가 페이지의크기로 나눈 나머지가 0이라면 다음페이지를 가져오는 함수를 실행하고, 삭제후 댓글리스트의 길이가 0이라면 이전페이지를 가져오는 함수를 실행합니다.",
+      "리액트에서 DOM 을 렌더링 후 밴즈인타운 스크립트를 동적으로 추가하고 로드가 완료되면 init() 을 호출하도록 변경하고, 스크립트의 객체 존재여부로 로딩여부를 판단하는 로직을 제거했습니다."]
   }
 ];
