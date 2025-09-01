@@ -22,7 +22,7 @@ export const certificates : Certificate[] = [
   {
     id : 2,
     title : 'ADsP',
-    date : '2025.09.07',
+    date : '2025.09.05',
     issuer : 'K-DATA',
     img : adspTemp
   },
