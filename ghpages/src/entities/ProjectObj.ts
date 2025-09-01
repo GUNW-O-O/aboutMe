@@ -17,9 +17,9 @@ import res8 from '../assets/resonosSpring/blind.png'
 import res9 from '../assets/resonosSpring/plAdd.png'
 import res10 from '../assets/resonosSpring/plAddOk.png'
 import resr from '../assets/resonosReact/welcome.png'
-import resr1 from '../assets/resonosSpring/artist.png'
-import resr2 from '../assets/resonosSpring/album.png'
-import resr3 from '../assets/resonosSpring/track.png'
+import resr1 from '../assets/resonosReact/artist.png'
+import resr2 from '../assets/resonosReact/album.png'
+import resr3 from '../assets/resonosReact/track.png'
 import resr4 from '../assets/resonosReact/comRefactoring.png'
 import resr5 from '../assets/resonosReact/comMain.png'
 import resr6 from '../assets/resonosReact/comPostEdit.png'
@@ -101,9 +101,9 @@ export const projectObjs: ProjectObj[] = [
     images: [resr, resr1, resr2, resr3, resr4, resr5, resr6, resr7, resr8, resr9, resr10],
     imgDesc: [
       "배경은 라이브러리를 적용하였고, 다크/라이트모드 기능 도입 시 왼쪽 배경의 조화가 떨어져, 현재 모드를 감지 후 맞춤 배경을 적용하여 사용자 경험을 개선했습니다.",
-      "월요일 이미지 수정1.",
-      "월요일 이미지 수정2.",
-      "월요일 이미지 수정3.",
+      "아티스트 페이지 입니다. 기존과 동일하게 구현하였습니다.",
+      "앨범 페이지 입니다. 기존과 동일하게 구현하였습니다.",
+      "트랙 페이지 입니다. 기존과 동일하게 구현하였습니다.",
       "기존 컨트롤러 코드 리팩토링 전/후 입니다. 파사드 패턴을 적용하여 컨트롤러와 서비스 단의 역할을 분리했고, 코드 가독성과 안정성을 높일 수 있는 구조로 리팩토링했습니다.",
       "리액트로 변경하며 추가한 커뮤니티 기능 메인페이지 입니다.",
       "비회원 기능을 추가하여 임시 비밀번호를 등록한 후 게시글과 댓글 작성이 가능합니다.",
