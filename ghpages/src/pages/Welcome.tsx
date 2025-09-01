@@ -26,9 +26,10 @@ const Welcome: React.FC = () => {
             pauseBetweenAnimations={1}
           />
         </div>
+          <h2>Full Stack <strong style={{color:"#3B82F6"}}>Developer</strong> 고건우's PortFolio.</h2>
         <div className="link">
           <HrefButton link={"/main"} text={"포트폴리오"} />
-          <a className='btn' href="https://github.com/GUNW-O-O/" target="_blank" rel="noopener noreferrer">깃허브</a>
+          <a className='btn' href="https://github.com/GUNW-O-O/" target="_blank" rel="noopener noreferrer">Git</a>
         </div>
       </div>
     </>
