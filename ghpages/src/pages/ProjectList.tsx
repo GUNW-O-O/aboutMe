@@ -59,7 +59,10 @@ const ProjectList: React.FC = () => {
           </div>
         </SlideIn>
         {!project && (
-          <h1 className='headline'>프로젝트를 선택해주세요.</h1>
+          <>
+            <h1 className='headline'>프로젝트를 선택해주세요.</h1>
+            <h3>슬라이드는 드래그나, 클릭이 가능합니다</h3>
+          </>
         )}
         {project && (
           <div className="project-detail" key={trigger}>
