@@ -61,12 +61,17 @@
   justify-content: space-evenly;
 }
 .about .introduce .appeal {
-  padding-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 5px;
+  padding-bottom: 10px;
   border-bottom: 1px solid white;
 }
 .about .introduce .contact {
   display: flex;
   flex-direction: column;
+  gap: 3px;
 }
 .about .introduce .contact p {
   margin-bottom: 10px;

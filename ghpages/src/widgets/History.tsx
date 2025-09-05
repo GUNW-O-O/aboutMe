@@ -52,7 +52,7 @@ const History: React.FC = () => {
           <p>NAVER 1784 System Partition</p>
         </div>
         <div className="certificate">
-          <h2 className='headline'>Certificate 👈</h2>
+          <h2 className='headline'>Certificate 🖱️</h2>
           {certificates?.map((cer, idx) => (
             <div key={idx} className='certificate-item'
               onClick={() => handleClick(cer)} style={{ cursor: 'pointer' }}>
