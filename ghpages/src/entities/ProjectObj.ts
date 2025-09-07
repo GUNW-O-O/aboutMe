@@ -44,7 +44,7 @@ export const projectObjs: ProjectObj[] = [
   {
     id: 1,
     title: "할건해야짐",
-    description: "첫 팀 프로젝트로 CRUD 기능을 직접 구현했습니다. Java와 JSP를 활용하여 SSR MVC-2 구조 기반으로 개발했습니다.",
+    description: "첫 팀 프로젝트로 Java와 JSP를 활용하여 SSR MVC-2 구조 기반으로 개발했습니다.",
     reflections: "Java와 JSP 기반 서버 개발 경험을 쌓았습니다. 다만 시간상 구현하지 못한 부분들로 인해 프로젝트 중 자원 분배의 중요성을 느꼈고, 사용자는 개발자가 의도한 대로만 사용하지 않는다는 점도 깨달았습니다.",
     improvements: "특정 기간의 데이터만 가져온 후 차트를 그리는 기능을 추가하면 데이터의 양이 늘어나도 빠르게 동작할것같습니다. 추가적으로 예외 처리를 하지 못한 부분들도 개선이 필요합니다.",
     images: [hhg, hhg1, hhg2, hhg3, hhg4, hhg5, hhg6],

@@ -82,19 +82,6 @@ const ProjectList: React.FC = () => {
                 </div>
               </div>
             </SlideIn>
-            <div className="detail-body">
-              <h2 className='headline'>담당 구현부 / 프로젝트시 겪었던 문제</h2>
-              {project?.images.map((img, idx) => (
-                <SlideInOnView key={`${project.title}-${idx}`} direction="left">
-                  <div key={idx} className="img-box bg">
-                    <img src={img} alt={project.imgDesc[idx]}
-                      className={`fade-in ${isLoaded ? 'loaded' : ''}`}
-                      onLoad={() => setIsLoaded(true)} />
-                    <p className="img-desc">{project.imgDesc[idx]}</p>
-                  </div>
-                </SlideInOnView>
-              ))}
-            </div>
             <div className="detail-footer bg">
               <h2 className='headline'>프로젝트시 겪었던 문제</h2>
               <Swiper
@@ -115,6 +102,20 @@ const ProjectList: React.FC = () => {
                   </SwiperSlide>
                 ))}
               </Swiper>
+            </div>
+            <div className="detail-body">
+              <h2 className='headline'>담당 구현부</h2>
+              {project?.images.map((img, idx) => (
+                <SlideInOnView key={`${project.title}-${idx}`} direction="left">
+                  <div key={idx} className="img-box bg">
+                    <img src={img} alt={project.imgDesc[idx]}
+                      className={`fade-in ${isLoaded ? 'loaded' : ''}`}
+                      onLoad={() => setIsLoaded(true)} />
+                    <p className="img-desc">{project.imgDesc[idx]}</p>
+                  </div>
+                </SlideInOnView>
+              ))}
+              <h2 className='headline'>&lt;/&gt;</h2>
             </div>
           </div>
         )}
