@@ -28,7 +28,10 @@ const Info: React.FC = () => {
           <div className="contact">
             <h3><strong>Contact</strong></h3>
             <p>Email : go971230@gmail.com</p>
-          <HrefButton link={"/projects"} text={"프로젝트 🖱️"} />
+            <div className='btn-container'>
+              <HrefButton link={"/projects"} text={"개인 프로젝트 🖱️"} />
+              <HrefButton link={"/teamprojects"} text={"프로젝트 🖱️"} />
+            </div>
           </div>
         </div>
         <div className="my-img">
