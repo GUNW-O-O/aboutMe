@@ -14,9 +14,9 @@ const Info: React.FC = () => {
       <div className="bg">
         <div className="introduce">
           <div className="appeal">
-            <h3><strong>집중은 💻🔥 쉴 때는 🎧💻 취미도 🎧💻</strong></h3>
+            <h3><strong>집중은 🎧💻🔥 쉴 때는 🎧💻 취미도 🎧💻</strong></h3>
             <DecryptedText
-              text="프로그래머가 단순히 기능을 구현한다면, 저는 서비스 전체의 흐름을 고민하며, 하루 종일 컴퓨터 앞에서도 몰입하며 문제를 해결하는 개발자입니다."
+              text="프로그래머가 단순히 기능을 구현하는 데 그친다면, 저는 코드의 흐름과 작동 원리를 이해하고 이를 바탕으로 문제를 분석하고 개선하는 방식을 지향하는 개발자입니다."
               animateOn="view"
               revealDirection='start'
               useOriginalCharsOnly={true}
@@ -30,7 +30,7 @@ const Info: React.FC = () => {
             <p>Email : go971230@gmail.com</p>
             <div className='btn-container'>
               <HrefButton link={"/projects"} text={"개인 프로젝트 🖱️"} />
-              <HrefButton link={"/teamprojects"} text={"프로젝트 🖱️"} />
+              <HrefButton link={"/teamprojects"} text={"팀 프로젝트 🖱️"} />
             </div>
           </div>
         </div>

@@ -6,8 +6,8 @@ export const personalReferences : Reference[] = [
     id: 1,
     projectLogo : lexiLogo,
     title : "LexiHub",
-    serviceTarget : "헬스장 통합 관리 시스템",
-    description : "JAVA JSP MVC MySQL",
-    repo: "https://github.com/ruff1376/AI3_MINI1_TEAM3",
+    serviceTarget : "Toy Project",
+    description : "단어장 타이핑 웹서비스",
+    repo: "https://github.com/GUNW-O-O/lexi-hub",
   },
 ]

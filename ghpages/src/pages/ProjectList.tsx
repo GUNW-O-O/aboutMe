@@ -60,7 +60,7 @@ const ProjectList: React.FC = () => {
         </SlideIn>
         {!project && (
           <>
-            <h1 className='headline'>프로젝트를 선택해주세요.</h1>
+            <h1 className='headline'>프로젝트를 클릭해주세요.</h1>
             <h3>슬라이드는 드래그나, 클릭이 가능합니다</h3>
           </>
         )}
@@ -77,8 +77,8 @@ const ProjectList: React.FC = () => {
                   {project.reflections}
                 </div>
                 <div className="improvements">
-                  <h3 className='headline'>개선점</h3>
-                  {project.improvements}
+                  <h3 className='headline'>담당역할</h3>
+                  {project.responsibilities}
                 </div>
               </div>
             </SlideIn>
