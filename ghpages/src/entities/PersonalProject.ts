@@ -2,10 +2,11 @@ import lexi1 from '../assets/lexiHub/mainSearch.gif'
 import lexi2 from '../assets/lexiHub/addFlashcard.gif'
 import lexi3 from '../assets/lexiHub/editFlashcard.png'
 import lexi4 from '../assets/lexiHub/editedFlashcard.png'
-import lexi5 from '../assets/lexiHub/addLongform.png'
-import lexi6 from '../assets/lexiHub/typingLongform.gif'
-import lexi7 from '../assets/lexiHub/typingFlashcard.gif'
-import lexi8 from '../assets/lexiHub/doneLongform.png'
+import lexi5 from '../assets/lexiHub/typingFlashcard.gif'
+import lexi6 from '../assets/lexiHub/addLongform.png'
+import lexi7 from '../assets/lexiHub/editLongform.png'
+import lexi8 from '../assets/lexiHub/typingLongform.gif'
+import lexi9 from '../assets/lexiHub/doneLongform.png'
 // import lexi8 from '../assets/lexiHub/.png'
 import type { ProjectObj } from './ProjectObj'
 
@@ -16,7 +17,7 @@ export const PersonalProjectObjs: ProjectObj[] = [
     description: "첫 팀 프로젝트로 Java와 JSP를 활용하여 SSR MVC-2 구조 기반으로 개발했습니다.",
     reflections: "Java와 JSP 기반 서버 개발 경험을 쌓았습니다. 다만 시간상 구현하지 못한 부분들로 인해 프로젝트 중 자원 분배의 중요성을 느꼈고, 사용자는 개발자가 의도한 대로만 사용하지 않는다는 점도 깨달았습니다.",
     improvements: "특정 기간의 데이터만 가져온 후 차트를 그리는 기능을 추가하면 데이터의 양이 늘어나도 빠르게 동작할것같습니다. 추가적으로 예외 처리를 하지 못한 부분들도 개선이 필요합니다.",
-    images: [lexi1, lexi2, lexi3, lexi4, lexi5, lexi6, lexi7, lexi8],
+    images: [lexi1, lexi2, lexi3, lexi4, lexi5, lexi6, lexi7, lexi8, lexi9],
     imgDesc: ["메인화면",
       "카테고리별 기구 추가 및 기구 클릭 시 수정 화면으로 이동이 가능합니다.",
       "기구의 수정과 삭제가 가능하고 상태란에 '점검'이라는 키워드가 존재할 시 메인 화면의 할 일 탭에 노출됩니다.",
