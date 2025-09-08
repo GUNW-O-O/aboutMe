@@ -16,7 +16,7 @@ const PortFolio: React.FC = () => {
           <div className='usually-knowledge'>
             <SlideIn delay={0.8} direction="right">
               <div className="usually bg">
-                <h2>Usually</h2>
+                <h2>Core</h2>
                 <Skills category='usually' />
               </div>
             </SlideIn>
