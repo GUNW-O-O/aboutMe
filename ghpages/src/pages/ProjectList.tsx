@@ -104,7 +104,7 @@ const ProjectList: React.FC = () => {
               </Swiper>
             </div>
             <div className="detail-body">
-              <h2 className='headline'>담당 구현부</h2>
+              <h2 className='headline'>&lt;담당구현부&gt;</h2>
               {project?.images.map((img, idx) => (
                 <SlideInOnView key={`${project.title}-${idx}`} direction="left">
                   <div key={idx} className="img-box bg">
@@ -115,7 +115,7 @@ const ProjectList: React.FC = () => {
                   </div>
                 </SlideInOnView>
               ))}
-              <h2 className='headline'>&lt;/&gt;</h2>
+              <h2 className='headline'>&lt;/담당구현부&gt;</h2>
             </div>
           </div>
         )}

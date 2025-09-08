@@ -1,4 +1,10 @@
-body { background-color: #121212; color:#e0e0e0;}
+:root {
+    font-family: 'Noto Sans KR', sans-serif;
+}
+body { 
+    background-color: #121212;
+    color:#e0e0e0;
+}
 
 .bg {background-color: #222222; border-radius: 10px;}
 

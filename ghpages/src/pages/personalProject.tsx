@@ -115,7 +115,7 @@ export const PersonalProjectList: React.FC = () => {
               </div>
             </SlideIn>
             <div className="detail-body">
-              <h2 className='headline'>구현 내용</h2>
+              <h2 className='headline'>&lt;구현내용&gt;</h2>
               {project?.images.map((img, idx) => (
                 <SlideInOnView key={`${project.title}-${idx}`} direction="left">
                   <div key={idx} className="img-box bg">
@@ -127,7 +127,7 @@ export const PersonalProjectList: React.FC = () => {
                   </div>
                 </SlideInOnView>
               ))}
-              <h2 className='headline'>&lt;/&gt;</h2>
+              <h2 className='headline'>&lt;/구현내용&gt;</h2>
             </div>
           </div>
         )}
