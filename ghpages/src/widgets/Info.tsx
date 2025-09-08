@@ -16,7 +16,7 @@ const Info: React.FC = () => {
           <div className="appeal">
             <h3><strong>집중은 🎧💻🔥 쉴 때는 🎧💻 취미도 🎧💻</strong></h3>
             <DecryptedText
-              text="프로그래머가 단순히 기능을 구현하는 데 그친다면, 저는 코드의 흐름과 작동 원리를 이해하고 이를 바탕으로 문제를 분석하고 개선하는 방식을 지향하는 개발자입니다."
+              text="프로그래머가 단순히 기능만을 구현한다면, 저는 도메인과 사용자 경험, 코드의 흐름까지 이해하며 문제를 분석하고 개선하는 '개발자'가 되고 싶습니다."
               animateOn="view"
               revealDirection='start'
               useOriginalCharsOnly={true}
