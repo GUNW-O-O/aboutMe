@@ -10,7 +10,7 @@ export default defineConfig({
       jpeg: { quality: 80 },
       png: { quality: 80 },
       webp: { quality: 75 },
-      avif: { quality: 80 },
+      // avif: { quality: 80 },
     })
   ],
 })
