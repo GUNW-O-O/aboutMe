@@ -9,19 +9,30 @@ import SlideIn from '../shared/SlideIn'
 import SlideInOnView from '../shared/SlideInOnView'
 import ScrollToTop from '../features/ScrollToTop'
 import { PersonalProjectObjs as projectObjs, type ProjectObj } from '../entities/PersonalProject'
+import CircularText from '../features/CircularText'
 
 export const PersonalProjectList: React.FC = () => {
 
   const [project, setProject] = useState<ProjectObj | null>(null)
   const [isLoaded, setIsLoaded] = useState(false)
   const [trigger, setTrigger] = useState(0)
+  const [loadedImages, setLoadedImages] = useState<boolean[]>([]);
+
+  const handleImageLoad = (idx: number) => {
+    setLoadedImages(prev => {
+      const next = [...prev]
+      next[idx] = true
+      return next
+    })
+  }
+
 
   const handleProjectList = (id: number) => {
-    setIsLoaded(false)
     if (project?.id === id) {
       setProject(null)
       return
     }
+    setLoadedImages([])
     setTrigger(prev => prev + 1)
     setProject(projectObjs[id - 1])
   }
@@ -44,7 +55,13 @@ export const PersonalProjectList: React.FC = () => {
                 <SwiperSlide key={ref.id}>
                   <div className="project-card" onClick={() => handleProjectList(ref.id)}>
                     <div className="project-img">
-                      <img src={ref.projectLogo} alt={ref.title} />
+                      <img src={ref.projectLogo} alt={ref.title} className={`fade-in ${isLoaded ? 'loaded' : 'dn'}`} onLoad={() => setIsLoaded(true)} />
+                      <CircularText
+                        text="INITIALIZING...."
+                        spinDuration={8}
+                        onHover="pause"
+                        className={`${isLoaded ? 'dn' : ''}`}
+                      />
                     </div>
                     <div className="project-desc">
                       <h3>{ref.title}</h3>
@@ -82,7 +99,7 @@ export const PersonalProjectList: React.FC = () => {
                         </div>
                         <div className="skill-reason">
                           <p>
-                          {project?.skillReason[idx]}
+                            {project?.skillReason[idx]}
                           </p>
                         </div>
                       </div>
@@ -118,11 +135,19 @@ export const PersonalProjectList: React.FC = () => {
               <h2 className='headline'>&lt;구현내용&gt;</h2>
               {project?.images.map((img, idx) => (
                 <SlideInOnView key={`${project.title}-${idx}`} direction="left">
-                  <div key={idx} className="img-box bg">
-                    <img src={img} alt={project.imgDesc[idx]}
-                      className={`fade-in ${isLoaded ? 'loaded' : ''}`}
-                      onLoad={() => setIsLoaded(true)}
-                      style={{ maxHeight: "600px", objectFit: "contain" }} />
+                  <div className="img-box bg">
+                    <img
+                      src={img}
+                      alt={project.imgDesc[idx]}
+                      className={`fade-in ${loadedImages[idx] ? 'loaded' : 'dn'}`}
+                      onLoad={() => handleImageLoad(idx)}
+                    />
+                    <CircularText
+                      text="INITIALIZING...."
+                      spinDuration={8}
+                      onHover="pause"
+                      className={`${loadedImages[idx] ? 'dn' : ''}`}
+                    />
                     <p className="img-desc">{project.imgDesc[idx]}</p>
                   </div>
                 </SlideInOnView>
