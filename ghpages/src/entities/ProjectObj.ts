@@ -8,25 +8,26 @@ import hhg6 from '../assets/hhg/sales.png'
 import res from '../assets/resonosSpring/main.png'
 import res1 from '../assets/resonosSpring/artist.png'
 import res2 from '../assets/resonosSpring/album.png'
-import res3 from '../assets/resonosSpring/album6vote.png'
+import res3 from '../assets/resonosSpring/albumVote.avif'
 import res4 from '../assets/resonosSpring/track.png'
 import res5 from '../assets/resonosSpring/trackmood.png'
-import res6 from '../assets/resonosSpring/review.png'
-import res7 from '../assets/resonosSpring/reviewmore.png'
-import res8 from '../assets/resonosSpring/blind.png'
-import res9 from '../assets/resonosSpring/plAdd.png'
-import res10 from '../assets/resonosSpring/plAddOk.png'
-import resr from '../assets/resonosReact/welcome.png'
-import resr1 from '../assets/resonosReact/artist.png'
-import resr2 from '../assets/resonosReact/album.png'
-import resr3 from '../assets/resonosReact/track.png'
-import resr4 from '../assets/resonosReact/comRefactoring.png'
-import resr5 from '../assets/resonosReact/comMain.png'
-import resr6 from '../assets/resonosReact/comPostEdit.png'
-import resr7 from '../assets/resonosReact/comNonMember.png'
-import resr8 from '../assets/resonosReact/comPost.png'
-import resr9 from '../assets/resonosReact/comVote.png'
-import resr10 from '../assets/resonosReact/comComments.png'
+import res6 from '../assets/resonosSpring/albumReview.avif'
+import res7 from '../assets/resonosSpring/resonosStatus.avif'
+import res8 from '../assets/resonosSpring/resonosAdmin.avif'
+import res9 from '../assets/resonosSpring/resonosTrack.avif'
+import resr from '../assets/resonosReact/welcomDark.avif'
+import resr1 from '../assets/resonosReact/welcomeLight.png'
+import resr2 from '../assets/resonosReact/artist.avif'
+import resr3 from '../assets/resonosReact/album.avif'
+import resr4 from '../assets/resonosReact/track.avif'
+import resr5 from '../assets/resonosReact/comRefactoring.png'
+import resr6 from '../assets/resonosReact/comMain.png'
+import resr7 from '../assets/resonosReact/comPostEdit.avif'
+import resr8 from '../assets/resonosReact/comNonMember.avif'
+import resr9 from '../assets/resonosReact/pagination.avif'
+import resr10 from '../assets/resonosReact/comPost.avif'
+import resr11 from '../assets/resonosReact/comVote.avif'
+import resr12 from '../assets/resonosReact/comComments.avif'
 
 
 export type ProjectObj = {
@@ -68,7 +69,7 @@ export const projectObjs: ProjectObj[] = [
     description: "Spring + Thymeleaf과 SSR MVC-2 구조를 기반으로한 사용자 투표 기반 음악 커뮤니티 입니다.",
     reflections: "동기 요청 처리로 인해 페이지 전체가 갱신되는 현상이 있었습니다. 이를 비동기 요청으로 전환하고 응답을 자바스크립트로 처리하면서 사용자 경험을 개선할 수 있었고, API와 스프링의 개념 및 코드 흐름을 파악하는 능력을 키웠습니다.",
     responsibilities: "아티스트, 트랙, 앨범 상세 페이지 등 메인 사용 페이지를 담당하였으며, 핵심 상호작용 기능을 비동기 요청으로 보내며 즉각적인 피드백을 구현했습니다. 추가적으로 YouTube API를 활용하여 videoId를 가져오는 기능을 구현했습니다.",
-    images: [res, res1, res2, res3, res4, res5, res6, res7, res8, res9, res10],
+    images: [res, res1, res2, res3, res4, res5, res6, res7, res8, res9],
     imgDesc: ["웰컴 페이지 입니다.",
       "해당 아티스트의 정보와 앨범들, 인기 상위7곡과 인기도 1위인 뮤직비디오를 Spotify와 YouTube API를 활용하여 임베드하였고, 아티스트의 최근 리뷰와 Bandsintown 기반 공연 일정이 표시되며 분위기 투표가 가능합니다.",
       "앨범 페이지에서는 앨범 수록곡, 리뷰 현황과 앨범의 6요소 평가 점수, 앨범의 트랙이 포함된 플레이리스트, 해당 유저의 앨범·리뷰 좋아요 여부가 표시됩니다.",
@@ -76,10 +77,9 @@ export const projectObjs: ProjectObj[] = [
       "트랙 페이지에서는 해당 트랙을 플레이리스트에 추가하고, 투표된 분위기를 기반으로 다른 노래를 찾을 수 있습니다.",
       "분위기 투표와 해당 트랙이 포함된 플레이리스트가 좋아요 순으로 표시됩니다.",
       "리뷰는 '더보기' 형식의 페이지네이션을 적용했습니다.",
-      "신고가 누적된 리뷰는 블라인드 처리되며, 사용자가 내용을 확인할 수 있도록 구현하였습니다.",
-      "블라인드 리뷰는 관리자 계정 접속 시 버튼 클릭 없이 바로 볼 수 있으며, 수정과 삭제가 가능합니다.",
+      "상호작용한 내용은 저장됩니다.",
+      "관리자 계정 접속 시 블라인드 리뷰를 클릭 없이 바로 볼 수 있으며, 모든 리뷰의 수정과 삭제가 가능합니다.",
       "유저 상호작용 기능은 비동기 요청으로 구현하였습니다.",
-      "음악을 재생하면서 트랙을 플레이리스트에 추가한 장면입니다."
     ],
     troubles: [
       "로컬 환경 외부에서는 YouTube 임베드가 불가능한 영상 존재",
@@ -98,17 +98,19 @@ export const projectObjs: ProjectObj[] = [
     description: "Spring + React로 변경하며 커뮤니티와 게시글에 투표기능을 추가하였습니다.",
     reflections: "타임리프 기반 SSR 구조에서 React로 전환하며, 단순히 화면을 그리는 방식만 바꾼것이 아니라 컨트롤러 리팩토링을 수행하며 코드의 가독성과 안정성 증가를 경험했습니다. 다양한 유저 케이스를 고려한 UI·UX 설계의 복잡함을 체감했고, 이를 통해 React 상태 관리와 분기 처리에 대한 이해도를 크게 높일 수 있었습니다.",
     responsibilities: "기존 타임리프 기반 프로젝트를 React로 전환하며 담당했던 컨트롤러를 리팩토링하고, 프론트엔드로는 추가된 자유 커뮤니티 게시글 작성 및 상세 페이지 및 투표 기능을 구현했습니다. 또한 프론트엔드 작업시 백엔드 개선점도 전달했습니다. 비회원 게시글/댓글 기능도 구현하며 조건부 렌더링 처리에 집중했습니다.",
-    images: [resr, resr1, resr2, resr3, resr4, resr5, resr6, resr7, resr8, resr9, resr10],
+    images: [resr, resr1, resr2, resr3, resr4, resr5, resr6, resr7, resr8, resr9, resr10, resr11, resr12],
     imgDesc: [
-      "배경은 라이브러리를 적용하였고, 다크/라이트모드 기능 도입 시 왼쪽 배경의 조화가 떨어져, 현재 모드를 감지 후 맞춤 배경을 적용하여 사용자 경험을 개선했습니다.",
+      "기본 다크모드 웰컴페이지 입니다.",
+      "다크/라이트모드 기능 도입 시 다크모드 배경의 조화가 떨어져, 현재 모드를 감지 후 맞춤 배경을 적용하여 사용자 경험을 개선했습니다.",
       "아티스트 페이지 입니다. 기존과 동일하게 구현하였습니다.",
       "앨범 페이지 입니다. 기존과 동일하게 구현하였습니다.",
       "트랙 페이지 입니다. 기존과 동일하게 구현하였습니다.",
       "기존 컨트롤러 코드 리팩토링 전/후 입니다. 파사드 패턴을 적용하여 컨트롤러와 서비스 단의 역할을 분리했고, 코드 가독성과 안정성을 높일 수 있는 구조로 리팩토링했습니다.",
       "리액트로 변경하며 추가한 커뮤니티 기능 메인페이지 입니다.",
-      "비회원 기능을 추가하여 임시 비밀번호를 등록한 후 게시글과 댓글 작성이 가능합니다.",
-      "비회원의 게시글, 댓글은 작성 시 등록한 비밀번호가 일치하면 삭제나 수정이 가능합니다.",
-      "유저들이 원하는 항목들로 등록, 수정, 삭제가 가능하며 로그인 시 투표가 가능합니다.",
+      "비회원 이라면 임시 비밀번호를 등록한 후 게시글과 댓글 작성, 삭제가 가능합니다.",
+      "대댓글 기능도 구현하였고, 비회원의 게시글, 댓글은 작성 시 등록한 비밀번호가 일치하면 삭제나 수정이 가능합니다.",
+      "댓글 리스트의 길이에 따라 전/후 페이지를 불러옵니다.",
+      "유저들이 원하는 항목들로 투표 등록, 수정, 삭제가 가능하며 로그인 시 투표가 가능합니다.",
       "투표 시 chart.js 그래프로 표기되며, 투표 버튼은 '재투표하기' 버튼으로 변경됩니다.",
       "유저가 상호작용한 버튼은 표시되며, 게시글이나 댓글 작성자는 수정, 삭제가 가능합니다."
     ],
