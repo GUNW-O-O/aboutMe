@@ -1,0 +1,10 @@
+.custom-rays {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;   /* 화면 가로 100% */
+  height: 100vh;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden; /* 내부에서 넘쳐도 스크롤 안 생기게 */
+}

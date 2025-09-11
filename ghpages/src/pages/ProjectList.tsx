@@ -10,6 +10,7 @@ import SlideIn from '../shared/SlideIn'
 import SlideInOnView from '../shared/SlideInOnView'
 import ScrollToTop from '../features/ScrollToTop'
 import CircularText from '../features/CircularText'
+import LightRays from '../shared/LightRays'
 
 const ProjectList: React.FC = () => {
 
@@ -41,6 +42,18 @@ const ProjectList: React.FC = () => {
 
   return (
     <>
+      <LightRays
+        raysOrigin="bottom-center"
+        raysColor="#bfd9d9ff"
+        raysSpeed={1.5}
+        lightSpread={0.8}
+        rayLength={2}
+        followMouse={true}
+        mouseInfluence={0.1}
+        noiseAmount={0.1}
+        distortion={0.05}
+        className="custom-rays"
+      />
       <ScrollToTop />
       <div className="project-wrapper">
         <SlideIn delay={0.2} direction="down">
@@ -56,12 +69,12 @@ const ProjectList: React.FC = () => {
                   <div className="project-card" onClick={() => handleProjectList(ref.id)}>
                     <div className="project-img">
                       <img src={ref.projectLogo} alt={ref.title} className={`fade-in ${isLoaded ? 'loaded' : 'dn'}`} onLoad={() => setIsLoaded(true)} />
-                        <CircularText
-                          text="INITIALIZING...."
-                          spinDuration={8}
-                          onHover="pause"
-                          className={`${isLoaded ? 'dn' : ''}`}
-                        />
+                      <CircularText
+                        text="INITIALIZING...."
+                        spinDuration={8}
+                        onHover="pause"
+                        className={`${isLoaded ? 'dn' : ''}`}
+                      />
                     </div>
                     <div className="project-desc">
                       <h3>{ref.title}</h3>

@@ -227,6 +227,10 @@
 }
 
 /* 프로젝트 */
+/* .project-slider.bg {
+  background: transparent;
+  border: 1px solid #3B82F6;
+} */
 .project-wrapper {
   max-width: 1350px;
   margin: auto;
