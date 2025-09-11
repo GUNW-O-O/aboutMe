@@ -44,7 +44,7 @@ export const PersonalProjectList: React.FC = () => {
     <>
       <LightRays
         raysOrigin="bottom-center"
-        raysColor="#00ffff"
+        raysColor="#bfd9d9ff"
         raysSpeed={1.5}
         lightSpread={0.8}
         rayLength={1.2}
