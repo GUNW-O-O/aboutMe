@@ -41,7 +41,7 @@ const ScrollToTop: React.FC = () => {
   }, [scrollY]);
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
-  const goBack = () => navigate(-1);
+  const goBack = () => navigate('/main');
 
   return (
     <>

@@ -21,10 +21,10 @@ const About: React.FC = () => {
         <LightRays
           raysOrigin="bottom-center"
           raysColor="#00ffff"
-          pulsating={true}
+          pulsating={false}
           raysSpeed={1}
           lightSpread={0.8}
-          rayLength={1}
+          rayLength={1.3}
           followMouse={true}
           mouseInfluence={0.1}
           className="custom-rays"
