@@ -6,6 +6,7 @@ const ScrollToTop: React.FC = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
+
   const [isVisible, setIsVisible] = useState(false);
   const [atTop, setAtTop] = useState(true);
 
@@ -41,7 +42,15 @@ const ScrollToTop: React.FC = () => {
   }, [scrollY]);
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
-  const goBack = () => navigate('/main');
+
+
+  const handleBackButton = () => {
+    if(pathname === '/teamprojects' || pathname === '/projects') {
+      navigate('/main');
+    } else {
+      navigate(-1);
+    }
+  }
 
   return (
     <>
@@ -92,7 +101,7 @@ const ScrollToTop: React.FC = () => {
         {atTop && (
           <motion.button
             key="goBackBtn"
-            onClick={goBack}
+            onClick={handleBackButton}
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 30 }}
