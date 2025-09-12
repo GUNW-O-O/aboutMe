@@ -46,10 +46,10 @@ const ScrollToTop: React.FC = () => {
 
   const handleBackButton = () => {
     if(pathname === '/teamprojects' || pathname === '/projects') {
-      navigate('/main');
-    } else {
       navigate(-1);
-    }
+    } else if (pathname === '/main') {
+      navigate('/');
+    } else navigate(-1);
   }
 
   return (
