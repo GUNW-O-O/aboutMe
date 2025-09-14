@@ -9,9 +9,11 @@ const PortFolio: React.FC = () => {
     <>
       <ScrollToTop />
       <div className="port-folio">
-        <SlideIn delay={0.5} direction="up">
-          <History />
-        </SlideIn>
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          <SlideIn delay={0.5} direction="up">
+            <History />
+          </SlideIn>
+        </div>
         <div className="stacks">
           <div className='usually-knowledge'>
             <SlideIn delay={0.8} direction="right">

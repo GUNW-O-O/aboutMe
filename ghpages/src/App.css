@@ -364,8 +364,12 @@
   left: 50%;
   transform: translate(-50%, -50%) scale(0.95);
   opacity: 0;
-  background: rgba(255, 255, 255, 0.95);
-  padding: 20px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(59, 130, 246, 0.7);
+  /* backdrop-filter: blur(10px) saturate(100%) brightness(100%); */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(7px) saturate(120%);
+  padding: 40px;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   z-index: 100;
