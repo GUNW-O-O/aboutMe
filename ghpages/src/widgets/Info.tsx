@@ -20,8 +20,8 @@ const Info: React.FC = () => {
               animateOn="view"
               revealDirection='start'
               useOriginalCharsOnly={true}
-              speed={50}
-              maxIterations={5}
+              speed={30}
+              maxIterations={2}
               sequential={true}
             />
           </div>
