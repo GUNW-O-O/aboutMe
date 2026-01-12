@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { certificates, type Certificate } from '../entities/Certificate'
-import { experiences, type Experience } from '../entities/Experience';
-import { div } from 'framer-motion/client';
+import { experiences } from '../entities/Experience';
 
 const History: React.FC = () => {
 
