@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { certificates, type Certificate } from '../entities/Certificate'
+import { experiences, type Experience } from '../entities/Experience';
+import { div } from 'framer-motion/client';
 
 const History: React.FC = () => {
 
@@ -42,21 +44,23 @@ const History: React.FC = () => {
           </div>
         </div>
         <div className="work">
-          <h2 className='headline'>Work Experience</h2>
-          <h3>클레스트라 하우저만</h3>
-          <div className="date-info">
-            <p>2021.11 ~ 2022.04</p>
-            <p>사원</p>
-          </div>
-          <p>Project Manager</p>
-          <p>NAVER 1784 System Partition</p>
+          <h2 className='headline'>Experience</h2>
+          {experiences?.slice().reverse().map((exp, idx) => (
+            <div key={idx} className='experience-item'>
+              <h3 className='subline'>{exp.title}</h3>
+              <div className="date-info">
+                <p>{exp.date}</p>
+              </div>
+              <p>{exp.purpose}</p>
+            </div>
+          ))}
         </div>
         <div className="certificate">
           <h2 className='headline'>Certificate 🖱️</h2>
           {certificates?.map((cer, idx) => (
             <div key={idx} className='certificate-item'
               onClick={() => handleClick(cer)} style={{ cursor: 'pointer' }}>
-              <h3>{cer.title}</h3>
+              <h3 className='subline'>{cer.title}</h3>
               <div className="date-info">
                 <p>{cer.date}</p>
                 <p>{cer.issuer}</p>

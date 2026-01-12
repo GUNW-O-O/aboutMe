@@ -41,6 +41,7 @@
   gap: 10px;
 }
 .headline {color:#3B82F6;}
+.subline {color: #a5c8ff;}
 .about {
   max-width: 1350px;
   height: 100%;
@@ -175,7 +176,24 @@
 }
 .port-folio .history .bg>div {
   min-width: 230px;
+  max-height: 210px;
   text-align: center;
+}
+.port-folio .history .work {
+  overflow-y: scroll;
+}
+.port-folio .history .work::-webkit-scrollbar {
+    width: 5px;  
+}
+
+.port-folio .history .work::-webkit-scrollbar-thumb {
+    background: #3B82F6; /* 스크롤바 색상 */
+    border-radius: 10px; /* 스크롤바 둥근 테두리 */
+}
+
+.port-folio .history .work::-webkit-scrollbar-track {
+    background: rgba(59, 130, 246, 0.3);  /*스크롤바 뒷 배경 색상*/
+    border-radius: 5px;
 }
 .port-folio .history .bg {
   display: flex;
