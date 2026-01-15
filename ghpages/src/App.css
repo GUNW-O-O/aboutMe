@@ -176,11 +176,11 @@
 }
 .port-folio .history .bg>div {
   min-width: 230px;
-  max-height: 210px;
   text-align: center;
 }
 .port-folio .history .work {
   overflow-y: scroll;
+  max-height: 210px;
 }
 .port-folio .history .work::-webkit-scrollbar {
     width: 5px;  
