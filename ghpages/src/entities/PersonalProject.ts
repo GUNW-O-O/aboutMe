@@ -7,6 +7,14 @@ import lexi6 from '../assets/lexiHub/addLongform.png'
 import lexi7 from '../assets/lexiHub/EditLongform.gif'
 import lexi8 from '../assets/lexiHub/typingLongform.gif'
 import lexi9 from '../assets/lexiHub/doneLongform.png'
+import sync1 from '../assets/playsync/1playersReady.png'
+import sync2 from '../assets/playsync/2dashboard.png'
+import sync3 from '../assets/playsync/3raiseAndRaise.gif'
+import sync4 from '../assets/playsync/4autoCheck.gif'
+import sync5 from '../assets/playsync/5sidePotShowdown.gif'
+import sync6 from '../assets/playsync/6sidePot.png'
+import sync7 from '../assets/playsync/7goToShowDown.gif'
+import sync8 from '../assets/playsync/8eliminated.gif'
 // import type { ProjectObj } from './ProjectObj'
 
 export type ProjectObj = {
@@ -56,6 +64,53 @@ export const PersonalProjectObjs: ProjectObj[] = [
       "만료된 액세스 토큰을 자동으로 갱신하는 httpOnly 리프레시 토큰 시스템을 추가했습니다. API 호출 시 토큰이 만료되어 401 에러가 발생하면 리프레시 토큰을 사용하여 새로운 액세스 토큰을 발급받아 세션의 연속성과 보안성을 확보했습니다.",
       "입력 중인 글자는 오타 검증 대상에서 제외하고, 다음 글자가 입력될 때 이전 글자를 최종적으로 판단하도록 로직을 수정했습니다. 이를 통해 도메인에 이해도가 있어야 결과물의 퀄리티가 높아질수 있다는것을 깨달았습니다.",
       "인자타입에 FlashCard[] 를 추가하고 매개변수가 리스트 타입인지 확인후 리스트라면 구조분해후 추가, 아니라면 단일추가하는 로직으로 수정했습니다."
+    ]
+  },
+  {
+    id: 2,
+    title: "Playsync",
+    skillName: [
+      "NestJS",
+      "WebSocket",
+      "Next.js",
+      "Redis",
+      "PostgreSQL",
+      "JWT",
+      "Prisma",
+      "Docker",
+    ],
+    skillReason:[
+      "모듈 단위의 의존성 주입을 통해 로직을 구조화하고 유지보수성을 높였습니다.",
+      "실시간 상태 공유를 통해 테이블/플레이어/토너먼트 진행을 동기화합니다.",
+      "Server Action을 활용하여 httpOnly쿠키로 안전한 인증 로직을 구현하고 빠른 개발환경 구축을 위해 사용했습니다.",
+      "수시로 변하는 게임 상태를 빠르게 읽고 쓰며, 서버는 웹소켓과 게임로직 처리를 담당시키기 위해 활용했습니다.",
+      "Redis Persistence(RDB/AOF)설정을 통해 토너먼트중 서버 장애시 플레이중인 핸드를 보장하고, 상태 복구를 보장합니다.",
+      "인증정보를 안전하게 처리하고 확장에도 유연하게 대응하기 위해 도입하였습니다.",
+      "Type-safe한 환경에서 개발 생산성과 안정성을 높이고, 초반 잦은 스키마 변경에 대응했습니다.",
+      "Docker: 추후 배포시 환경의 일관성을 유지하고, 개발환경을 빠르게 구축하기위해 사용했습니다.",
+    ],
+    images: [sync1, sync2, sync3, sync4, sync5, sync6, sync7, sync8],
+    imgDesc: [
+      "모든 플레이어가 웹소켓으로 접속해있는 화면입니다.",
+      "관리페이지에서 대회를 시작하면 해당 대회정보를 Redis에 올리게됩니다.",
+      "첫 레이즈 이후 더 큰 벳이 나오면 새로운 액션기회를 가집니다.",
+      "test2 플레이어가 30초 이내로 액션을 하지않았고, 콜 할 금액이 없어 자동으로 체크.",
+      "사이드팟이 생기는 상황입니다. test2 플레이어가 콜할 금액이 높아져 액션을 더 진행했습니다.",
+      "딜러콘솔에서 클릭한 순서대로 핸드가 강한순입니다.",
+      "레이즈, 올인, 폴드 일때 액션 가능한 플레이어가 없으므로 쇼다운페이즈로 진입합니다.",
+      "딜러가 승자결정시 상태수정, 0인 플레이어 탈락처리, 상태 기준으로 db업데이트, 0인플레이어를 상태에서 제거합니다.",
+    ],
+    troubles: [
+      "Prisma 7.4 도입 및 트러블슈팅",
+      "인프라 보안 설정의 중요성 체감, Redis외부접근에 의한 악성봇 경험",
+      "실시간 게임 로직의 테이블별 상태 정합성 보장",
+      "객체지향 원칙을 통한 물리 구조의 추상화",
+    ],
+    solution: [
+      "라이브러리 사용법이 바뀌었고 AI가 제공해준 라이브러리 적용 코드들이 동작하지않아 공식문서를 찾아보며 해결했습니다.",
+      "Docker 컨테이너 기반 Redis 사용 시, 바인딩 설정 미비로 인한 보안 취약점을 발견했습니다. 환경변수를 통한 인증(Requirepass) 설정으로 외부 접근을 차단하고 보안을 강화했습니다.",
+      "블라인드 레벨 계산은 서버 타이머 대신 Lazy Update 방식을 적용하여 테이블 핸드 시작 시점에만 레벨을 계산하도록 했고, 이를 통해 서버가 대회 상태를 메모리에 보관하지 않는 stateless 구조를 유지했습니다.",
+      "초기 설계 시 딜러와 물리 테이블이 로직들에 강하게 결합되어 확장성이 저해되는 문제를 겪었습니다. 이를 추상화된 개념으로 분리하여 물리적 환경에 구애받지 않는 유연한 구조를 구축했습니다.",
     ]
   },
 ]

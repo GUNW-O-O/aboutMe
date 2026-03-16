@@ -341,13 +341,14 @@
 }
 .skill-list {
   display: flex;
-  min-width: 130px;
+  min-width: 200px;
 }
 .skill-reason {
   display: flex;
   align-items: start;
   justify-content: start;
   height: 100%;
+  margin-bottom: 10px;
 }
 
 .project-troubles .trouble,

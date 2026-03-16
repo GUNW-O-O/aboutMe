@@ -64,7 +64,7 @@ export const PersonalProjectList: React.FC = () => {
               pagination={{ clickable: true }}
               slidesPerView={1}
             >
-              {reference.map((ref) => (
+              {reference.slice().reverse().map((ref) => (
                 <SwiperSlide key={ref.id}>
                   <div className="project-card" onClick={() => handleProjectList(ref.id)}>
                     <div className="project-img">

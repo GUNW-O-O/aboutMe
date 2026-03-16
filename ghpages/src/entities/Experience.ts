@@ -36,4 +36,10 @@ export const experiences : Experience[] = [
     date : '2025.09.01 ~ 2025.09.15',
     purpose : 'JWT, MongoDB, NestJS 학습',
   },
+  {
+    id : 6,
+    title : 'Playsync',
+    date : '2026.02.24 ~ 2026.03.15',
+    purpose : '최선의 아키텍쳐 구현',
+  },
 ]
