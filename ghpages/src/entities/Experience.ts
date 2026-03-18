@@ -40,6 +40,6 @@ export const experiences : Experience[] = [
     id : 6,
     title : 'Playsync',
     date : '2026.02.24 ~ 2026.03.15',
-    purpose : '최선의 아키텍쳐 구현',
+    purpose : '홀덤 토너먼트 관리 SaaS 시스템 MVP',
   },
 ]
