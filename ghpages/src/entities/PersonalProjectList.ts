@@ -15,8 +15,8 @@ export const personalReferences : Reference[] = [
     id: 2,
     projectLogo : syncLogo,
     title : "Playsync",
-    serviceTarget : "홀덤 토너먼트의 온/오프라인 융합 SaaS 시스템",
-    description : "상태머신과 Redis 기반 Stateless 서버 아키텍처 설계",
+    serviceTarget : "상태머신과 Redis 기반 Stateless 서버 아키텍처 설계",
+    description : "오프라인 홀덤 토너먼트의 디지털 전환",
     repo: "https://github.com/GUNW-O-O/playsync",
   },
 ]
