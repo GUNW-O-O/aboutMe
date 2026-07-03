@@ -1,0 +1,695 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>포트폴리오 개편 v2 — DESIGN.md 적용 목업</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&family=Noto+Sans+KR:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ═══════════════ DESIGN.md 토큰 (Vercel-design-analysis) ═══════════════ */
+  :root {
+    /* colors */
+    --ink: #171717;
+    --body: #4d4d4d;
+    --mute: #888888;
+    --hairline: #ebebeb;
+    --hairline-strong: #a1a1a1;
+    --canvas: #ffffff;
+    --canvas-soft: #fafafa;
+    --canvas-soft-2: #f5f5f5;
+    --link: #0070f3;
+    --on-primary: #ffffff;
+    /* gradient stops */
+    --g-develop-a: #007cf0; --g-develop-b: #00dfd8;
+    --g-preview-a: #7928ca; --g-preview-b: #ff0080;
+    --g-ship-a: #ff4d4d;    --g-ship-b: #f9cb28;
+    /* type */
+    --sans: "Inter", "Noto Sans KR", system-ui, -apple-system, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    /* doc chrome (문서 자체 — 목업 외곽) */
+    --doc-bg: #f0f0ee;
+    --doc-ink: #3d4045;
+    --doc-soft: #8a8e96;
+    --doc-line: #d5d6d9;
+    --anno: #3563e9;
+    --anno-bg: rgba(53, 99, 233, 0.08);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --doc-bg: #15181e;
+      --doc-ink: #d4d8df;
+      --doc-soft: #79808c;
+      --doc-line: #363c47;
+      --anno: #6b93ff;
+      --anno-bg: rgba(107, 147, 255, 0.12);
+    }
+  }
+  /* 아트보드 내부는 라이트 고정 — DESIGN.md가 라이트 우선 시스템.
+     다크 구간은 polarity-flip 밴드로만 존재 (문서 다크모드와 무관) */
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--doc-bg);
+    color: var(--doc-ink);
+    font-family: var(--sans);
+    line-height: 1.55;
+    padding: 48px 24px 96px;
+  }
+  .page { max-width: 1120px; margin: 0 auto; display: flex; flex-direction: column; gap: 80px; }
+
+  /* ─── 문서 헤더 ─── */
+  .doc-head { display: flex; flex-direction: column; gap: 10px; }
+  .doc-head .kicker { font-family: var(--mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--anno); }
+  .doc-head h1 { font-size: 26px; font-weight: 600; letter-spacing: -0.5px; }
+  .doc-head p { color: var(--doc-soft); font-size: 14px; max-width: 68ch; }
+
+  .map-table { border-collapse: collapse; font-size: 13px; margin-top: 8px; width: 100%; max-width: 780px; }
+  .map-table th, .map-table td { text-align: left; padding: 7px 12px; border-bottom: 1px solid var(--doc-line); vertical-align: top; }
+  .map-table th { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--doc-soft); font-weight: 400; }
+  .map-table code { font-family: var(--mono); font-size: 12px; color: var(--anno); }
+  .map-table .del { text-decoration: line-through; color: var(--doc-soft); }
+
+  /* ─── 아트보드 공통 ─── */
+  .artboard { display: flex; flex-direction: column; gap: 16px; }
+  .artboard-title { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; font-family: var(--mono); }
+  .artboard-title .route { font-size: 15px; font-weight: 700; background: var(--anno-bg); color: var(--anno); border: 1px solid var(--anno); padding: 3px 10px; border-radius: 4px; }
+  .artboard-title .desc { font-size: 12.5px; color: var(--doc-soft); }
+
+  .frame { background: var(--canvas-soft); border: 1px solid var(--doc-line); border-radius: 10px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,.08); }
+  .chrome { display: flex; align-items: center; gap: 8px; padding: 9px 14px; border-bottom: 1px solid var(--hairline); background: var(--canvas); font-family: var(--mono); font-size: 11px; color: var(--mute); }
+  .chrome .dots { display: flex; gap: 4px; }
+  .chrome .dots i { width: 8px; height: 8px; border-radius: 50%; border: 1px solid var(--hairline-strong); display: block; }
+  .chrome .url { flex: 1; border: 1px solid var(--hairline); border-radius: 4px; padding: 2px 10px; background: var(--canvas-soft); }
+
+  /* 주석 태그 */
+  .anno-wrap { position: relative; }
+  .tag {
+    position: absolute; z-index: 30;
+    min-width: 21px; height: 21px; padding: 0 6px;
+    background: var(--anno); color: #fff; border-radius: 11px;
+    font-family: var(--mono); font-size: 11px; font-weight: 700;
+    display: inline-flex; align-items: center; justify-content: center;
+    box-shadow: 0 1px 4px rgba(0,0,0,.3);
+  }
+  .notes { border-left: 3px solid var(--anno); background: var(--anno-bg); border-radius: 0 8px 8px 0; padding: 14px 18px; display: flex; flex-direction: column; gap: 7px; }
+  .notes li { list-style: none; font-size: 13px; display: flex; gap: 10px; align-items: baseline; }
+  .notes .n { flex: none; width: 18px; height: 18px; border-radius: 9px; background: var(--anno); color: #fff; font-family: var(--mono); font-size: 10.5px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; transform: translateY(2px); }
+  .notes code { font-family: var(--mono); font-size: 12px; background: rgba(0,0,0,.06); padding: 0 4px; border-radius: 3px; }
+  @media (prefers-color-scheme: dark) { .notes code { background: rgba(255,255,255,.1); } }
+  .notes .rb { font-family: var(--mono); font-size: 11px; color: var(--anno); border: 1px solid var(--anno); border-radius: 999px; padding: 0 7px; white-space: nowrap; }
+
+  /* ═══════════════ 목업 내부 — Vercel 언어 ═══════════════ */
+  .mock { background: var(--canvas-soft); color: var(--ink); font-family: var(--sans); }
+
+  /* type scale */
+  .t-display-xl { font-size: 48px; font-weight: 600; line-height: 1.0; letter-spacing: -2.4px; text-wrap: balance; }
+  .t-display-lg { font-size: 32px; font-weight: 600; line-height: 1.25; letter-spacing: -1.28px; }
+  .t-display-md { font-size: 24px; font-weight: 600; line-height: 1.33; letter-spacing: -0.96px; }
+  .t-display-sm { font-size: 20px; font-weight: 600; line-height: 1.4; letter-spacing: -0.6px; }
+  .t-body-lg { font-size: 18px; font-weight: 400; line-height: 1.55; color: var(--body); }
+  .t-body-md { font-size: 15px; font-weight: 400; line-height: 1.6; color: var(--body); }
+  .t-body-sm { font-size: 14px; font-weight: 400; line-height: 1.45; letter-spacing: -0.28px; color: var(--body); }
+  .t-caption { font-size: 12px; color: var(--mute); }
+  .eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--mute); }
+
+  /* buttons */
+  .pill { display: inline-flex; align-items: center; justify-content: center; gap: 6px; border-radius: 100px; font-size: 14px; font-weight: 500; padding: 0 20px; height: 40px; cursor: pointer; border: 1px solid transparent; text-decoration: none; }
+  .pill.primary { background: var(--ink); color: var(--on-primary); }
+  .pill.secondary { background: var(--canvas); color: var(--ink); border-color: var(--hairline); box-shadow: 0 1px 1px #00000005, 0 2px 2px #0000000a; }
+  .btn-sq { display: inline-flex; align-items: center; border-radius: 6px; font-size: 13px; font-weight: 500; padding: 0 10px; height: 28px; }
+  .btn-sq.primary { background: var(--ink); color: var(--on-primary); }
+  .btn-sq.ghost { color: var(--ink); border: 1px solid var(--hairline); background: var(--canvas); }
+
+  /* card chrome — stacked shadow + inset hairline */
+  .card {
+    background: var(--canvas); border-radius: 8px; padding: 24px;
+    box-shadow: 0 0 0 1px #00000014 inset, 0 1px 1px #00000005, 0 2px 2px #0000000a;
+  }
+  .card-lg { border-radius: 12px; padding: 32px; box-shadow: 0 0 0 1px #00000014 inset, 0 2px 2px #0000000a, 0 8px 16px -4px #0000000a; }
+
+  .chip { display: inline-block; background: var(--canvas-soft); border: 1px solid var(--hairline); color: var(--body); border-radius: 999px; padding: 1px 10px; font-size: 12px; }
+  .chip-mono { font-family: var(--mono); font-size: 11px; }
+
+  .img-ph {
+    background: var(--canvas-soft-2); border: 1px solid var(--hairline); border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--mute); font-family: var(--mono); font-size: 11px; text-align: center; padding: 8px;
+  }
+
+  /* nav */
+  .m-nav { height: 64px; display: flex; align-items: center; gap: 6px; padding: 12px 24px; background: rgba(250,250,250,.85); backdrop-filter: blur(8px); border-bottom: 1px solid var(--hairline); position: relative; }
+  .m-nav .logo { font-weight: 600; font-size: 15px; letter-spacing: -0.3px; margin-right: 12px; }
+  .m-nav .links { display: flex; gap: 2px; margin: 0 auto; }
+  .m-nav .links a { font-size: 14px; letter-spacing: -0.28px; color: var(--body); padding: 6px 12px; border-radius: 9999px; text-decoration: none; }
+  .m-nav .links a.active { background: var(--canvas-soft-2); color: var(--ink); }
+
+  /* hero + mesh gradient */
+  .m-hero { position: relative; padding: 96px 24px 96px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 20px; overflow: hidden; background: var(--canvas); }
+  .mesh {
+    position: absolute; inset: -20% -10% auto; height: 90%; z-index: 0; filter: blur(70px); opacity: .5; pointer-events: none;
+    background:
+      radial-gradient(38% 45% at 18% 30%, var(--g-develop-a) 0%, transparent 70%),
+      radial-gradient(34% 42% at 42% 12%, var(--g-develop-b) 0%, transparent 70%),
+      radial-gradient(36% 44% at 62% 34%, var(--g-preview-b) 0%, transparent 70%),
+      radial-gradient(30% 40% at 82% 16%, var(--g-ship-b) 0%, transparent 70%),
+      radial-gradient(26% 36% at 92% 42%, var(--g-ship-a) 0%, transparent 70%);
+  }
+  .m-hero > * { position: relative; z-index: 1; }
+  .m-hero .badge { background: var(--canvas-soft); border: 1px solid var(--hairline); color: var(--body); border-radius: 999px; padding: 4px 14px; font-size: 13px; letter-spacing: -0.28px; }
+  .m-hero .cta-row { display: flex; gap: 12px; margin-top: 8px; }
+
+  /* tech strip — LogoLoop ×3, 줄마다 방향 엇갈림 */
+  .m-strip3 { border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); background: var(--canvas); padding: 20px 0; display: flex; flex-direction: column; gap: 14px; overflow: hidden; }
+  .strip-row { display: flex; align-items: center; gap: 28px; white-space: nowrap; padding: 0 24px; position: relative;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+  .strip-row.rev { justify-content: flex-end; }
+  .strip-row .lg { font-family: var(--mono); font-size: 13px; color: var(--hairline-strong); font-weight: 400; }
+  .strip-row .dir { font-family: var(--mono); font-size: 11px; color: var(--mute); flex: none; }
+
+  .m-section { padding: 72px 24px; max-width: 960px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; position: relative; }
+  .m-section .sec-head { display: flex; flex-direction: column; gap: 6px; }
+
+  /* about */
+  .m-about { display: grid; grid-template-columns: 180px 1fr; gap: 28px; align-items: start; }
+  .m-about .photo { aspect-ratio: 3/4; }
+
+  /* projects */
+  .m-projects { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .p-card { display: flex; flex-direction: column; gap: 10px; padding: 16px; border-radius: 8px; background: var(--canvas); box-shadow: 0 0 0 1px #00000014 inset, 0 1px 1px #00000005, 0 2px 2px #0000000a; position: relative; }
+  .p-card .thumb { aspect-ratio: 16/9; }
+  .p-card .p-title { font-size: 16px; font-weight: 600; letter-spacing: -0.3px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .p-card .p-sum { font-size: 13.5px; letter-spacing: -0.28px; color: var(--body); }
+  .p-card .p-meta { display: flex; gap: 6px; flex-wrap: wrap; margin-top: auto; }
+  .p-card.featured { grid-column: span 2; grid-row: span 1; }
+  .p-card.featured .thumb { aspect-ratio: 21/9; }
+
+  /* dark band — polarity flip */
+  .m-dark { background: var(--ink); color: var(--on-primary); padding: 96px 24px; }
+  .m-dark .inner { max-width: 960px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.1fr; gap: 48px; align-items: center; position: relative; }
+  /* CardSwap 목업 — 겹쳐진 카드 3장, 자동 교체 */
+  .swap-stack { position: relative; height: 300px; }
+  .swap-card { position: absolute; inset: 0; background: #0a0a0a; border: 1px solid #333; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .swap-card .img-ph { flex: 1; background: #1a1a1a; border-color: #333; color: #666; }
+  .swap-card .sc-cap { font-size: 13px; letter-spacing: -0.28px; color: #d4d4d4; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+  .swap-card .sc-cap .go { font-family: var(--mono); font-size: 11px; color: #50e3c2; white-space: nowrap; }
+  .swap-card.b1 { transform: translate(14px, 14px) scale(.97); opacity: .55; z-index: 1; }
+  .swap-card.b2 { transform: translate(28px, 28px) scale(.94); opacity: .3; z-index: 0; }
+  .swap-card.top { z-index: 2; }
+  .swap-dots { display: flex; gap: 6px; margin-top: 14px; }
+  .swap-dots i { width: 6px; height: 6px; border-radius: 50%; background: #444; }
+  .swap-dots i.on { background: #fff; }
+
+  /* timeline */
+  .m-tl { display: flex; flex-direction: column; }
+  .tl-item { display: grid; grid-template-columns: 130px 20px 1fr; gap: 0 14px; }
+  .tl-item .when { font-family: var(--mono); font-size: 11px; color: var(--mute); text-align: right; padding-top: 4px; }
+  .tl-item .dotcol { display: flex; flex-direction: column; align-items: center; }
+  .tl-item .dot { width: 9px; height: 9px; border-radius: 50%; border: 2px solid var(--ink); background: var(--canvas); flex: none; margin-top: 6px; }
+  .tl-item .stem { width: 1px; flex: 1; background: var(--hairline); }
+  .tl-item .what { padding-bottom: 24px; font-size: 14px; letter-spacing: -0.28px; color: var(--body); }
+  .tl-item .what b { color: var(--ink); font-weight: 600; }
+
+  /* footer */
+  .m-footer { border-top: 1px solid var(--hairline); background: var(--canvas); padding: 48px 24px; }
+  .m-footer .inner { max-width: 960px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+
+  /* ─── 상세 페이지 ─── */
+  .d-summary { display: flex; flex-direction: column; gap: 16px; }
+  .meta-grid { display: grid; grid-template-columns: 90px 1fr; gap: 6px 18px; font-size: 14px; letter-spacing: -0.28px; }
+  .meta-grid dt { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--mute); padding-top: 2px; }
+  .meta-grid dd { color: var(--body); }
+
+  .ts-pair { display: grid; grid-template-columns: 1fr 1fr; border-radius: 8px; overflow: hidden; background: var(--canvas); box-shadow: 0 0 0 1px #00000014 inset, 0 1px 1px #00000005, 0 2px 2px #0000000a; }
+  .ts-pair > div { padding: 20px 24px; font-size: 14px; letter-spacing: -0.28px; color: var(--body); }
+  .ts-pair .t { border-right: 1px solid var(--hairline); }
+  .ts-pair .hd { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+  .ts-pair .t .hd { color: #c50000; }
+  .ts-pair .s .hd { color: #0070f3; }
+  .ts-pair .rs { margin-top: 10px; font-size: 12.5px; color: var(--mute); }
+
+  .shot { display: grid; grid-template-columns: 1fr 240px; gap: 20px; align-items: center; }
+  .shot .img-ph { min-height: 160px; }
+  .shot .cap { font-size: 13.5px; letter-spacing: -0.28px; color: var(--body); }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  /* ─── 모바일 아트보드 ─── */
+  .mobile-strip { display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-start; }
+  .phone { width: 260px; flex: none; border: 1px solid var(--doc-line); border-radius: 16px; background: var(--canvas-soft); overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,.08); }
+  .phone .p-head { font-family: var(--mono); font-size: 10.5px; color: var(--doc-soft); background: var(--doc-bg); text-align: center; padding: 6px; border-bottom: 1px solid var(--doc-line); }
+  .phone .p-body { display: flex; flex-direction: column; }
+  .mob-note { flex: 1; min-width: 260px; }
+
+  .doc-foot { font-family: var(--mono); font-size: 11px; color: var(--doc-soft); text-align: center; }
+
+  @media (max-width: 900px) {
+    .t-display-xl { font-size: 34px; letter-spacing: -1.4px; }
+    .m-about { grid-template-columns: 1fr; }
+    .m-projects { grid-template-columns: 1fr; }
+    .p-card.featured { grid-column: span 1; }
+    .m-dark .inner { grid-template-columns: 1fr; }
+    .two-col, .ts-pair, .shot { grid-template-columns: 1fr; }
+    .ts-pair .t { border-right: none; border-bottom: 1px solid var(--hairline); }
+    .tl-item { grid-template-columns: 90px 20px 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ══════════════ 문서 헤더 ══════════════ -->
+  <header class="doc-head">
+    <span class="kicker">Mockup · v2 — DESIGN.md 적용</span>
+    <h1>포트폴리오 개편 v2 — Vercel 디자인 언어 + reactbits 매핑</h1>
+    <p>v1 골조 유지, DESIGN.md(Vercel-design-analysis) 토큰 적용: near-white 캔버스 + 잉크 텍스트,
+    장식은 히어로 메시 그라디언트 하나, 모노 아이브로우, 네거티브 트래킹 헤드라인(600 상한), 필 CTA, 스택 섀도.
+    다크 구간은 polarity-flip 밴드로만. 파란 태그 = reactbits 컴포넌트 매핑 (하단 노트 대응).</p>
+
+    <table class="map-table">
+      <thead><tr><th>현재 (제거/교체)</th><th>v2 (reactbits)</th><th>사용 위치 · 이유</th></tr></thead>
+      <tbody>
+        <tr><td class="del">DarkVeil, LightRays</td><td><code>Aurora</code> 또는 <code>Grainient</code></td><td>히어로 배경 한정. DESIGN.md: 그라디언트는 히어로 스케일만, 모바일·reduced-motion 시 정적 CSS 그라디언트 폴백</td></tr>
+        <tr><td class="del">TrueFocus</td><td><code>SplitText</code></td><td>히어로 헤드라인 등장 1회. 이후 정적 — 반복 애니메이션 금지</td></tr>
+        <tr><td class="del">DecryptedText</td><td>정적 텍스트</td><td>자기소개는 즉시 읽혀야 함 — 애니메이션 제거</td></tr>
+        <tr><td class="del">CircularText 로더</td><td>CSS 스켈레톤</td><td>이미지 로딩은 canvas-soft-2 스켈레톤 박스로</td></tr>
+        <tr><td class="del">SlideIn / SlideInOnView (자작)</td><td><code>AnimatedContent</code> / <code>FadeContent</code></td><td>섹션 스크롤 리빌. 지연 누적 금지 (최대 0.15s stagger)</td></tr>
+        <tr><td class="del">Swiper 캐러셀</td><td>CSS Grid</td><td>정보 은닉 제거 — 전 프로젝트 즉시 노출</td></tr>
+        <tr><td class="del">Skills 카드 섹션</td><td><code>LogoLoop</code> ×3</td><td>Skills 섹션 자체 삭제 — About 아래 기술 스트립 3줄(백/프론트/툴)로 대체. 접해본 스택 전부, 줄마다 방향 엇갈림</td></tr>
+        <tr><td>—</td><td><code>SpotlightCard</code></td><td>신규: 프로젝트 카드 호버 (라이트 모드에선 subtle spotlight)</td></tr>
+        <tr><td class="del">CountUp 지표 / 트러블슈팅 서사</td><td><code>CardSwap</code></td><td>둘 다 탈락(수치화 과장·억지 서사) — 다크 밴드는 프로젝트 상세 하이라이트 요약 슬라이드로. 자동 교체 애니메이션, hover 시 pause, 클릭 → 상세</td></tr>
+      </tbody>
+    </table>
+  </header>
+
+  <!-- ══════════════ ARTBOARD 1 : 메인 원페이지 ══════════════ -->
+  <section class="artboard">
+    <div class="artboard-title">
+      <span class="route">/</span>
+      <span class="desc">메인 원페이지 · 데스크톱 — canvas-soft 바탕, 섹션 간 여백 72~96px</span>
+    </div>
+
+    <div class="frame">
+      <div class="chrome">
+        <span class="dots"><i></i><i></i><i></i></span>
+        <span class="url">gunw-o-o.github.io/#/</span>
+      </div>
+
+      <div class="mock">
+
+        <!-- nav -->
+        <div class="anno-wrap">
+          <span class="tag" style="top:10px; right:14px;">1</span>
+          <nav class="m-nav">
+            <span class="logo">고건우</span>
+            <div class="links">
+              <a class="active" href="#">About</a><a href="#">Projects</a><a href="#">Career</a><a href="#">Contact</a>
+            </div>
+            <span class="btn-sq ghost">GitHub</span>
+            <span class="btn-sq primary">이력서 PDF</span>
+          </nav>
+        </div>
+
+        <!-- hero -->
+        <div class="anno-wrap">
+          <span class="tag" style="top:16px; left:16px;">2</span>
+          <span class="tag" style="top:16px; left:46px;">3</span>
+          <header class="m-hero">
+            <div class="mesh"></div>
+            <span class="badge">풀스택 개발자 · Java / Spring / React</span>
+            <h1 class="t-display-xl">기능 구현에서 멈추지 않는<br>개발자, 고건우입니다.</h1>
+            <p class="t-body-lg" style="max-width:52ch;">도메인과 사용자 경험, 코드의 흐름까지 이해하며 문제를 분석하고 개선합니다.</p>
+            <div class="cta-row">
+              <span class="pill primary">프로젝트 보기 ↓</span>
+              <span class="pill secondary">go971230@gmail.com</span>
+            </div>
+          </header>
+        </div>
+
+        <!-- about -->
+        <section class="m-section anno-wrap">
+          <span class="tag" style="top:56px; right:0;">4</span>
+          <div class="sec-head">
+            <span class="eyebrow">about</span>
+            <h2 class="t-display-lg">프로그래머가 아니라 개발자.</h2>
+          </div>
+          <div class="m-about">
+            <div class="img-ph photo">프로필 사진<br>180×240</div>
+            <div style="display:flex; flex-direction:column; gap:14px;">
+              <p class="t-body-md">부트캠프에서 팀 프로젝트 3회를 거치며 Spring SSR에서 React SPA 전환까지 경험했고,
+              수료 후에도 NestJS·MongoDB 학습 프로젝트와 홀덤 토너먼트 SaaS MVP를 만들며 폭을 넓히고 있습니다.</p>
+              <p class="t-body-md">기능이 "돌아가는 것"과 "잘 만들어진 것"의 차이를 트러블슈팅 기록으로 증명하는 것을 좋아합니다.</p>
+              <div style="display:flex; gap:8px;">
+                <span class="chip chip-mono">Incheon, KR</span>
+                <span class="chip chip-mono">SQLD · ADsP · 웹디자인기능사</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- tech strip — Skills 섹션 대체 -->
+        <div class="anno-wrap">
+          <span class="tag" style="top:-10px; right:14px;">5</span>
+          <div class="m-strip3">
+            <div class="strip-row">
+              <span class="dir">backend →</span>
+              <span class="lg">Java</span><span class="lg">Spring Boot</span><span class="lg">JSP / Servlet</span>
+              <span class="lg">MyBatis</span><span class="lg">MySQL</span><span class="lg">MongoDB</span>
+              <span class="lg">NestJS</span><span class="lg">Django</span><span class="lg">Python</span>
+            </div>
+            <div class="strip-row rev">
+              <span class="lg">React</span><span class="lg">TypeScript</span><span class="lg">JavaScript</span>
+              <span class="lg">Thymeleaf</span><span class="lg">HTML / CSS</span><span class="lg">Bootstrap</span>
+              <span class="lg">jQuery</span><span class="lg">chart.js</span><span class="lg">Flutter / Dart</span>
+              <span class="dir">← frontend</span>
+            </div>
+            <div class="strip-row">
+              <span class="dir">tools →</span>
+              <span class="lg">Git / GitHub</span><span class="lg">Vite</span><span class="lg">npm</span>
+              <span class="lg">Swagger</span><span class="lg">Tomcat</span><span class="lg">Figma</span>
+              <span class="lg">Notion</span><span class="lg">VS Code</span><span class="lg">Eclipse</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- projects -->
+        <section class="m-section anno-wrap">
+          <span class="tag" style="top:56px; right:0;">6</span>
+          <span class="tag" style="top:150px; left:-10px;">7</span>
+          <div class="sec-head">
+            <span class="eyebrow">projects</span>
+            <h2 class="t-display-lg">만든 것들.</h2>
+          </div>
+          <div class="m-projects">
+            <div class="p-card featured">
+              <div class="img-ph thumb">Playsync — 대시보드 GIF (21:9)</div>
+              <div class="p-title">Playsync <span class="chip chip-mono">개인 · MVP</span> <span class="chip chip-mono" style="border-color:#0070f3; color:#0070f3;">최신</span></div>
+              <p class="p-sum">홀덤 토너먼트 관리 SaaS — 사이드팟 자동 정산, 실시간 플레이어 상태 동기화</p>
+              <div class="p-meta"><span class="chip chip-mono">React</span><span class="chip chip-mono">TypeScript</span></div>
+            </div>
+            <div class="p-card">
+              <div class="img-ph thumb">Lexi-hub</div>
+              <div class="p-title">Lexi-hub <span class="chip chip-mono">개인</span></div>
+              <p class="p-sum">플래시카드 학습 앱 — JWT 인증, MongoDB</p>
+              <div class="p-meta"><span class="chip chip-mono">NestJS</span><span class="chip chip-mono">MongoDB</span></div>
+            </div>
+            <div class="p-card">
+              <div class="img-ph thumb">Resonos React</div>
+              <div class="p-title">Resonos React <span class="chip chip-mono">팀 4인</span></div>
+              <p class="p-sum">SSR → React 전환 + 커뮤니티·투표 기능, 컨트롤러 리팩토링</p>
+              <div class="p-meta"><span class="chip chip-mono">React</span><span class="chip chip-mono">Spring</span></div>
+            </div>
+            <div class="p-card">
+              <div class="img-ph thumb">Resonos</div>
+              <div class="p-title">Resonos Thymeleaf <span class="chip chip-mono">팀 4인</span></div>
+              <p class="p-sum">투표 기반 음악 커뮤니티 — 상호작용 비동기 전환으로 재생 끊김 제거</p>
+              <div class="p-meta"><span class="chip chip-mono">Spring</span><span class="chip chip-mono">Thymeleaf</span></div>
+            </div>
+            <div class="p-card">
+              <div class="img-ph thumb">할건해야짐</div>
+              <div class="p-title">할건해야짐 <span class="chip chip-mono">팀 · 첫 프로젝트</span></div>
+              <p class="p-sum">헬스장 관리 — chart.js 매출 시각화</p>
+              <div class="p-meta"><span class="chip chip-mono">JSP</span><span class="chip chip-mono">Servlet</span></div>
+            </div>
+            <div class="p-card">
+              <div class="img-ph thumb">AboutMe</div>
+              <div class="p-title">AboutMe <span class="chip chip-mono">개인</span></div>
+              <p class="p-sum">이 포트폴리오 — TypeScript 학습 기록</p>
+              <div class="p-meta"><span class="chip chip-mono">React</span><span class="chip chip-mono">Vite</span></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- dark band -->
+        <div class="anno-wrap">
+          <span class="tag" style="top:16px; right:16px;">8</span>
+          <section class="m-dark">
+            <div class="inner">
+              <div>
+                <span class="eyebrow" style="color:#888;">highlights</span>
+                <h2 class="t-display-lg" style="color:#fff;">상세에서 볼 수 있는 것들.</h2>
+                <p class="t-body-md" style="color:#a1a1a1; margin-top:12px; max-width:44ch;">각 프로젝트 상세 페이지의 핵심 장면을 미리 보여줍니다. 카드가 자동으로 넘어가고, 클릭하면 해당 상세로 이동합니다.</p>
+                <div class="swap-dots"><i class="on"></i><i></i><i></i><i></i></div>
+              </div>
+              <div class="swap-stack">
+                <div class="swap-card top">
+                  <div class="img-ph">Playsync — 사이드팟 자동 정산 GIF</div>
+                  <div class="sc-cap"><span>복수 올인 사이드팟 자동 계산·정산</span><span class="go">Playsync →</span></div>
+                </div>
+                <div class="swap-card b1">
+                  <div class="img-ph">Resonos — 투표 chart.js</div>
+                </div>
+                <div class="swap-card b2">
+                  <div class="img-ph">Lexi-hub — 플래시카드 학습 흐름</div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- career -->
+        <section class="m-section anno-wrap">
+          <span class="tag" style="top:56px; right:0;">9</span>
+          <div class="sec-head">
+            <span class="eyebrow">career</span>
+            <h2 class="t-display-lg">지나온 길.</h2>
+          </div>
+          <div class="m-tl">
+            <div class="tl-item">
+              <div class="when">2026.02 – 03</div>
+              <div class="dotcol"><span class="dot"></span><span class="stem"></span></div>
+              <div class="what"><b>Playsync</b> — 홀덤 토너먼트 SaaS MVP (개인)</div>
+            </div>
+            <div class="tl-item">
+              <div class="when">2025.09</div>
+              <div class="dotcol"><span class="dot"></span><span class="stem"></span></div>
+              <div class="what"><b>SQLD · ADsP 취득</b> — 클릭 시 자격증 모달 (ESC 닫기)</div>
+            </div>
+            <div class="tl-item">
+              <div class="when">2025.03 – 09</div>
+              <div class="dotcol"><span class="dot"></span><span class="stem"></span></div>
+              <div class="what"><b>부트캠프 수료</b> — 더조은컴퓨터아카데미 · 팀 프로젝트 3회</div>
+            </div>
+            <div class="tl-item">
+              <div class="when">…</div>
+              <div class="dotcol"><span class="dot"></span></div>
+              <div class="what" style="color:var(--mute);">이하 동일 패턴 — 최신이 위</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- footer -->
+        <footer class="m-footer">
+          <div class="inner">
+            <div>
+              <div style="font-weight:600; letter-spacing:-0.3px;">고건우</div>
+              <div class="t-caption" style="font-family:var(--mono); margin-top:4px;">go971230@gmail.com</div>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <span class="btn-sq ghost">GitHub</span>
+              <span class="btn-sq ghost">이력서 PDF</span>
+              <span class="btn-sq primary">메일 보내기</span>
+            </div>
+          </div>
+        </footer>
+
+      </div>
+    </div>
+
+    <ul class="notes">
+      <li><span class="n">1</span><span><b>고정 nav 64px</b> — DESIGN.md <code>nav-bar</code>. 링크는 ghost pill(<code>rounded.full</code>), CTA는 6px 사각(<code>rounded.sm</code>) — 마케팅 pill(100px)과 nav 스케일 혼용 금지 규칙 준수. 배경 blur + canvas-soft 85%.</span></li>
+      <li><span class="n">2</span><span><span class="rb">Aurora / Grainient</span> <b>메시 그라디언트 배경 — 히어로 한정.</b> develop/preview/ship 3쌍 스톱 유지, 축소·단색화 금지. 모바일과 <code>prefers-reduced-motion</code>에선 위 CSS radial-gradient 정적 폴백 (이 목업의 배경이 그 폴백 자체).</span></li>
+      <li><span class="n">3</span><span><span class="rb">SplitText</span> <b>헤드라인 등장 1회.</b> display-xl 48px/600/-2.4px, 문장형+마침표 — DESIGN.md 보이스. 등장 후 재생 반복 없음.</span></li>
+      <li><span class="n">4</span><span><span class="rb">FadeContent</span> <b>섹션 리빌 공통.</b> 이하 모든 섹션 동일 — 뷰포트 진입 시 1회, stagger 최대 0.15s. 기존 SlideIn 지연 누적(1.3s) 제거.</span></li>
+      <li><span class="n">5</span><span><span class="rb">LogoLoop ×3</span> <b>기술 스트립 — Skills 섹션 대체.</b> About 아래 배치. 접해본 스택 전부를 백엔드/프론트/툴 3줄로, 줄마다 흐름 방향 엇갈림(→ ← →). 모노크롬 텍스트/로고, 속도 낮게(hover 시 pause), 양끝 fade 마스크. shields.io 뱃지 38개 대체.</span></li>
+      <li><span class="n">6</span><span><b>프로젝트 그리드 3열, 최신순.</b> Playsync는 2칸 featured. 카드 = <code>template-card</code> 크롬(8px 라운드, 인셋 헤어라인 + 스택 섀도). 클릭 → <code>/projects/:id</code>.</span></li>
+      <li><span class="n">7</span><span><span class="rb">SpotlightCard</span> <b>카드 호버.</b> 라이트 그라운드라 spotlight 강도 낮게 (opacity ≤ .15). 과하면 일반 hover elevation(Level 3→4)으로 대체 가능.</span></li>
+      <li><span class="n">8</span><span><span class="rb">CardSwap</span> <b>다크 밴드 = 프로젝트 상세 하이라이트 슬라이드.</b> 수치 지표·트러블슈팅 서사 모두 탈락(과장/억지). 대신 각 상세 페이지의 핵심 장면(GIF/스크린샷) 카드가 자동 교체 — 프로젝트당 1장, 캡션 한 줄 + 상세 링크. 자동재생 hover 시 pause, <code>prefers-reduced-motion</code> 시 정적 1장. 그리드(⑥)가 주 접근 경로라 슬라이드 은닉 문제 없음 — 순수 티저.</span></li>
+      <li><span class="n">9</span><span><b>타임라인 통합</b> (Education+Experience+Certificate). 내부 스크롤 금지, 자격증은 항목 클릭 모달. 날짜는 <code>caption-mono</code> + <code>tabular-nums</code>.</span></li>
+    </ul>
+  </section>
+
+  <!-- ══════════════ ARTBOARD 2 : 프로젝트 상세 ══════════════ -->
+  <section class="artboard">
+    <div class="artboard-title">
+      <span class="route">/projects/:id</span>
+      <span class="desc">프로젝트 상세 · 예시 = Resonos React — 상담 데이터가 채우는 페이지</span>
+    </div>
+
+    <div class="frame">
+      <div class="chrome">
+        <span class="dots"><i></i><i></i><i></i></span>
+        <span class="url">gunw-o-o.github.io/#/projects/resonos-react</span>
+      </div>
+
+      <div class="mock">
+
+        <nav class="m-nav">
+          <span class="btn-sq ghost">← Projects</span>
+          <span class="logo" style="margin-left:8px;">고건우</span>
+          <div class="links" style="margin:0 0 0 auto;"><a href="#">다음: Playsync →</a></div>
+        </nav>
+
+        <!-- summary -->
+        <section class="m-section anno-wrap" style="padding-top:56px;">
+          <span class="tag" style="top:40px; right:0;">1</span>
+          <div class="d-summary">
+            <span class="eyebrow">team project · 2025</span>
+            <h1 class="t-display-lg">Resonos React — SSR을 SPA로.</h1>
+            <p class="t-body-lg" style="max-width:60ch;">타임리프 SSR 음악 커뮤니티를 React로 전환하고, 커뮤니티·투표 기능을 추가한 팀 프로젝트.</p>
+            <div class="card" style="padding:20px 24px;">
+              <dl class="meta-grid">
+                <dt>기간</dt><dd>2025.08.06 – 08.27 (3주)</dd>
+                <dt>인원</dt><dd>4인 팀</dd>
+                <dt>역할</dt><dd>담당 컨트롤러 리팩토링 · 커뮤니티/투표 프론트 구현 · 비회원 흐름 설계</dd>
+                <dt>스택</dt><dd><span class="chip chip-mono">React</span> <span class="chip chip-mono">TypeScript</span> <span class="chip chip-mono">Spring Boot</span> <span class="chip chip-mono">MySQL</span></dd>
+                <dt>링크</dt><dd><span class="btn-sq ghost">GitHub</span> <span class="btn-sq ghost">시연 영상</span></dd>
+              </dl>
+            </div>
+          </div>
+        </section>
+
+        <!-- role / learnings -->
+        <section class="m-section" style="padding-top:0;">
+          <div class="two-col">
+            <div class="card">
+              <span class="eyebrow">담당 역할</span>
+              <ul style="margin-top:10px; padding-left:18px; display:flex; flex-direction:column; gap:8px;">
+                <li class="t-body-sm">타임리프 컨트롤러 → 파사드 패턴 적용 리팩토링, 서비스 단 책임 분리</li>
+                <li class="t-body-sm">커뮤니티 게시글·대댓글·투표(chart.js) 프론트 구현</li>
+                <li class="t-body-sm">비회원 작성 흐름(임시 비밀번호) 조건부 렌더링 설계</li>
+              </ul>
+            </div>
+            <div class="card">
+              <span class="eyebrow">배운 점</span>
+              <p class="t-body-sm" style="margin-top:10px;">화면 전환 방식만 바꾸는 것이 아니라 컨트롤러 계층까지 재설계해야 전환이 완성된다는 것.
+              유저 케이스별 분기 설계가 UI 코드 절반 이상을 차지한다는 것.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- troubles -->
+        <section class="m-section anno-wrap" style="padding-top:0;">
+          <span class="tag" style="top:-6px; right:0;">2</span>
+          <div class="sec-head">
+            <span class="eyebrow">troubleshooting</span>
+            <h2 class="t-display-md">문제와 해결.</h2>
+          </div>
+          <div class="ts-pair">
+            <div class="t"><div class="hd">Problem</div>댓글 등록 시 페이지네이션이 무시되고 현재 리스트에 계속 추가됨</div>
+            <div class="s"><div class="hd">Solution</div>등록 후 마지막 페이지로 이동 + 리스트 길이 기반 전/후 페이지 자동 요청
+              <div class="rs">결과: 페이지 상태와 데이터 정합성 유지</div></div>
+          </div>
+          <div class="ts-pair">
+            <div class="t"><div class="hd">Problem</div>Bandsintown 스크립트와 React DOM 마운트 시점 불일치 → 위젯 미표시</div>
+            <div class="s"><div class="hd">Solution</div>DOM 렌더 후 스크립트 동적 삽입, onload에서 init() 호출
+              <div class="rs">결과: 위젯 로드 안정화, 로딩 판단 로직 단순화</div></div>
+          </div>
+          <p class="t-caption" style="font-family:var(--mono);">항목 2~4개 세로 나열 — 캐러셀 은닉 금지. 각 항목은 상담에서 수집한 상황→원인→해결→결과 구조.</p>
+        </section>
+
+        <!-- screenshots -->
+        <section class="m-section anno-wrap" style="padding-top:0;">
+          <span class="tag" style="top:-6px; right:0;">3</span>
+          <div class="sec-head">
+            <span class="eyebrow">screenshots</span>
+            <h2 class="t-display-md">증거.</h2>
+          </div>
+          <div class="shot">
+            <div class="img-ph">투표 기능 GIF (16:9)</div>
+            <p class="cap">유저 정의 항목으로 투표 생성 — 투표 후 버튼이 '재투표하기'로 전환되고 chart.js 그래프가 갱신됩니다.</p>
+          </div>
+          <div class="shot">
+            <div class="img-ph">컨트롤러 리팩토링 전/후 diff</div>
+            <p class="cap">파사드 패턴 적용 전/후 — 컨트롤러가 서비스 조합만 담당하도록 축소. 코드 개선 증거는 주니어 포트폴리오에서 가장 강한 신호.</p>
+          </div>
+          <details style="border:1px solid var(--hairline); border-radius:8px; padding:14px 20px; background:var(--canvas);">
+            <summary class="t-body-sm" style="cursor:pointer; font-weight:500; color:var(--ink);">나머지 스크린샷 9장 더 보기</summary>
+          </details>
+        </section>
+
+        <footer class="m-footer">
+          <div class="inner">
+            <span class="btn-sq ghost">← 이전: Resonos Thymeleaf</span>
+            <span class="btn-sq ghost">다음: Playsync →</span>
+          </div>
+        </footer>
+
+      </div>
+    </div>
+
+    <ul class="notes">
+      <li><span class="n">1</span><span><b>요약 카드가 첫 화면.</b> 기간·인원·역할·스택·링크 — 채용자가 상세를 안 읽어도 판단 가능. 헤드라인은 display-lg 문장형+마침표.</span></li>
+      <li><span class="n">2</span><span><b>Problem/Solution 병치 카드 세로 나열</b> — 이 페이지의 주인공. Problem 라벨만 semantic red, Solution은 link blue — DESIGN.md semantic 토큰, 새 액센트 아님. <span class="rb">AnimatedContent</span>로 항목별 리빌.</span></li>
+      <li><span class="n">3</span><span><b>스크린샷 3~4장 + <code>&lt;details&gt;</code> 접기.</b> 캡션은 의사결정 서술 ("동일하게 구현" 류 금지). 이미지 로딩은 스켈레톤, 카드별 개별 상태 (기존 isLoaded 공유 버그 수정).</span></li>
+    </ul>
+  </section>
+
+  <!-- ══════════════ ARTBOARD 3 : 모바일 ══════════════ -->
+  <section class="artboard">
+    <div class="artboard-title">
+      <span class="route">375px</span>
+      <span class="desc">모바일 — 768px 이하 1열 전환</span>
+    </div>
+
+    <div class="mobile-strip">
+
+      <div class="phone">
+        <div class="p-head">/ — 상단</div>
+        <div class="p-body mock">
+          <nav class="m-nav" style="height:52px; padding:8px 16px;">
+            <span class="logo" style="font-size:14px;">고건우</span>
+            <span style="margin-left:auto; font-family:var(--mono);">≡</span>
+          </nav>
+          <div class="m-hero" style="padding:48px 20px;">
+            <div class="mesh" style="filter:blur(50px);"></div>
+            <span class="badge" style="font-size:11px;">풀스택 개발자</span>
+            <h1 style="font-size:26px; font-weight:600; letter-spacing:-1.2px; line-height:1.15; position:relative;">기능 구현에서<br>멈추지 않는 개발자.</h1>
+            <div class="cta-row" style="flex-direction:column; width:100%;">
+              <span class="pill primary" style="height:44px;">프로젝트 보기 ↓</span>
+              <span class="pill secondary" style="height:44px;">GitHub</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="phone">
+        <div class="p-head">/ — 프로젝트 구간</div>
+        <div class="p-body mock" style="padding:16px; gap:12px;">
+          <div class="p-card">
+            <div class="img-ph thumb">Playsync</div>
+            <div class="p-title" style="font-size:14px;">Playsync <span class="chip chip-mono">최신</span></div>
+            <p class="p-sum" style="font-size:12px;">홀덤 토너먼트 관리 SaaS</p>
+          </div>
+          <div class="p-card">
+            <div class="img-ph thumb">Lexi-hub</div>
+            <div class="p-title" style="font-size:14px;">Lexi-hub</div>
+          </div>
+          <div style="text-align:center; font-family:var(--mono); font-size:10.5px; color:var(--mute);">↓ 1열 세로 — 가로 스와이프 없음</div>
+        </div>
+      </div>
+
+      <div class="mob-note">
+        <ul class="notes">
+          <li><span class="n">a</span><span><b>고정폭 전면 제거.</b> 현재 <code>min-width: 900px</code>가 모바일 파손 원인 — 모든 섹션 1열 스택.</span></li>
+          <li><span class="n">b</span><span><b>WebGL(Aurora) 모바일 비활성</b> — 정적 CSS 그라디언트 폴백. 발열·배터리.</span></li>
+          <li><span class="n">c</span><span><b>탭 타깃 44px 이상.</b> CTA pill 높이 44px, 카드 전체가 링크.</span></li>
+          <li><span class="n">d</span><span><b>nav는 햄버거 → 풀 오버레이</b> (DESIGN.md collapsing 전략). <span class="rb">StaggeredMenu</span> 사용 가능 — 절제해서.</span></li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <footer class="doc-foot">
+    mockup v2 · DESIGN.md 토큰 적용 + reactbits 매핑 — 구조 확정 후 구현 순서: 골조 → 상담 기반 콘텐츠 → 애니메이션 (CLAUDE.md 참조)
+  </footer>
+
+</div>
+
+</body>
+</html>

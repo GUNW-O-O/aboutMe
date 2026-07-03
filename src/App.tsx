@@ -1,18 +1,17 @@
 import React from 'react'
-import Welcome from './pages/Welcome'
-import { HashRouter as Router, Route, Routes } from 'react-router-dom'
-import About from './pages/About'
-import ProjectList from './pages/ProjectList'
-import { PersonalProjectList } from './pages/personalProject'
+import { HashRouter as Router, Navigate, Route, Routes } from 'react-router-dom'
+import Home from './pages/Home'
+import ProjectDetail from './pages/ProjectDetail'
+import ScrollToTop from './shared/ScrollToTop'
 
 const App: React.FC = () => {
   return (
     <Router>
+      <ScrollToTop />
       <Routes>
-        <Route path="/" element={<Welcome />} />
-        <Route path="/main" element={<About />} />
-        <Route path="/teamprojects" element={<ProjectList />} />
-        <Route path="/projects" element={<PersonalProjectList />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/projects/:id" element={<ProjectDetail />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
   )

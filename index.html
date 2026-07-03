@@ -1,24 +1,26 @@
 <!doctype html>
-<html lang="kr">
+<html lang="ko">
 
 <head>
   <meta charset="UTF-8" />
+  <script>
+    // FOUC 방지 — 렌더 전 테마 결정. 기본 = 다크.
+    document.documentElement.dataset.theme = localStorage.getItem('theme') || 'dark';
+  </script>
   <link rel="icon" type="image/svg+xml" href="/vite.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&family=Noto+Sans+KR:wght@400;500;600&display=swap"
+    rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GUNW-O-O</title>
+  <meta name="description" content="고건우 — 풀스택 개발자 포트폴리오. Java, Spring, React, TypeScript." />
+  <title>고건우 — 풀스택 개발자</title>
 </head>
 
 <body>
   <div id="root"></div>
   <script type="module" src="/src/main.tsx"></script>
-  <script>
-    if (!window.location.hash) {
-      window.location.hash = '/';
-    }
-  </script>
 </body>
 
 </html>
