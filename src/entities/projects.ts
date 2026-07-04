@@ -93,13 +93,15 @@ export const projects: Project[] = [
     summary: '오프라인 홀덤 토너먼트의 디지털 전환 — 상태머신과 Redis 기반 stateless 서버로 실시간 진행을 동기화하는 SaaS MVP',
     period: '2026.02.24 – 03.15',
     roles: [
-      // TODO(상담): 역할 bullet 구체화
-      '1인 프로젝트',
+      '설계부터 구현까지 전 과정 1인 수행',
+      '상태머신 기반 홀덤 게임 엔진 구현 — 베팅 라운드·사이드팟·쇼다운·탈락 처리',
+      'Redis write-back 저장 구조 설계 — 핸드 중 DB 쓰기 없는 stateless 서버',
+      'WebSocket 실시간 동기화 및 Next.js 프론트 구현',
     ],
     stacks: [
       { name: 'NestJS', reason: '모듈 단위 의존성 주입으로 로직을 구조화하고 유지보수성을 높였습니다.' },
       { name: 'WebSocket', reason: '실시간 상태 공유로 테이블/플레이어/토너먼트 진행을 동기화합니다.' },
-      { name: 'Next.js', reason: 'Server Action으로 httpOnly 쿠키 기반 인증을 구현하고 빠른 개발 환경을 구축했습니다.' },
+      { name: 'Next.js', reason: 'Server Action에서 httpOnly 쿠키 접근이 가능해 인증 처리 목적으로 선택했습니다.' },
       { name: 'Redis', reason: '수시로 변하는 게임 상태를 빠르게 읽고 쓰며, RDB/AOF 설정으로 서버 장애 시 진행 중인 핸드 복구를 보장합니다.' },
       { name: 'PostgreSQL + Prisma', reason: 'Type-safe한 환경에서 초반의 잦은 스키마 변경에 대응했습니다.' },
       { name: 'Docker', reason: '배포 환경 일관성 유지와 빠른 개발 환경 구축.' },
@@ -107,27 +109,38 @@ export const projects: Project[] = [
     links: [{ label: 'GitHub', url: 'https://github.com/GUNW-O-O/playsync' }],
     troubles: [
       {
-        problem: 'Prisma 7.4 도입 — 라이브러리 사용법이 대폭 바뀌어 AI가 제안하는 적용 코드가 동작하지 않음',
-        solution: '공식 문서를 직접 찾아보며 변경된 API에 맞게 해결',
+        problem: '실시간 게임 특성상 매 액션마다 상태가 바뀌는데, 이를 전부 DB에 쓰면 부하와 비용이 커지는 구조적 문제',
+        solution:
+          '핸드 중 상태 변경은 전부 Redis 스냅샷에서 처리하고 DB 트랜잭션은 정산·탈락 등 경계 이벤트에만 실행하는 write-back 구조 설계. 블라인드 레벨도 서버 타이머 대신 핸드 시작 시점에 계산(Lazy Update)해 서버가 대회 상태를 메모리에 들지 않는 stateless 구조 유지',
+        result: '핸드 진행 중 DB 쓰기 0회 — 상태 변경은 Redis에서 처리되고 DB에는 정산 시점 1~2회만 기록',
+      },
+      {
+        problem:
+          '핸드 종료 후 스택이 0이 된 플레이어들의 리바이 의사를 수집(각 최대 15초)할 때, 먼저 응답한 유저도 전체 응답이 끝날 때까지 자신의 스택 갱신을 볼 수 없는 피드백 지연',
+        approach:
+          '유저별 응답 이벤트를 EventEmitter once로 대기시키고 15초 타이머와 경쟁시켜 어느 쪽이 먼저든 한 번만 resolve되는 구조 설계',
+        solution:
+          '동일 메모리를 가리키는 테이블 객체를 콜백 인자로 공유 — 개별 응답 트랜잭션 성공 시 즉시 상태머신을 수정하고 웹소켓으로 전파',
+        result: '전체 응답 완료 전에도 즉각 피드백 — 실시간 반응성과 최종 데이터 정합성 양립',
+      },
+      {
+        problem:
+          '같은 리바이·탈락 흐름에서 반복문이 플레이어를 한 건씩 조회·UPDATE — 비효율을 발견하고 조사하며 N+1 패턴임을 파악',
+        solution:
+          '공통 정보는 상위에서 한 번 조회해 컨텍스트로 주입해 반복 읽기를 제거하고, 탈락 확정자는 IN절 updateMany/deleteMany 단일 트랜잭션으로 배치해 동시 탈락 시 등수 정합성까지 확보',
       },
       {
         problem: 'Docker 기반 Redis의 바인딩 설정 미비로 외부 접근이 열려 악성봇 접근을 경험',
+        approach: 'Redis 데이터가 계속 삭제되고 무관한 값으로 바뀌는 이상 동작으로 침입을 인지',
         solution: '환경변수 기반 인증(requirepass) 설정으로 외부 접근 차단',
         result: '인프라 보안 설정의 중요성을 실제 침입 시도로 체감',
       },
-      {
-        problem: '실시간 게임 로직에서 테이블별 상태 정합성 보장 필요',
-        solution: '블라인드 레벨을 서버 타이머 대신 Lazy Update로 핸드 시작 시점에만 계산 — 서버가 대회 상태를 메모리에 들고 있지 않는 stateless 구조 유지',
-      },
-      {
-        problem: '초기 설계에서 딜러·물리 테이블이 로직에 강하게 결합되어 확장성 저해',
-        solution: '추상화된 개념으로 분리해 물리 환경에 구애받지 않는 구조로 재설계',
-      },
     ],
-    learnings: '', // TODO(상담)
+    learnings:
+      'lexi-hub에서 익힌 NestJS 모듈 구조와 JWT 인증을 실전 규모 프로젝트에 무리 없이 재사용하며 학습이 프로젝트 간에 이어지는 경험을 했습니다. Next.js는 httpOnly 쿠키 인증 때문에 선택했지만 SEO가 불필요한 서비스라 React SPA가 더 적합했다는 회고, "Redis는 어느 시점부터 필요한가" 같은 도입 트레이드오프를 먼저 따져야 한다는 배움도 남았습니다. 다음 프로젝트에는 수동 테스트의 한계를 넘기 위해 TDD와 아키텍처 학습을 적용할 계획입니다.',
     highlight: {
       src: sync5,
-      caption: '복수 올인 시 사이드팟 자동 계산·정산', // TODO(상담): 확정
+      caption: '복수 올인 시 사이드팟 자동 계산·정산',
     },
     screenshots: [
       { src: sync5, caption: '복수 올인으로 사이드팟이 생성되는 상황 — 콜 금액 변화에 따라 액션이 이어집니다.', featured: true },
@@ -146,14 +159,21 @@ export const projects: Project[] = [
     title: 'Lexi-hub',
     type: 'personal',
     sortKey: '2025-09',
-    summary: '단어장 타이핑 학습 웹서비스 — JWT 인증 구조와 한글 IME 타이핑 검증을 직접 구현한 학습 프로젝트',
+    summary:
+      '단어장 타이핑 학습 웹서비스 — TypeScript·MongoDB·JWT 인증을 학습 목적으로 직접 구현하고, 한글 IME 오타 판정 로직까지 설계한 개인 프로젝트',
     period: '2025.09.01 – 09.15',
     roles: [
-      '1인 프로젝트',
+      '설계부터 프론트·백엔드 구현까지 전 과정 1인 수행',
+      'React + TS FSD 프론트 — 타이핑 검증 로직, JWT 자동 갱신 인터셉터 구현',
+      'NestJS + MongoDB 백엔드 — auth/note 모듈, Access + HttpOnly Refresh 토큰 인증',
     ],
     stacks: [
-      { name: 'React + TS (FSD)', reason: '제한된 시간이라 익숙한 React를 선택하고, TypeScript와 FSD 구조를 학습하며 관심사를 기능 단위로 분리했습니다.' },
-      { name: 'NestJS', reason: 'Express와 비교 후 선택 — TS 기본 내장과 모듈 기반 구조로 기능을 역할별로 모듈화.' },
+      {
+        name: 'React + TS (FSD)',
+        reason:
+          'Resonos 팀 프로젝트에서 폴더 구조 탐색의 어려움을 겪고 해결책을 찾다 FSD를 접해 적용했습니다. TypeScript는 JS 팀플에서 느낀 오류 추적 불안을 계기로 학습 목적 도입.',
+      },
+      { name: 'NestJS', reason: 'Express와 문서 수준에서 비교 후 선택 — TS 기본 내장과 모듈 기반 구조로 기능을 역할별로 모듈화.' },
       { name: 'MongoDB', reason: 'NoSQL 구조가 커스텀 단어장 데이터 모델과 잘 맞고 학습 곡선이 낮아 빠른 프로토타이핑에 적합하다고 판단.' },
       { name: 'JWT', reason: '팀 프로젝트에서 경험하지 못한 인증/인가 학습 목적 — Access Token + HttpOnly Refresh Token 구조를 직접 적용.' },
     ],
@@ -165,6 +185,8 @@ export const projects: Project[] = [
       },
       {
         problem: '한글 입력 시 받침이 완성되기 전에 오타로 인식',
+        approach:
+          "직접 타이핑하며 문제를 발견하고 typing.works를 레퍼런스로 참고 — composition API 대신 '입력됨/대기/오타' 렌더링 기준을 직접 정의하다 입력 중 글자 판정 유예 규칙에 도달",
         solution: '입력 중인 글자는 검증에서 제외하고 다음 글자 입력 시점에 이전 글자를 최종 판단하도록 로직 수정',
         result: '도메인 이해도가 결과물 품질을 좌우한다는 것을 체감',
       },
@@ -173,10 +195,11 @@ export const projects: Project[] = [
         solution: '인자 타입에 FlashCard[]를 추가하고 리스트 여부를 판단해 구조분해 추가/단일 추가를 분기',
       },
     ],
-    learnings: '', // TODO(상담)
+    learnings:
+      'JS 팀 프로젝트와 TS 개인 프로젝트를 연달아 경험하며 타입 안정성의 가치를 체감했고, 이는 playsync의 Prisma type-safe 환경 선택으로 이어졌습니다. 여기서 익힌 NestJS 모듈 구조와 JWT 인증도 playsync에서 그대로 재사용했습니다. 반면 FSD는 이 규모에선 오버엔지니어링이었다는 것, 기간 안에 가능한 범위를 구분해 개발 범위를 잡는 것의 중요성도 배웠습니다.',
     highlight: {
       src: lexi5,
-      caption: '한글 IME를 고려한 타이핑 오타 검증', // TODO(상담): 확정
+      caption: '한글 IME를 고려한 타이핑 오타 검증',
     },
     screenshots: [
       { src: lexi5, caption: '단어장 타이핑 화면 — 받침 입력 중에는 오타 판정을 유예합니다.', featured: true },
@@ -200,41 +223,55 @@ export const projects: Project[] = [
     period: '2025.08.06 – 08.27',
     team: '4인 팀',
     roles: [
-      '담당 컨트롤러 파사드 패턴 리팩토링 — 서비스 단 책임 분리',
+      '아티스트·트랙·앨범 페이지 백/프론트 담당 — 초기 로딩 데이터를 Combined 서비스(파사드)와 명시적 DTO로 재설계',
       '커뮤니티 게시글·대댓글·투표(chart.js) 프론트 구현',
       '비회원 작성 흐름(임시 비밀번호) 조건부 렌더링 설계',
-      '프론트 작업 중 발견한 백엔드 개선점 전달',
+      '백/프론트 분업에서 응답 누락 재수정을 겪고 사전 API 협의 프로세스 제안',
     ],
     stacks: [
       { name: 'React' },
       { name: 'Spring Boot' },
       { name: 'MySQL' },
       { name: 'Swagger' },
+      {
+        name: 'CKEditor 5',
+        reason: '에디터 직접 구현으로는 UI/UX 품질 확보가 어렵다고 판단, 동영상 임베딩까지 지원해 선택했습니다.',
+      },
+      {
+        name: 'chart.js',
+        reason: '할건해야짐·Resonos에서 이어 사용 — 커뮤니티 투표 결과 시각화에 재사용했습니다.',
+      },
     ],
     links: [{ label: 'GitHub', url: 'https://github.com/Lee-0210/Resonos_React' }],
     troubles: [
       {
-        problem: '컨트롤러에 서비스 로직이 섞여 있어 책임 분리와 가독성이 떨어짐',
-        solution: '파사드 패턴을 적용해 컨트롤러와 서비스 단 역할을 분리 — 가독성과 안정성 개선',
+        problem:
+          '컨트롤러에 간단한 로직이 조금씩 쌓여 서비스 계층과 분간이 안 되는 상태 — REST API 전환을 맞아 "좋은 구조"를 고민',
+        solution:
+          '초기 페이지 조회를 Combined 서비스(파사드)로 분리하고, 응답도 Map 대신 명시적 PageDTO로 계약화 — 컨트롤러에는 파라미터 주입과 위임 한 줄만 남김',
+        result: '엔드포인트당 수십 줄 로직이 위임 한 줄로 슬림해짐',
       },
       {
-        problem: '분업 후 커뮤니티 기능이 정상 작동하지 않는데 원인 위치(백/프론트) 파악이 어려움',
-        solution: 'Swagger 도입으로 API 명세를 정확히 파악하고 원인 계층을 구분하며 진행',
+        problem: 'SSR 일체형에서 백/프론트 분업으로 바뀌자 응답에 프론트 렌더 필요값이 누락돼 백엔드 재수정이 반복',
+        approach: '팀이 도입한 Swagger 명세로 API를 확인하며 원인 계층(백/프론트)을 구분',
+        solution: '필요값을 사전에 논의하는 방향으로 팀 프로세스를 개선하고, 본인 담당 응답은 명시적 DTO로 계약화',
       },
       {
         problem: '댓글 작성 시 useState로 추가하면 페이지네이션이 무시되고 리스트에 계속 누적',
-        solution: '등록 후 마지막 페이지로 이동 + 리스트 길이에 따라 전/후 페이지 자동 요청',
+        solution: '등록 성공 시 현재 페이지가 가득 찼으면(10개) 다음 페이지를 요청해 이동, 아니면 로컬 상태에 추가',
       },
       {
-        problem: 'Bandsintown 스크립트 로드와 React DOM 준비 시점 불일치로 위젯 미표시',
-        solution: 'DOM 렌더 후 스크립트를 동적 삽입하고 로드 완료 시 init() 호출',
+        problem:
+          'SSR에서 동작하던 Bandsintown 위젯이 React SPA에서 미표시 — 위젯 스크립트는 로드 시 1회만 DOM을 스캔하는데, SPA는 그 시점에 대상 div가 마운트 전',
+        solution:
+          'useEffect에서 스크립트를 동적 삽입하고 로드 완료 시 init()으로 재스캔 — 이미 로드된 경우 init()만 재호출',
       },
     ],
     learnings:
-      'SSR에서 React 전환은 화면 방식만 바꾸는 게 아니라 컨트롤러 계층 재설계까지 포함해야 완성된다는 것. 유저 케이스별 분기 설계가 UI 코드의 절반 이상을 차지한다는 것.',
+      'SSR에서 React 전환은 화면만 바꾸는 게 아니라 REST API에 맞는 컨트롤러 계층 재설계까지 포함해야 완성된다는 것을 배웠습니다. 백/프론트가 분리되면 응답에 무엇이 담기는지가 곧 계약이라는 것도 — 필요값 누락으로 재수정을 반복하며 사전 협의와 명시적 DTO의 가치를 체감했고, 이때의 구조 고민이 lexi-hub의 FSD 도입으로 이어졌습니다.',
     highlight: {
-      src: resr11,
-      caption: '유저 정의 항목 투표 — chart.js 실시간 반영', // TODO(상담): 확정
+      src: resr8,
+      caption: '비회원도 임시 비밀번호로 게시글·댓글 작성 — 케이스별 조건부 렌더링',
     },
     screenshots: [
       { src: resr11, caption: '유저가 원하는 항목으로 투표 등록/수정/삭제 — 로그인 시 투표 가능.', featured: true },
@@ -247,9 +284,9 @@ export const projects: Project[] = [
       { src: resr3, caption: '앨범 페이지.' },
       { src: resr4, caption: '트랙 페이지.' },
       { src: resr6, caption: '커뮤니티 메인 페이지.' },
-      { src: resr7, caption: '비회원 게시글 수정 — 등록한 비밀번호 일치 시 가능.' },
-      { src: resr10, caption: '대댓글 기능.' },
-      { src: resr12, caption: '상호작용 버튼 표시 — 작성자는 수정/삭제 가능.' },
+      { src: resr7, caption: '비회원 게시글 — 등록한 비밀번호 일치 시 가능.' },
+      { src: resr10, caption: '투표 기능.' },
+      { src: resr12, caption: '상호작용 버튼 저장 및 표시 — 작성자는 수정/삭제 가능.' },
     ],
     thumbnail: resonosThumb,
   },
@@ -262,48 +299,56 @@ export const projects: Project[] = [
     period: '2025.06.26 – 07.22',
     team: '4인 팀',
     roles: [
-      '아티스트·트랙·앨범 상세 등 메인 사용 페이지 담당',
-      '핵심 상호작용의 비동기 요청 전환 — 즉각적 피드백 구현',
-      'YouTube API 활용 videoId 수집 기능 구현',
+      '아티스트·트랙·앨범 상세 페이지 풀스택 담당 (DB 설계는 팀 공동)',
+      '새로고침을 유발하는 유저 상호작용 전면 비동기 전환',
+      'YouTube API videoId 자동 수집 + 점수 기반 매칭 필터링 구현',
     ],
     stacks: [
       { name: 'Spring Boot' },
       { name: 'Thymeleaf' },
       { name: 'MySQL' },
       { name: 'YouTube / Spotify API' },
+      {
+        name: 'chart.js',
+        reason: '할건해야짐(첫 팀플)에서 매출 시각화로 사용해본 경험이 있어, 투표 시각화 등 다른 형식의 그래프에 재사용했습니다.',
+      },
     ],
     links: [{ label: 'GitHub', url: 'https://github.com/ruff1376/Resonos' }],
     troubles: [
       {
         problem: '노래 재생 중 리뷰·좋아요 등 상호작용 시 동기 요청의 전체 새로고침으로 음악이 끊김 — 음악 커뮤니티에 치명적',
+        approach: '본인이 노래 재생 중 리뷰를 작성하다 새로고침으로 끊기는 것을 직접 발견',
         solution: '유저 상호작용을 전면 비동기 요청으로 전환하고 응답을 자바스크립트로 처리',
         result: '재생 무중단 — 사용자 경험 핵심 개선',
       },
       {
-        problem: '로컬 외부 환경에서 YouTube 임베드 불가 영상 존재',
-        solution: 'Spotify 임베드 iframe을 추가해 임베드 불가 영상도 음원 재생 가능하도록 보완',
+        problem: 'YouTube API 호출 시 해당 아티스트가 아닌 영상이나 리액션 영상의 videoId가 DB에 저장',
+        approach: '잘 동작하는 줄 알았다가 음악과 무관한 영상이 DB에 저장되는 것을 발견',
+        solution:
+          '공식 채널 가산·리액션 등 제외 키워드 감점·아티스트명 검증을 점수로 합산하는 필터링을 추가 — 제외/공식 채널 키워드 목록은 AI를 활용해 생성·보강하고, 영/한/일 추출 fallback 쿼리 체인으로 재검색',
+        result: '완벽하지는 않지만 최소 동일 음원 또는 타국어 번역 영상 수준의 매칭 보장',
       },
       {
-        problem: 'YouTube API 호출 시 해당 아티스트가 아닌 영상이나 리액션 영상의 videoId가 DB에 저장',
-        solution: '가산점·감점·제외 키워드를 점수 기준으로 비교해 검색 연관성을 높이도록 수정',
+        problem: '로컬 외부 환경에서 YouTube 임베드 불가 영상 존재',
+        solution: 'Spotify 임베드 iframe을 병행 배치 — 로그인 상태면 풀버전까지 재생되는 것을 확인하고 폴백으로 추가',
       },
     ],
     learnings:
-      '동기 요청의 전체 갱신 문제를 비동기 전환으로 해결하며 API와 스프링의 코드 흐름을 파악하는 능력을 키움.',
+      '동기 요청의 전체 갱신 문제를 비동기 전환으로 해결하며 API와 스프링의 코드 흐름을 파악하는 능력을 키웠습니다.',
     highlight: {
-      src: res3,
-      caption: '앨범 6요소 투표 — 기록 여부에 따라 투표/수정 분기', // TODO(상담): 확정
+      src: res9,
+      caption: '노래 재생 중 상호작용해도 끊기지 않는 전면 비동기 처리',
     },
     screenshots: [
-      { src: res3, caption: '앨범 6요소 평가 — 투표 기록이 있으면 수정하기로 분기.', featured: true },
       { src: res9, caption: '유저 상호작용 전면 비동기 처리 — 재생 중단 없음.', featured: true },
+      { src: res3, caption: '앨범 6요소 평가 — 투표 기록이 있으면 수정하기로 분기.', featured: true },
       { src: res1, caption: 'Spotify·YouTube API 임베드 + Bandsintown 공연 일정 + 분위기 투표.', featured: true },
       { src: res, caption: '웰컴 페이지.' },
       { src: res2, caption: '앨범 수록곡·리뷰 현황·6요소 점수·플레이리스트 표시.' },
       { src: res4, caption: '트랙을 플레이리스트에 추가하고 분위기 기반으로 다른 곡 탐색.' },
       { src: res5, caption: '분위기 투표와 트랙 포함 플레이리스트 (좋아요순).' },
-      { src: res6, caption: '리뷰 더보기 페이지네이션.' },
-      { src: res7, caption: '상호작용 내용 저장.' },
+      { src: res6, caption: '리뷰 더보기 페이지네이션 및 블라인드 리뷰 보기.' },
+      { src: res7, caption: '상호작용 내용 저장 및 좋아요 수 기준 정렬.' },
       { src: res8, caption: '관리자 — 블라인드 리뷰 즉시 열람, 전체 리뷰 수정/삭제.' },
     ],
     thumbnail: resonosThumb,
@@ -315,7 +360,7 @@ export const projects: Project[] = [
     sortKey: '2025-05',
     summary: '첫 팀 프로젝트 — Java JSP/Servlet SSR MVC-2 기반 헬스장 통합 관리 웹서비스, 기구·매출 관리와 chart.js 시각화 담당',
     period: '2025.05.16 – 05.28',
-    team: '팀 프로젝트',
+    team: '4인 팀',
     roles: [
       '기구 관리 기능 담당 — 카테고리별 추가/수정/삭제, 점검 상태 노출',
       '매출 관리 담당 — chart.js 트레이너별 매출 시각화 (주/월/전체)',
@@ -323,24 +368,29 @@ export const projects: Project[] = [
     stacks: [
       { name: 'Java (JSP/Servlet)' },
       { name: 'MySQL' },
-      { name: 'chart.js' },
+      {
+        name: 'chart.js',
+        reason: '처음 다뤄본 시각화 라이브러리 — 이후 Resonos 투표 시각화까지 이어 사용했습니다.',
+      },
     ],
     links: [{ label: 'GitHub', url: 'https://github.com/ruff1376/AI3_MINI1_TEAM3' }],
     troubles: [
       {
         problem: '매출을 음수로 등록하면 차트 그래프가 제대로 그려지지 않음',
+        approach: '직접 테스트하다 발견',
         solution: '뷰에서 필수값 검증 + 컨트롤러에서 0 미만 예외 처리 후 에러 메시지 표시',
       },
       {
         problem: '데이터 없는 상태로 페이지 접근 시 NullPointerException 오류 페이지 발생',
         solution: '기간 내 수정하지 못함 — 원인은 null 체크 누락. 이후 조건문·예외 처리로 다양한 상황을 사전 대비하는 습관의 필요성을 확인',
+        result: '이 교훈은 React 전환 프로젝트부터 데이터 로딩 전 렌더를 isLoading state로 방어하는 습관으로 이어짐',
       },
     ],
     learnings:
-      '자원 분배의 중요성, 그리고 사용자는 개발자가 의도한 대로만 사용하지 않는다는 것.',
+      '무리하게 잡은 범위(태블릿 반응형 별도 구현)가 전부 백지화되며 자원 분배의 중요성을, 음수 입력 같은 예상 밖 사용에서 사용자는 개발자 의도대로만 쓰지 않는다는 것을 배웠습니다. 첫 협업에서 git 충돌과 .gitignore 미설정으로 환경이 꼬이는 경험도 이후 프로젝트 협업 습관의 기준점이 됐습니다.',
     highlight: {
       src: hhg3,
-      caption: '트레이너별 매출 chart.js 시각화', // TODO(상담): 확정
+      caption: '트레이너별 매출 chart.js 시각화',
     },
     screenshots: [
       { src: hhg3, caption: '트레이너별 매출 chart.js 시각화 — 최근 1주/한 달/전체 조회.', featured: true },

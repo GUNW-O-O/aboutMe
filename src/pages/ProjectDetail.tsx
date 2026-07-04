@@ -91,12 +91,14 @@ const ProjectDetail: React.FC = () => {
             <span className="eyebrow">stack decisions</span>
             <h2 className="t-display-md">기술 선정 이유.</h2>
           </div>
-          {project.stacks.filter(s => s.reason).map(s => (
-            <div key={s.name} className="card" style={{ padding: '16px 24px' }}>
-              <span className="chip chip-mono">{s.name}</span>
-              <p className="t-body-sm" style={{ marginTop: 8 }}>{s.reason}</p>
-            </div>
-          ))}
+          <div className="stack-grid">
+            {project.stacks.filter(s => s.reason).map(s => (
+              <div key={s.name} className="card">
+                <span className="chip chip-mono">{s.name}</span>
+                <p className="t-body-sm" style={{ marginTop: 8 }}>{s.reason}</p>
+              </div>
+            ))}
+          </div>
         </section>
       )}
 
@@ -106,20 +108,27 @@ const ProjectDetail: React.FC = () => {
           <span className="eyebrow">troubleshooting</span>
           <h2 className="t-display-md">문제와 해결.</h2>
         </div>
-        {project.troubles.map((t, i) => (
-          <div className="ts-pair" key={i}>
-            <div className="t">
-              <div className="hd">Problem</div>
-              {t.problem}
-              {t.approach && <div className="rs">{t.approach}</div>}
-            </div>
-            <div className="s">
-              <div className="hd">Solution</div>
-              {t.solution}
-              {t.result && <div className="rs">결과: {t.result}</div>}
-            </div>
-          </div>
-        ))}
+        <div className="ts-list">
+          {project.troubles.map((t, i) => (
+            <article className="ts-item" key={i}>
+              <span className="ts-num">
+                {String(i + 1).padStart(2, '0')} / {String(project.troubles.length).padStart(2, '0')}
+              </span>
+              <div className="ts-pair">
+                <div className="t">
+                  <div className="hd">Problem</div>
+                  {t.problem}
+                  {t.approach && <div className="rs">{t.approach}</div>}
+                </div>
+                <div className="s">
+                  <div className="hd">Solution</div>
+                  {t.solution}
+                  {t.result && <div className="rs">결과: {t.result}</div>}
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
       </section>
 
       {/* 스크린샷 */}

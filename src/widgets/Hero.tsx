@@ -44,7 +44,7 @@ const Hero: React.FC = () => {
           <SoftAurora />
         </div>
       )}
-      <span className="badge hero-reveal">풀스택 개발자</span>
+      <span className="badge hero-reveal">Programmer != Developer</span>
       <h1 className="t-display-xl">
         <span className="hero-reveal">돌아가게 만드는 건,</span>
         <br />
