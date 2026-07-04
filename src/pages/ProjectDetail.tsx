@@ -78,7 +78,7 @@ const ProjectDetail: React.FC = () => {
           <div className="card">
             <span className="eyebrow">배운 점</span>
             <p className="t-body-sm" style={{ marginTop: 10 }}>
-              {project.learnings || '상담 후 작성 예정.'}
+              {project.learnings || '.'}
             </p>
           </div>
         </div>
@@ -89,7 +89,7 @@ const ProjectDetail: React.FC = () => {
         <section className="section" style={{ paddingBottom: 0 }}>
           <div className="sec-head">
             <span className="eyebrow">stack decisions</span>
-            <h2 className="t-display-md">왜 이 기술이었나.</h2>
+            <h2 className="t-display-md">기술 선정 이유.</h2>
           </div>
           {project.stacks.filter(s => s.reason).map(s => (
             <div key={s.name} className="card" style={{ padding: '16px 24px' }}>
@@ -126,7 +126,7 @@ const ProjectDetail: React.FC = () => {
       <section className="section">
         <div className="sec-head">
           <span className="eyebrow">screenshots</span>
-          <h2 className="t-display-md">증거.</h2>
+          <h2 className="t-display-md">구현 내용.</h2>
         </div>
         {featured.map(s => (
           <div className="shot" key={s.src}>

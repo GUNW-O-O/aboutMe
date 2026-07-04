@@ -94,7 +94,7 @@ export const projects: Project[] = [
     period: '2026.02.24 – 03.15',
     roles: [
       // TODO(상담): 역할 bullet 구체화
-      '기획·설계·개발 전담 (1인 프로젝트)',
+      '1인 프로젝트',
     ],
     stacks: [
       { name: 'NestJS', reason: '모듈 단위 의존성 주입으로 로직을 구조화하고 유지보수성을 높였습니다.' },
@@ -149,7 +149,7 @@ export const projects: Project[] = [
     summary: '단어장 타이핑 학습 웹서비스 — JWT 인증 구조와 한글 IME 타이핑 검증을 직접 구현한 학습 프로젝트',
     period: '2025.09.01 – 09.15',
     roles: [
-      '기획·설계·개발 전담 (1인 프로젝트)',
+      '1인 프로젝트',
     ],
     stacks: [
       { name: 'React + TS (FSD)', reason: '제한된 시간이라 익숙한 React를 선택하고, TypeScript와 FSD 구조를 학습하며 관심사를 기능 단위로 분리했습니다.' },

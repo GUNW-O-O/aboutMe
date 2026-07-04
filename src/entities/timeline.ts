@@ -5,7 +5,7 @@ import sqldImg from '../assets/certificate/SQLD.png'
 import adspImg from '../assets/certificate/ADsP.png'
 import webdImg from '../assets/certificate/webd.png'
 
-export type CareerItem = {
+export type TimelineItem = {
   kind: 'project' | 'education' | 'certificate'
   sortKey: string // 'YYYY-MM' — 내림차순 정렬 기준
   date: string // 표시용
@@ -16,7 +16,7 @@ export type CareerItem = {
   issuer?: string
 }
 
-export const career: CareerItem[] = [
+export const timeline: TimelineItem[] = [
   {
     kind: 'project',
     sortKey: '2026-02',
@@ -36,7 +36,7 @@ export const career: CareerItem[] = [
   {
     kind: 'certificate',
     sortKey: '2025-09',
-    date: '2025.09.05',
+    date: '2025.09',
     title: 'ADsP',
     issuer: 'K-DATA',
     img: adspImg,
@@ -44,7 +44,14 @@ export const career: CareerItem[] = [
   {
     kind: 'education',
     sortKey: '2025-03',
-    date: '2025.03 – 09',
+    date: '2025.03',
+    title: '부트캠프 등록',
+    sub: '더조은컴퓨터아카데미 — 풀스택',
+  },
+  {
+    kind: 'education',
+    sortKey: '2025-09-15',
+    date: '2025.09',
     title: '부트캠프 수료',
     sub: '더조은컴퓨터아카데미 — 팀 프로젝트 3회',
   },
@@ -67,7 +74,7 @@ export const career: CareerItem[] = [
   {
     kind: 'certificate',
     sortKey: '2025-06',
-    date: '2025.06.27',
+    date: '2025.06',
     title: 'SQLD',
     issuer: 'K-DATA',
     img: sqldImg,
@@ -75,7 +82,7 @@ export const career: CareerItem[] = [
   {
     kind: 'certificate',
     sortKey: '2025-06',
-    date: '2025.06.27',
+    date: '2025.06',
     title: '웹디자인개발기능사',
     issuer: '한국산업인력공단',
     img: webdImg,
@@ -90,6 +97,30 @@ export const career: CareerItem[] = [
   },
 ]
 
-export const sortedCareer = [...career].sort((a, b) =>
+export const sortedTimeline = [...timeline].sort((a, b) =>
   b.sortKey.localeCompare(a.sortKey),
 )
+
+// 같은 달 항목은 하나의 타임라인 노드로 묶는다 — 월당 점·날짜 하나.
+export type TimelineGroup = {
+  key: string // 'YYYY-MM'
+  date: string // 표시용 — 단일 항목이면 원 날짜(범위 보존), 복수면 'YYYY.MM'
+  items: TimelineItem[]
+}
+
+export const groupedTimeline: TimelineGroup[] = (() => {
+  const map = new Map<string, TimelineItem[]>()
+  for (const item of sortedTimeline) {
+    const key = item.sortKey.slice(0, 7)
+    const arr = map.get(key)
+    if (arr) arr.push(item)
+    else map.set(key, [item])
+  }
+  return [...map.entries()]
+    .sort((a, b) => b[0].localeCompare(a[0]))
+    .map(([key, items]) => ({
+      key,
+      date: items.length === 1 ? items[0].date : `${key.slice(0, 4)}.${key.slice(5, 7)}`,
+      items,
+    }))
+})()

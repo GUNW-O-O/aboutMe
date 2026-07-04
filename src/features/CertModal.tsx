@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
-import type { CareerItem } from '../entities/career'
+import type { TimelineItem } from '../entities/timeline'
 
 type Props = {
-  cert: CareerItem
+  cert: TimelineItem
   onClose: () => void
 }
 

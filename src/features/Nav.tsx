@@ -5,7 +5,7 @@ import { setTheme, useTheme } from '../shared/theme'
 const SECTIONS = [
   { id: 'about', label: 'About' },
   { id: 'projects', label: 'Projects' },
-  { id: 'career', label: 'Career' },
+  { id: 'timeline', label: 'Timeline' },
   { id: 'contact', label: 'Contact' },
 ]
 

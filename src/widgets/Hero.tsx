@@ -51,7 +51,7 @@ const Hero: React.FC = () => {
         <span className="hero-reveal"> 이제 누구나 가능합니다.</span>
       </h1>
       <p className="t-body-lg hero-reveal" style={{ maxWidth: '60ch' }}>
-        그래서 코드를 짜기 전에 무엇을 어떻게 만들지 설계하는 데 더 많은 시간을 씁니다.
+        그래서 코드작성 전에 무엇을 어떻게 만들지 설계하는 데 더 많은 시간을 씁니다.
       </p>
       <div className="cta-row hero-reveal">
         <button className="pill primary" onClick={scrollToProjects}>프로젝트 보기 ↓</button>

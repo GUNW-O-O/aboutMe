@@ -64,7 +64,7 @@ const HighlightBand: React.FC = () => {
       <div className="inner">
         <div>
           <span className="eyebrow">highlights</span>
-          <h2 className="t-display-lg">상세에서 볼 수 있는 것들.</h2>
+          <h2 className="t-display-lg">하이라이트.</h2>
           <p className="t-body-md lead">
             각 프로젝트별 장면을 모았습니다. 카드를 누르면
             상세로 이동합니다.

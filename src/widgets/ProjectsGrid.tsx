@@ -7,7 +7,7 @@ const ProjectsGrid: React.FC = () => {
     <section className="section" id="projects">
       <div className="sec-head">
         <span className="eyebrow">projects</span>
-        <h2 className="t-display-lg">만든 것들.</h2>
+        <h2 className="t-display-lg">프로젝트.</h2>
       </div>
       <div className="projects-grid">
         {sortedProjects.map((p, idx) => (
