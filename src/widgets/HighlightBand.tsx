@@ -1,23 +1,30 @@
-import React, { useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { sortedProjects } from '../entities/projects'
 import Img from '../shared/Img'
 
 const SWIPE_THRESHOLD = 40
+const AUTOPLAY_MS = 4200
 
-// 골조 단계: 수동 전환(밴드 좌우 화살표/드래그).
-// TODO(애니메이션 단계): CardSwap — 자동 교체, hover pause,
-// prefers-reduced-motion 시 자동재생 없음.
 const HighlightBand: React.FC = () => {
   const items = sortedProjects.filter(p => p.highlight)
   const [active, setActive] = useState(0)
+  const [paused, setPaused] = useState(false)
   const dragStartX = useRef<number | null>(null)
   const dragged = useRef(false)
 
-  if (items.length === 0) return null
-
   const count = items.length
-  const go = (dir: 1 | -1) => setActive(i => (i + dir + count) % count)
+  const go = useCallback((dir: 1 | -1) => {
+    setActive(i => (i + dir + count) % count)
+  }, [count])
+
+  useEffect(() => {
+    if (count <= 1 || paused || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const timer = window.setInterval(() => go(1), AUTOPLAY_MS)
+    return () => window.clearInterval(timer)
+  }, [count, go, paused])
+
+  if (items.length === 0) return null
 
   const order = (offset: number) => items[(active + offset) % count]
   const top = order(0)
@@ -59,7 +66,7 @@ const HighlightBand: React.FC = () => {
           <span className="eyebrow">highlights</span>
           <h2 className="t-display-lg">상세에서 볼 수 있는 것들.</h2>
           <p className="t-body-md lead">
-            각 프로젝트 상세 페이지의 핵심 장면입니다. 카드를 클릭하면 해당
+            각 프로젝트별 장면을 모았습니다. 카드를 누르면
             상세로 이동합니다.
           </p>
           <div className="swap-dots" aria-hidden="true">
@@ -70,20 +77,25 @@ const HighlightBand: React.FC = () => {
         </div>
         <div
           className="swap-stack"
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+          onFocus={() => setPaused(true)}
+          onBlur={() => setPaused(false)}
           onPointerDown={onPointerDown}
           onPointerUp={onPointerUp}
         >
           {b2 && (
-            <div className="swap-card b2" aria-hidden="true">
+            <div key={`b2-${b2.id}`} className="swap-card b2" aria-hidden="true">
               <Img src={b2.highlight!.src} alt="" />
             </div>
           )}
           {b1 && (
-            <div className="swap-card b1" aria-hidden="true">
+            <div key={`b1-${b1.id}`} className="swap-card b1" aria-hidden="true">
               <Img src={b1.highlight!.src} alt="" />
             </div>
           )}
           <Link
+            key={`top-${top.id}`}
             to={`/projects/${top.id}`}
             className="swap-card top"
             onClick={onCardClick}

@@ -3,6 +3,7 @@ import { HashRouter as Router, Navigate, Route, Routes } from 'react-router-dom'
 import Home from './pages/Home'
 import ProjectDetail from './pages/ProjectDetail'
 import ScrollToTop from './shared/ScrollToTop'
+import BackToTop from './shared/BackToTop'
 
 const App: React.FC = () => {
   return (
@@ -13,6 +14,7 @@ const App: React.FC = () => {
         <Route path="/projects/:id" element={<ProjectDetail />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
+      <BackToTop />
     </Router>
   )
 }
