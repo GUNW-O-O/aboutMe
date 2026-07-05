@@ -26,6 +26,7 @@ const ProjectDetail: React.FC = () => {
         <div className="detail-summary">
           <span className="eyebrow">
             {project.type === 'team' ? 'team project' : 'personal project'} · {project.sortKey.slice(0, 4)}
+            {project.aiNative && ' · AI-native'}
           </span>
           <h1 className="t-display-lg">{project.title}</h1>
           <p className="t-body-lg" style={{ maxWidth: '60ch' }}>{project.summary}</p>
@@ -131,12 +132,14 @@ const ProjectDetail: React.FC = () => {
         </div>
       </section>
 
-      {/* 스크린샷 */}
+      {/* 스크린샷 — 없는 프로젝트는 섹션 생략 */}
       <section className="section">
-        <div className="sec-head">
-          <span className="eyebrow">screenshots</span>
-          <h2 className="t-display-md">구현 내용.</h2>
-        </div>
+        {project.screenshots.length > 0 && (
+          <div className="sec-head">
+            <span className="eyebrow">screenshots</span>
+            <h2 className="t-display-md">구현 내용.</h2>
+          </div>
+        )}
         {featured.map(s => (
           <div className="shot" key={s.src}>
             <Img src={s.src} alt={s.caption} />

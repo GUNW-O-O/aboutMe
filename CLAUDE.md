@@ -70,7 +70,7 @@ export type Project = {
 
 골조 완성 후, **프로젝트 1개씩** 사용자와 상담해서 위 `Project` 필드를 채운다. 상담 없이 에이전트가 내용을 지어내는 것 금지 — 코드/README에서 **검증한 사실만** 가져오고, 서사·동기·수치·이유는 반드시 사용자 답변에서.
 
-> **현황 (2026-07-05): 5개 프로젝트 인터뷰 전부 완료(④ done).** 원문·검증 기록은 `docs/interviews/*.md`. 새 프로젝트 추가 시 동일 프로세스(Step 0부터) 적용. 확보된 학습 사슬: chart.js(hhg→Resonos), NPE→isLoading(hhg→Resonos React), FSD(Resonos React→lexi-hub→AboutMe), TS(Resonos JS→lexi-hub TS→playsync Prisma), NestJS 모듈·JWT(lexi-hub→playsync).
+> **현황 (2026-07-05): 6개 프로젝트 인터뷰 전부 완료(④ done)** — `aboutme`(이 사이트 자체, 첫 AI-native) 포함. 원문·검증 기록은 `docs/interviews/*.md`. 새 프로젝트 추가 시 동일 프로세스(Step 0부터) 적용. 확보된 학습 사슬: chart.js(hhg→Resonos), NPE→isLoading(hhg→Resonos React), FSD(Resonos React→lexi-hub→AboutMe), TS(Resonos JS→lexi-hub TS→playsync Prisma), NestJS 모듈·JWT(lexi-hub→playsync). 참고: `thumbnail`은 optional — 없으면 카드 placeholder, screenshots 빈 배열이면 상세 섹션 생략.
 
 ### 프로젝트 소스 위치 — 인터뷰 전 반드시 코드부터 읽는다
 

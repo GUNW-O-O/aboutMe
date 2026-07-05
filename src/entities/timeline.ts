@@ -19,6 +19,14 @@ export type TimelineItem = {
 export const timeline: TimelineItem[] = [
   {
     kind: 'project',
+    sortKey: '2026-07',
+    date: '2026.07 –',
+    title: 'AboutMe v2 리뉴얼',
+    sub: 'Claude Code 협업 — 첫 AI-native 프로젝트 (진행 중)',
+    projectId: 'aboutme',
+  },
+  {
+    kind: 'project',
     sortKey: '2026-02',
     date: '2026.02 – 03',
     title: 'Playsync',
@@ -94,6 +102,14 @@ export const timeline: TimelineItem[] = [
     title: '할건해야짐',
     sub: '헬스장 통합 관리 — 첫 팀 프로젝트',
     projectId: 'hhg',
+  },
+  {
+    kind: 'project',
+    sortKey: '2025-04',
+    date: '2025.04',
+    title: 'AboutMe v1',
+    sub: '포트폴리오 사이트 직접 구현 (개인)',
+    projectId: 'aboutme',
   },
 ]
 

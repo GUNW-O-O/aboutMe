@@ -24,7 +24,7 @@ const About: React.FC = () => {
           </p>
           <div className="chips">
             <span className="chip chip-mono">Incheon, KR</span>
-            <span className="chip chip-mono">SQLD · ADsP · 웹디자인개발기능사</span>
+            <span className="chip">SQLD · ADsP · 웹디자인개발기능사</span>
           </div>
         </div>
       </div>

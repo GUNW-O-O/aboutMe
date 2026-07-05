@@ -12,7 +12,7 @@
   --on-primary: #ffffff; /* 다크 밴드 위 텍스트 — 밴드는 양 테마 모두 어두움 */
   /* type */
   --sans: "Inter", "Noto Sans KR", system-ui, -apple-system, sans-serif;
-  --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, "Noto Sans KR", monospace;
 
   /* ─── 다크 (기본) ─── */
   color-scheme: dark;
@@ -252,6 +252,10 @@ img { display: block; max-width: 100%; }
 }
 .p-card:hover { box-shadow: var(--shadow-4); transform: translateY(-2px); }
 .p-card .thumb { aspect-ratio: 16 / 9; }
+.p-card .thumb-empty {
+  display: flex; align-items: center; justify-content: center;
+  background: var(--canvas-soft-2); border: 1px solid var(--hairline); border-radius: 8px;
+}
 .p-card .p-title { font-size: 16px; font-weight: 600; letter-spacing: -0.3px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; color: var(--ink); }
 .p-card .p-sum { font-size: 13.5px; letter-spacing: -0.28px; color: var(--body); }
 .p-card .p-meta { display: flex; gap: 6px; flex-wrap: wrap; margin-top: auto; }

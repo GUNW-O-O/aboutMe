@@ -63,6 +63,7 @@ export type Project = {
   id: string
   title: string
   type: 'team' | 'personal'
+  aiNative?: boolean // 에이전트 협업 프로세스(판단 기록 존재)로 만든 프로젝트만 true — 단순 AI 도구 사용은 해당 없음
   featured?: boolean
   sortKey: string // 'YYYY-MM' 시작월 — 내림차순 정렬 기준
   summary: string
@@ -80,10 +81,59 @@ export type Project = {
   learnings: string
   highlight?: { src: string; caption: string }
   screenshots: { src: string; caption: string; featured?: boolean }[]
-  thumbnail: string
+  thumbnail?: string // 없으면 카드에 placeholder 렌더
 }
 
 export const projects: Project[] = [
+  {
+    id: 'aboutme',
+    title: 'AboutMe',
+    type: 'personal',
+    aiNative: true,
+    sortKey: '2025-04', // git 초기 세팅 시점 기준 (v2 리뉴얼은 2026-07이지만 시작일로 정렬)
+    summary:
+      "이 포트폴리오 자체 — Claude Code와 협업해 리뉴얼한 AI-native 프로젝트",
+    period: '2025.04 – 진행 중 (v2 리뉴얼 2026.07)',
+    roles: [
+      'v1(2025.04) 직접 구현, v2(2026.07~) Claude Code 협업 리뉴얼',
+      'CLAUDE.md 협업 규칙 설계 — 지어내기 금지·코드 검증 우선·프로젝트 인터뷰 프로세스',
+      'DESIGN.md 토큰 시스템 적용 — 다크 기본 + 라이트 토글 이중 토큰',
+    ],
+    stacks: [
+      { name: 'React 19 + TS + Vite' },
+      {
+        name: 'Claude Code',
+        reason:
+          '웹 챗봇이 가정으로 응답하는 것이 불만이었고, 내 코드를 근거로 응답하는 협업을 원해 도입했습니다. 동작할 규칙을 CLAUDE.md로 명문화했습니다.',
+      },
+      {
+        name: 'CSS 토큰 시스템',
+        reason: '디자인은 감각의 영역 — 부족한 감각을 검증된 디자인 분석 기반 토큰(DESIGN.md)으로 보완했습니다.',
+      },
+    ],
+    links: [{ label: 'GitHub', url: 'https://github.com/GUNW-O-O/aboutMe' }],
+    troubles: [
+      {
+        problem: 'v1 데이터가 병렬 배열 3파일 — 인덱스가 어긋나면 조용히 깨지는 구조적 취약 (실제 사고는 없었음)',
+        solution: '단일 객체 배열로 마이그레이션 — 프로젝트 추가가 컴포넌트 수정 없이 항목 1개로 끝나는 구조',
+        result: '데이터 파일 3개 → 1개',
+      },
+      {
+        problem: '기억에 의존해 작성했던 v1 트러블슈팅 — 대체로 사실과 일치했지만 코드 근거가 붙어 있지 않아 구체성과 면접 방어력이 옅었음',
+        solution: '전 프로젝트를 인터뷰 프로세스(코드 검증 → 답변 수집 → 승인)로 재작성하고, 측정 없는 수치는 사실 서술로 전환',
+        result: '인터뷰 문서 5건 — 모든 서술이 코드·답변 근거 보유',
+      },
+      {
+        problem:
+          'v1을 직접 구현하며 과한 애니메이션, 아무 정보 없는 랜딩 페이지 등 디자인과 가독성이 흔들림 — 감각에 의존한 결과물에 확신이 없었음',
+        solution:
+          '검증된 디자인 분석 기반 DESIGN.md 규칙(토큰, 타이포 스케일, 장식 상한)을 도입해 모든 시각 결정을 규제 아래에서 내리도록 전환',
+      },
+    ],
+    learnings:
+      '이제 막 AI 협업을 시작하는 단계지만, 필요한 스킬과 플러그인을 적재적소에 쓰고 어떤 기술로 접근해야 더 좋은 결과를 받을지 먼저 생각해야 한다는 것을 배우고 있습니다.',
+    screenshots: [],
+  },
   {
     id: 'playsync',
     title: 'Playsync',
