@@ -9,22 +9,29 @@ const KIND_LABEL: Record<TimelineItem['kind'], string> = {
   certificate: 'certificate',
 }
 
+const COLLAPSED_COUNT = 3
+
 const Timeline: React.FC = () => {
   const [cert, setCert] = useState<TimelineItem | null>(null)
+  const [expanded, setExpanded] = useState(false)
+
+  const hasMore = groupedTimeline.length > COLLAPSED_COUNT
+  const collapsed = hasMore && !expanded
+  const visible = collapsed ? groupedTimeline.slice(0, COLLAPSED_COUNT) : groupedTimeline
 
   return (
     <section className="section" id="timeline">
-      <div className="sec-head">
+      <div className="sec-head" data-reveal>
         <span className="eyebrow">timeline</span>
         <h2 className="t-display-lg">지나온 길.</h2>
       </div>
-      <div className="tl">
-        {groupedTimeline.map((group, idx) => (
-          <div className="tl-item" key={group.key}>
+      <div className={`tl ${collapsed ? 'collapsed' : ''}`}>
+        {visible.map((group, idx) => (
+          <div className="tl-item" key={group.key} data-reveal>
             <div className="when">{group.date}</div>
             <div className="dotcol">
               <span className="dot" />
-              {idx < groupedTimeline.length - 1 && <span className="stem" />}
+              {(idx < visible.length - 1 || collapsed) && <span className="stem" />}
             </div>
             <div className="what">
               {group.items.map((item, i) => (
@@ -56,6 +63,17 @@ const Timeline: React.FC = () => {
           </div>
         ))}
       </div>
+      {hasMore && (
+        <button
+          className="tl-more btn-sq ghost"
+          onClick={() => setExpanded(v => !v)}
+          aria-expanded={expanded}
+        >
+          {expanded
+            ? '접기'
+            : `이전 이력 ${groupedTimeline.length - COLLAPSED_COUNT}개 더보기`}
+        </button>
+      )}
       {cert && <CertModal cert={cert} onClose={() => setCert(null)} />}
     </section>
   )

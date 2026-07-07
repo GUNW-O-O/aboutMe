@@ -62,7 +62,7 @@ const HighlightBand: React.FC = () => {
       </button>
 
       <div className="inner">
-        <div>
+        <div data-reveal>
           <span className="eyebrow">highlights</span>
           <h2 className="t-display-lg">하이라이트.</h2>
           <p className="t-body-md lead">
@@ -77,6 +77,7 @@ const HighlightBand: React.FC = () => {
         </div>
         <div
           className="swap-stack"
+          data-reveal
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
           onFocus={() => setPaused(true)}

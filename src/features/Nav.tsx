@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { setTheme, useTheme } from '../shared/theme'
 
@@ -15,9 +15,31 @@ type NavProps = {
 
 const Nav: React.FC<NavProps> = ({ variant = 'home' }) => {
   const theme = useTheme()
+  const [active, setActive] = useState('')
   const scrollTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
   }
+
+  // 현재 뷰포트 상단에 걸린 섹션을 nav에서 활성 표시 — 방향감 보조(모션 아님).
+  useEffect(() => {
+    if (variant !== 'home') return
+    const els = SECTIONS.map(s => document.getElementById(s.id)).filter(
+      (el): el is HTMLElement => el !== null,
+    )
+    if (els.length === 0) return
+    const obs = new IntersectionObserver(
+      entries => {
+        const hit = entries
+          .filter(e => e.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0]
+        if (hit) setActive(hit.target.id)
+      },
+      // 상단 nav(64px) 아래에서, 뷰포트 상위 30% 밴드에 섹션 top이 들어오면 활성
+      { rootMargin: '-64px 0px -70% 0px', threshold: 0 },
+    )
+    els.forEach(el => obs.observe(el))
+    return () => obs.disconnect()
+  }, [variant])
 
   return (
     <nav className="nav">
@@ -28,7 +50,14 @@ const Nav: React.FC<NavProps> = ({ variant = 'home' }) => {
       {variant === 'home' && (
         <div className="links">
           {SECTIONS.map(s => (
-            <button key={s.id} onClick={() => scrollTo(s.id)}>{s.label}</button>
+            <button
+              key={s.id}
+              className={active === s.id ? 'active' : undefined}
+              aria-current={active === s.id ? 'true' : undefined}
+              onClick={() => scrollTo(s.id)}
+            >
+              {s.label}
+            </button>
           ))}
         </div>
       )}

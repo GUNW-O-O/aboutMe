@@ -7,8 +7,10 @@ import ProjectsGrid from '../widgets/ProjectsGrid'
 import HighlightBand from '../widgets/HighlightBand'
 import Timeline from '../widgets/Timeline'
 import Footer from '../widgets/Footer'
+import { useScrollReveal } from '../shared/useScrollReveal'
 
 const Home: React.FC = () => {
+  useScrollReveal()
   return (
     <>
       <Nav variant="home" />

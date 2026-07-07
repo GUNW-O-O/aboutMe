@@ -22,7 +22,7 @@ export const timeline: TimelineItem[] = [
     sortKey: '2026-07',
     date: '2026.07 –',
     title: 'AboutMe v2 리뉴얼',
-    sub: 'Claude Code 협업 — 첫 AI-native 프로젝트 (진행 중)',
+    sub: '첫 agent-built 프로젝트',
     projectId: 'aboutme',
   },
   {

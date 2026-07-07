@@ -63,8 +63,8 @@ export type Project = {
   id: string
   title: string
   type: 'team' | 'personal'
-  aiNative?: boolean // 에이전트 협업 프로세스(판단 기록 존재)로 만든 프로젝트만 true — 단순 AI 도구 사용은 해당 없음
-  featured?: boolean
+  agentBuilt?: boolean // 에이전트 협업 프로세스(판단 기록 존재)로 만든 프로젝트만 true — 단순 AI 도구 사용은 해당 없음
+  isHighlight?: boolean // 대표작 1개만 — 그리드 최상단 고정 + 2칸 강조 (screenshots의 featured와 무관)
   sortKey: string // 'YYYY-MM' 시작월 — 내림차순 정렬 기준
   summary: string
   period: string
@@ -89,10 +89,11 @@ export const projects: Project[] = [
     id: 'aboutme',
     title: 'AboutMe',
     type: 'personal',
-    aiNative: true,
-    sortKey: '2025-04', // git 초기 세팅 시점 기준 (v2 리뉴얼은 2026-07이지만 시작일로 정렬)
+    agentBuilt: true,
+    isHighlight: true, // 대표작 — 정렬 규칙상 최상단 고정 (sortKey는 시작월 이력 그대로)
+    sortKey: '2025-04', // git 초기 세팅 시점 기준
     summary:
-      "이 포트폴리오 자체 — Claude Code와 협업해 리뉴얼한 AI-native 프로젝트",
+      "이 포트폴리오 자체 — Claude Code와 협업해 리뉴얼한 첫 agent-built 프로젝트",
     period: '2025.04 – 진행 중 (v2 리뉴얼 2026.07)',
     roles: [
       'v1(2025.04) 직접 구현, v2(2026.07~) Claude Code 협업 리뉴얼',
@@ -138,7 +139,6 @@ export const projects: Project[] = [
     id: 'playsync',
     title: 'Playsync',
     type: 'personal',
-    featured: true,
     sortKey: '2026-02',
     summary: '오프라인 홀덤 토너먼트의 디지털 전환 — 상태머신과 Redis 기반 stateless 서버로 실시간 진행을 동기화하는 SaaS MVP',
     period: '2026.02.24 – 03.15',
@@ -451,9 +451,11 @@ export const projects: Project[] = [
   },
 ]
 
-/** 최신순 정렬된 목록 — UI는 항상 이걸 사용 */
-export const sortedProjects = [...projects].sort((a, b) =>
-  b.sortKey.localeCompare(a.sortKey),
+/** 정렬된 목록 — UI는 항상 이걸 사용. 대표작(isHighlight) 최상단 고정, 나머지 sortKey(시작월) 내림차순 — 이력 훼손 없이 순서만 제어 */
+export const sortedProjects = [...projects].sort(
+  (a, b) =>
+    Number(b.isHighlight ?? false) - Number(a.isHighlight ?? false) ||
+    b.sortKey.localeCompare(a.sortKey),
 )
 
 export const getProject = (id: string) => projects.find(p => p.id === id)

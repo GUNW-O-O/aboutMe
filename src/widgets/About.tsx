@@ -5,11 +5,11 @@ import Img from '../shared/Img'
 const About: React.FC = () => {
   return (
     <section className="section" id="about">
-      <div className="sec-head">
+      <div className="sec-head" data-reveal>
         <span className="eyebrow">about</span>
         <h2 className="t-display-lg">프로그래머가 아니라 개발자, 고건우입니다.</h2>
       </div>
-      <div className="about-grid">
+      <div className="about-grid" data-reveal>
         <Img src={myPhoto} alt="고건우 프로필 사진" className="photo" />
         <div className="about-text">
           <p className="t-body-md">

@@ -26,7 +26,7 @@ const ProjectDetail: React.FC = () => {
         <div className="detail-summary">
           <span className="eyebrow">
             {project.type === 'team' ? 'team project' : 'personal project'} · {project.sortKey.slice(0, 4)}
-            {project.aiNative && ' · AI-native'}
+            {project.agentBuilt && ' · agent-built'}
           </span>
           <h1 className="t-display-lg">{project.title}</h1>
           <p className="t-body-lg" style={{ maxWidth: '60ch' }}>{project.summary}</p>
