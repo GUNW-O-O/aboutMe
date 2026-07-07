@@ -288,7 +288,7 @@ img { display: block; max-width: 100%; }
 .band h2 { color: #fff; }
 .band .lead { color: #a1a1a1; margin-top: 12px; max-width: 44ch; }
 .swap-stack {
-  position: relative; aspect-ratio: 16 / 11; overflow: hidden;
+  position: relative; aspect-ratio: 16 / 11;
   touch-action: pan-y; user-select: none; cursor: grab;
 }
 .swap-stack:active { cursor: grabbing; }

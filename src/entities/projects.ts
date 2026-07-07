@@ -438,10 +438,6 @@ export const projects: Project[] = [
     ],
     learnings:
       '무리하게 잡은 범위(태블릿 반응형 별도 구현)가 전부 백지화되며 자원 분배의 중요성을, 음수 입력 같은 예상 밖 사용에서 사용자는 개발자 의도대로만 쓰지 않는다는 것을 배웠습니다. 첫 협업에서 git 충돌과 .gitignore 미설정으로 환경이 꼬이는 경험도 이후 프로젝트 협업 습관의 기준점이 됐습니다.',
-    highlight: {
-      src: hhg3,
-      caption: '트레이너별 매출 chart.js 시각화',
-    },
     screenshots: [
       { src: hhg3, caption: '트레이너별 매출 chart.js 시각화 — 최근 1주/한 달/전체 조회.', featured: true },
       { src: hhg4, caption: '좌측 트레이너 클릭으로 개별 차트 조회.', featured: true },
