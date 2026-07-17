@@ -159,7 +159,7 @@ export const projects: Project[] = [
     links: [{ label: 'GitHub', url: 'https://github.com/GUNW-O-O/playsync' }],
     troubles: [
       {
-        problem: '실시간 게임 특성상 매 액션마다 상태가 바뀌는데, 이를 전부 DB에 쓰면 부하와 비용이 커지는 구조적 문제',
+        problem: '실시간 게임 특성상 6인 테이블 기준 한 핸드에만 최소 7회 이상 상태가 바뀌는데, 이를 전부 DB에 쓰면 부하와 비용이 커지는 구조적 문제',
         solution:
           '핸드 중 상태 변경은 전부 Redis 스냅샷에서 처리하고 DB 트랜잭션은 정산·탈락 등 경계 이벤트에만 실행하는 write-back 구조 설계. 블라인드 레벨도 서버 타이머 대신 핸드 시작 시점에 계산(Lazy Update)해 서버가 대회 상태를 메모리에 들지 않는 stateless 구조 유지',
         result: '핸드 진행 중 DB 쓰기 0회 — 상태 변경은 Redis에서 처리되고 DB에는 정산 시점 1회만 기록',

@@ -13,7 +13,7 @@ const About: React.FC = () => {
         <Img src={myPhoto} alt="고건우 프로필 사진" className="photo" />
         <div className="about-text">
           <p className="t-body-md">
-            부트캠프 프로젝트에서는 코드 작성을 AI에 맡겨 시간을 벌었습니다.
+            부트캠프 프로젝트에서는 AI를 활용해 시간을 벌었습니다.
             그렇게 번 시간은 어떻게 구현할 것인가를 판단하고 팀원과 소통하는
             데 썼습니다.
           </p>
