@@ -44,14 +44,16 @@ const Hero: React.FC = () => {
           <SoftAurora />
         </div>
       )}
-      <span className="badge hero-reveal">Programmer != Developer</span>
+      <span className="badge hero-reveal">Running != Solved</span>
       <h1 className="t-display-xl">
-        <span className="hero-reveal">돌아가게 만드는 건,</span>
+        <span className="hero-reveal">돌아가게 만드는 건</span>
         <br />
-        <span className="hero-reveal"> 이제 누구나 가능합니다.</span>
+        <span className="hero-reveal">이제 누구나 합니다.</span>
       </h1>
       <p className="t-body-lg hero-reveal" style={{ maxWidth: '60ch' }}>
-        그래서 코드작성 전에 무엇을 어떻게 만들지 설계하는 데 더 많은 시간을 씁니다.
+        그래서 만드는 것보다 무엇이 문제인지
+        <br />
+        파악하고 검증하는 것이 개발자의 몫이라고 생각합니다.
       </p>
       <div className="cta-row hero-reveal">
         <button className="pill primary" onClick={scrollToProjects}>프로젝트 보기 ↓</button>
