@@ -12,9 +12,9 @@ npm run lint     # eslint
 
 ## 페이지 구조
 
-- `/` — 원페이지 스크롤: sticky nav → Hero(메시 그라디언트) → About → 기술 스트립(LogoLoop 3줄) → Projects(2그룹: agent-built + 부트캠프 접기, isHighlight 대표작 최상단 고정·2칸 강조) → 다크 밴드(CardSwap — 프로젝트 상세 하이라이트 슬라이드) → 통합 타임라인 → Footer
+- `/` — 원페이지 스크롤: sticky nav → Hero(메시 그라디언트) → About → 기술 스트립(LogoLoop 3줄) → Projects(2그룹: 대표작·agent-built + 이전 프로젝트 접기, isHighlight 대표작 최상단 고정·2칸 강조) → 다크 밴드(CardSwap — 프로젝트 상세 하이라이트 슬라이드) → 통합 타임라인 → Footer
 - 다크 밴드 규칙: 수치 집계 지표 금지(과장), 억지 서사 금지. 실제 상세 페이지에 있는 장면만 티저로. 프로젝트 그리드가 주 접근 경로, 슬라이드는 순수 보조.
-- `/projects/:id` — 프로젝트 상세: 요약 메타 카드 → 역할/배운점 → Problem/Solution 병치 카드 → 스크린샷 3~4장 + 접기
+- `/projects/:id` — 프로젝트 상세. V1(부트캠프): 요약 메타 카드 → 역할/배운점 → Problem/Solution 병치 카드 → 스크린샷 3~4장 + 접기. V2(agent-built): 같은 라우트에서 id로 갈라져 `ProjectDetailV2`가 렌더 — 아래 데이터 모델 참고
 
 ## 콘텐츠 원칙
 
@@ -26,7 +26,7 @@ npm run lint     # eslint
 
 기존 6개 프로젝트(hhg, resonos-thymeleaf, resonos-react, lexi-hub, playsync, aboutme)는 인터뷰·정리 완료. **제거가 아닌 이상 내용 수정하지 않는다.** 인터뷰 원문·검증 기록은 `docs/interviews/*.md`(gitignore) 보존.
 
-- 예외: `aboutme`는 진행형 — featured 승격(정렬 규칙이 featured를 최상단 고정, sortKey는 시작월 이력 그대로 보존), 구조는 V1 유지.
+- 예외: `aboutme`는 진행형 — 구조는 V1 유지. **2026-08-09 대표작 강등**(`isHighlight` 제거, playsync-v2로 이관). 사이트를 직접 만든 것 자체는 2026 기준 차별점이 아니라는 판단. sortKey는 시작월 이력 그대로 보존.
 
 ## V2 체제 — 앞으로의 프로젝트
 
@@ -35,8 +35,10 @@ npm run lint     # eslint
 - **진행 중 프로젝트는 여기 싣지 않는다.** 개발 중엔 해당 프로젝트 리포의 README에 기록. 완료 시에만 aboutMe 반영.
 - 완료 시 반영 = `projectsV2.ts` 항목 1개 + (있으면) `notes.ts` 항목 추가. **컴포넌트 수정 없이 끝나야 정상.** 내용은 사용자 회고에서만.
 - V2 서사 비중: 기술선정·트러블은 간결, **회고가 주인공**, 구현 증거(evidence)가 상세 최상단.
-- 배치: 홈 Projects 섹션 2그룹 — 상단 "agent-built 프로젝트"(항상 펼침, 비면 미렌더) + 하단 "부트캠프 프로젝트"(아코디언, 기본 펼침). **전환 규칙: agent-built 3개 쌓이면 부트캠프 기본 접힘으로.**
-- 나중 구현 트리거: ProjectDetailV2 = 첫 V2 프로젝트 완결 시, /notes 페이지 + 홈 진입점 = 첫 TechNote 작성 시.
+- 배치: 홈 Projects 섹션 2그룹 — 상단 대표작·agent-built(항상 펼침, 비면 미렌더) + 하단 **"이전 프로젝트"**(아코디언, 기본 펼침). 아코디언에 부트캠프 6개 + 강등된 `aboutme`가 섞여 있어 "부트캠프"로 부르지 않는다. **전환 규칙: V2 3개 쌓이면 기본 접힘으로.**
+- 나중 구현 트리거: ~~ProjectDetailV2~~ **구현 완료(2026-08-09, playsync-v2 반영 시)**. /notes 페이지 + 홈 진입점 = 첫 TechNote 작성 시.
+- **playsync-v2 (2026-08-09 반영)** — 첫 V2 항목. `retrospective`는 사용자 회고 대기로 비어 있어 회고 섹션이 미렌더 상태다. 나머지(evidence·overrides·verification·decisions·troubles·limits)는 전부 리포 README·chat-log에서 검증한 사실.
+- 애니메이션 webp는 `vite.config.ts`의 이미지 최적화 `test`에서 제외되어 있다. 넣으면 sharp가 첫 프레임만 남긴다.
 
 ## 디자인 규칙 (DESIGN.md 요약 — 위반 금지)
 
@@ -90,14 +92,21 @@ export type ProjectV2 = {
   period: string
   links: { label: string; url: string }[]
   stacks: { name: string; insight?: string }[]   // insight = 이 프로젝트로 알게 된 핵심 한 줄
-  evidence: { src: string; caption: string; featured?: boolean }[]  // 상세 최상단 갤러리
-  decisions: { topic: string; choice: string; reason: string }[]    // 설계 판단 — 간결
+  evidence: { src: string; caption: string; featured?: boolean
+              proofUrl?: string; proofLabel?: string }[]  // 상세 최상단 갤러리. proofUrl = 그 장면을 지키는 테스트
+  overrides?: { proposal: string; rejection: string        // AI 제안을 뒤집은 지점
+                consequence: string; sourceUrl?: string }[] // consequence = 안 막았으면 뭐가 깨졌나
+  verification?: { label: string; value: string }[]        // 검증 규모 — 측정된 수치만
+  decisions?: { topic: string; choice: string; reason: string }[]   // 설계 판단 — 간결
   troubles?: { problem: string; solution: string }[]
-  retrospective: string[]     // 주인공 — 단락 배열
+  limits?: { topic: string; detail: string }[]             // 증명하지 못하는 것 + 감수한 근거
+  retrospective?: string[]    // 주인공 — 단락 배열. 사용자 회고에서만
   noteIds?: string[]          // TechNote 연결
   thumbnail?: string
 }
 ```
+
+상세 렌더는 `ProjectDetailV2`(V1과 같은 라우트·같은 CSS, 섹션 구성만 다름). 순서는 요약 → evidence → overrides → verification → stack insights → decisions → troubles → limits → retrospective. **각 섹션은 비면 렌더되지 않는다.**
 
 ### TechNote (`src/entities/notes.ts`)
 

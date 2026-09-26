@@ -1,6 +1,8 @@
 import React from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { getProject, getAdjacent } from '../entities/projects'
+import { getProjectV2 } from '../entities/projectsV2'
+import ProjectDetailV2 from './ProjectDetailV2'
 import Nav from '../features/Nav'
 import Footer from '../widgets/Footer'
 import Img from '../shared/Img'
@@ -10,7 +12,10 @@ const FEATURED_MAX = 4
 const ProjectDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>()
   const project = id ? getProject(id) : undefined
+  // V1·V2가 같은 라우트를 쓴다 — id로 갈라 상세 골격만 바꾼다
+  const projectV2 = id && !project ? getProjectV2(id) : undefined
 
+  if (projectV2) return <ProjectDetailV2 project={projectV2} />
   if (!project) return <Navigate to="/" replace />
 
   const { prev, next } = getAdjacent(project.id)

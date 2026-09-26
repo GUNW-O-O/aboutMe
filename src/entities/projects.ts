@@ -90,14 +90,14 @@ export const projects: Project[] = [
     title: 'AboutMe',
     type: 'personal',
     agentBuilt: true,
-    isHighlight: true, // 대표작 — 정렬 규칙상 최상단 고정 (sortKey는 시작월 이력 그대로)
+    // 2026-08-09 대표작 강등 — playsync-v2로 넘김. 사이트 자체는 이제 차별점이 아니다
     sortKey: '2025-04', // git 초기 세팅 시점 기준
     summary:
       "이 포트폴리오 자체 — Claude Code와 협업해 리뉴얼한 첫 agent-built 프로젝트",
     period: '2025.04 – 진행 중 (v2 리뉴얼 2026.07)',
     roles: [
       'v1(2025.04) 직접 구현, v2(2026.07~) Claude Code 협업 리뉴얼',
-      'CLAUDE.md 협업 규칙 설계 — 지어내기 금지·코드 검증 우선·프로젝트 인터뷰 프로세스',
+      'CLAUDE.md 협업 규칙 설계 — 지어내기 금지·코드 검증 우선·프로젝트 심층 인터뷰 프로세스',
       'DESIGN.md 토큰 시스템 적용 — 다크 기본 + 라이트 토글 이중 토큰',
     ],
     stacks: [
@@ -105,7 +105,7 @@ export const projects: Project[] = [
       {
         name: 'Claude Code',
         reason:
-          '웹 챗봇이 가정으로 응답하는 것이 불만이었고, 내 코드를 근거로 응답하는 협업을 원해 도입했습니다. 동작할 규칙을 CLAUDE.md로 명문화했습니다.',
+          '내 코드를 근거로 응답하는 협업을 원해 도입했습니다. 동작할 규칙을 CLAUDE.md로 명문화했습니다.',
       },
       {
         name: 'CSS 토큰 시스템',
@@ -120,7 +120,7 @@ export const projects: Project[] = [
         result: '데이터 파일 3개 → 1개',
       },
       {
-        problem: '기억에 의존해 작성했던 v1 트러블슈팅 — 대체로 사실과 일치했지만 코드 근거가 붙어 있지 않아 구체성과 면접 방어력이 옅었음',
+        problem: '기억에 의존해 작성했던 v1 트러블슈팅 — 대체로 사실과 일치했지만 코드 근거가 붙어 있지 않아 구체성과 신뢰성이 옅었음',
         solution: '전 프로젝트를 인터뷰 프로세스(코드 검증 → 답변 수집 → 승인)로 재작성하고, 측정 없는 수치는 사실 서술로 전환',
         result: '인터뷰 문서 5건 — 모든 서술이 코드·답변 근거 보유',
       },

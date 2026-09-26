@@ -32,7 +32,8 @@ const ProjectsGrid: React.FC = () => {
         </div>
       )}
       <details className="p-fold" open={sortedProjectsV2.length < BOOTCAMP_FOLD_AT}>
-        <summary>부트캠프 프로젝트 {foldedProjects.length}개</summary>
+        {/* 부트캠프 6개 + 대표작에서 강등된 aboutme가 섞여 '부트캠프'로 못 부른다 */}
+        <summary>이전 프로젝트 {foldedProjects.length}개</summary>
         <div className="projects-grid">
           {foldedProjects.map(p => (
             <ProjectCard key={p.id} project={p} isLatest={p.id === latestId} />
