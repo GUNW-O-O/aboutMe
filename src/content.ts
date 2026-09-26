@@ -108,13 +108,17 @@ marked.use({
 const LABELS = ['문제', '원인', '대안', '선택', '결과', '한계']
 const LABEL_RE = new RegExp(`^\\*\\*(${LABELS.join('|')})\\*\\* — `)
 
-export type TocItem = { id: string; text: string }
+export type TocItem = { id: string; text: string; no?: string }
 
 /**
  * md → html. 판단(`**문제** — …` 문단들)은 dl 판단 블록으로, 그 앞 ##에는 번호를 붙인다.
  * 라벨 문단 뒤에 이어지는 목록·문단은 다음 ##나 --- 전까지 직전 라벨 칸에 넣는다.
  */
+const cache = new Map<string, { html: string; toc: TocItem[] }>()
+
 export function render(md: string): { html: string; toc: TocItem[] } {
+  const hit = cache.get(md)
+  if (hit) return hit
   const tokens = marked.lexer(md)
   const block = (ts: Token[]) => marked.parser(Object.assign(ts, { links: tokens.links }))
   const out: string[] = []
@@ -138,16 +142,17 @@ export function render(md: string): { html: string; toc: TocItem[] } {
     if (t.type === 'heading' && (t as Tokens.Heading).depth === 2) {
       const text = (t as Tokens.Heading).text
       const id = slugify(plain(text))
-      toc.push({ id, text: plain(text) })
       let judged = false
       for (let j = i + 1; j < tokens.length; j++) {
         const n = tokens[j]
         if (n.type === 'hr' || (n.type === 'heading' && (n as Tokens.Heading).depth <= 2)) break
         if (n.type === 'paragraph' && LABEL_RE.test(n.raw)) { judged = true; break }
       }
+      const num = judged ? String(++no).padStart(2, '0') : undefined
+      toc.push({ id, text: plain(text), no: num })
       const inner = marked.parseInline(text) as string
-      out.push(judged
-        ? `<h2 id="${id}" class="jh"><span class="no">${String(++no).padStart(2, '0')}</span><span>${inner}</span></h2>`
+      out.push(num
+        ? `<h2 id="${id}" class="jh"><span class="no">${num}</span><span>${inner}</span></h2>`
         : `<h2 id="${id}">${inner}</h2>`)
       return
     }
@@ -162,5 +167,16 @@ export function render(md: string): { html: string; toc: TocItem[] } {
     }
   })
   flush()
-  return { html: out.join(''), toc }
+  const result = { html: out.join(''), toc }
+  cache.set(md, result)
+  return result
+}
+
+export const CERT_ID = '자격증'
+
+/** 사이드바에 펼칠 목차 — slug 없으면 메인 */
+export const tocFor = (slug?: string): TocItem[] => {
+  if (!slug) return [...render(mainRest).toc, { id: CERT_ID, text: '자격증' }]
+  const d = getDoc(slug)
+  return d ? render(d.body).toc : []
 }

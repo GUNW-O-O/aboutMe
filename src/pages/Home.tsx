@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { mainDoc, mainIntro, mainRest } from '../content'
+import { CERT_ID, mainDoc, mainIntro, mainRest } from '../content'
 import Article from '../shared/Article'
 import Lightbox, { type LightboxItem } from '../shared/Lightbox'
 import photo from '../assets/gunwoo.jpg'
@@ -12,12 +12,11 @@ const certs: LightboxItem[] = [
   { src: sqld, title: 'SQLD', sub: '2025.06 · K-DATA' },
   { src: webd, title: '웹디자인개발기능사', sub: '2025.06 · 한국산업인력공단' },
 ]
-const certToc = [{ id: '자격증', text: '자격증' }]
 
 export function Byline() {
   return (
     <div className="byline">
-      <img className="photo" src={photo} alt="고건우 프로필 사진" />
+      <div className="photo"><img src={photo} alt="고건우 프로필 사진" /></div>
       <div>
         <div className="name">고건우</div>
         <p className="intro" dangerouslySetInnerHTML={{ __html: mainIntro }} />
@@ -39,12 +38,11 @@ export default function Home() {
       <Article
         className="home"
         md={mainRest}
-        extraToc={certToc}
         head={<><Byline /><h1>{mainDoc.meta.title}</h1></>}
         after={
           <section>
             <hr />
-            <h2 id="자격증">자격증</h2>
+            <h2 id={CERT_ID}>자격증</h2>
             <div className="certs">
               {certs.map(c => (
                 <button key={c.title} type="button" className="cert" onClick={() => setZoom(c)}>
