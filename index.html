@@ -4,18 +4,17 @@
 <head>
   <meta charset="UTF-8" />
   <script>
-    // FOUC 방지 — 렌더 전 테마 결정. 기본 = 다크.
-    document.documentElement.dataset.theme = localStorage.getItem('theme') || 'dark';
+    // FOUC 방지 — 저장된 선택만 적용. 없으면 CSS가 OS 설정을 따른다(기본 라이트)
+    try { const t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t } catch { }
   </script>
   <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&family=Noto+Sans+KR:wght@400;500;600&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="고건우 — 풀스택 개발자 포트폴리오. Java, Spring, React, TypeScript." />
-  <title>고건우 — 풀스택 개발자</title>
+  <meta name="description" content="고건우 — 어떻게 작업하는가. 프로젝트별 판단과 한계." />
+  <title>고건우 — 포트폴리오</title>
 </head>
 
 <body>
