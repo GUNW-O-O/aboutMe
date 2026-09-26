@@ -26,3 +26,8 @@ docs/
 *.njsproj
 *.sln
 *.sw?
+
+# 로컬 전용 — 설계·작업 문서
+CLAUDE.local.md
+DESIGN.md
+wireframe.html
