@@ -17,7 +17,7 @@ export function Byline() {
   return (
     <div className="byline">
       <div className="photo"><img src={photo} alt="고건우 프로필 사진" /></div>
-      <div>
+      <div className="byline-text">
         <div className="name">고건우</div>
         <p className="intro" dangerouslySetInnerHTML={{ __html: mainIntro }} />
         <div className="links">

@@ -97,9 +97,11 @@ marked.use({
       }
       return `<a class="ext" href="${esc(href)}" target="_blank" rel="noopener noreferrer">${text}</a>`
     },
-    image({ href, text }) {
+    // ![캡션](경로 "대표") — 대표 화면만 인쇄/PDF에 나간다
+    image({ href, text, title }) {
       const src = assets[`./assets/${href}`] ?? href
-      return `<button type="button" class="fig" data-src="${esc(src)}" data-cap="${esc(text)}">` +
+      const cls = title === '대표' ? 'fig featured' : 'fig'
+      return `<button type="button" class="${cls}" data-src="${esc(src)}" data-cap="${esc(text)}">` +
         `<img src="${esc(src)}" alt="${esc(text)}" loading="lazy"><span>${esc(text)}</span></button>`
     },
   },
