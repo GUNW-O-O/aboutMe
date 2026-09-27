@@ -1,7 +1,7 @@
 import { marked, type Token, type Tokens } from 'marked'
 
-// 원고는 docs/
-const raws = import.meta.glob<string>('../docs/*.md', {
+// 원고는 src/article/
+const raws = import.meta.glob<string>('./article/*.md', {
   eager: true, query: '?raw', import: 'default',
 })
 const assets = import.meta.glob<string>('./assets/**/*.{png,jpg,jpeg,avif,webp,gif}', {
