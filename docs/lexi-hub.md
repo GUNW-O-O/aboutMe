@@ -17,7 +17,7 @@ links:
 <details class="shots">
 <summary><span class="closed">구현 화면 9장 보기</span><span class="opened">구현 화면 접기</span></summary>
 
-![단어장 타이핑 화면 — 받침 입력 중에는 오타 판정을 유예합니다.](lexiHub/typingFlashcard.gif "대표")
+![단어장 타이핑 화면. 받침 입력 중에는 오타 판정을 유예합니다.](lexiHub/typingFlashcard.gif "대표")
 
 ![단일 추가와 JSON/CSV 대량 추가를 지원합니다.](lexiHub/addFlashcard.gif "대표")
 
@@ -50,7 +50,7 @@ links:
 - 다음 글자가 들어왔다는 건 앞 글자의 조합이 끝났다는 뜻이라, 입력 순서만으로 판정할 수 있습니다
 - 먼저 "입력됨 / 대기 / 오타" 세 상태의 렌더링 기준을 정의했고, 그 과정에서 이 규칙에 도달했습니다
 
-**결과** — 조합 중 빨간 글자가 사라졌고, 상태가 `입력됨 / 대기 / 오타` 셋으로 닫혔습니다.
+**결과** — 조합 중 빨간 글자가 사라졌고, 상태가 `입력됨 / 대기 / 오타` 셋으로 정리됐습니다.
 - **배운 것**: 한글이 어떻게 입력되는지라는 도메인을 이해하는 것이 결과물 품질을 좌우했습니다
 
 ---
@@ -61,7 +61,7 @@ links:
 
 **선택** — Access Token은 응답 본문으로, Refresh Token은 HttpOnly 쿠키(7일)로 나눴습니다.
 - 401이 나면 `/auth/refresh-token`에서 둘 다 재발급하는 인터셉터를 뒀습니다
-- **배운 것**: Refresh Token에 httpOnly 옵션을 두느냐가 곧 보안 경계라는 것을 여기서 처음 다뤘습니다
+- **배운 것**: Refresh Token에 httpOnly 옵션을 두느냐에 따라 스크립트가 토큰을 읽을 수 있는지가 갈린다는 것을 여기서 처음 다뤘습니다
 
 ---
 

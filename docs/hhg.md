@@ -15,7 +15,7 @@ links:
 <details class="shots">
 <summary><span class="closed">구현 화면 7장 보기</span><span class="opened">구현 화면 접기</span></summary>
 
-![트레이너별 매출 chart.js 시각화 — 최근 1주/한 달/전체 조회.](hhg/salesChartMax.png "대표")
+![트레이너별 매출 chart.js 시각화. 최근 1주/한 달/전체 조회.](hhg/salesChartMax.png "대표")
 
 ![좌측 트레이너 클릭으로 개별 차트 조회.](hhg/salesChartMin.png "대표")
 
@@ -25,7 +25,7 @@ links:
 
 ![카테고리별 기구 추가, 클릭 시 수정 화면 이동.](hhg/machines.png)
 
-![매출 등록 — 클릭 시 아코디언 탭.](hhg/salesList.png)
+![매출 등록. 클릭 시 아코디언 탭.](hhg/salesList.png)
 
 ![매출 클릭 시 수정 화면 이동.](hhg/sales.png)
 
@@ -54,12 +54,11 @@ links:
 
 **결과** — 기간 안에 고치지 못한 채 제출했습니다.
 - **이후**: 기능을 만들 때 데이터가 있는 경우와 없는 경우를 같이 그리게 됐습니다. [Resonos React](./resonos-react.md)에서는 처음부터 데이터 로딩 전 렌더를 `isLoading` 상태로 막았고, 그 뒤 프로젝트에서도 유지하고 있습니다
-- 빈 상태는 예외가 아니라 정상 경로의 하나입니다
 
 ---
 
 ## 태블릿 반응형 범위 철회
 
 **선택** — 태블릿 반응형을 따로 구현하겠다고 잡았다가, 2주 안에 가능한 양이 아니라 전부 버렸습니다.
-- **배운 것**: 자원 분배가 곧 설계입니다. 이후 프로젝트에서 범위를 먼저 자르고 시작하는 기준이 됐습니다([lexi-hub](./lexi-hub.md)의 FSD 회고, [playsync](./playsync.md)의 GraphQL 철거와 V2 재시작)
+- **배운 것**: 정해진 기간에 무엇을 할지 나누는 것도 설계입니다. 이후 프로젝트에서 범위를 먼저 자르고 시작하는 기준이 됐습니다([lexi-hub](./lexi-hub.md)의 FSD 회고, [playsync](./playsync.md)의 GraphQL 철거와 V2 재시작)
 - 첫 협업이라 git 충돌과 `.gitignore` 미설정으로 환경이 꼬이는 것도 여기서 겪었습니다

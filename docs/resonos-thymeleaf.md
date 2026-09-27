@@ -16,9 +16,9 @@ links:
 <details class="shots">
 <summary><span class="closed">구현 화면 10장 보기</span><span class="opened">구현 화면 접기</span></summary>
 
-![유저 상호작용 전면 비동기 처리 — 재생 중단 없음.](resonosSpring/resonosTrack.avif "대표")
+![유저 상호작용 전면 비동기 처리. 재생 중단 없음.](resonosSpring/resonosTrack.avif "대표")
 
-![앨범 6요소 평가 — 투표 기록이 있으면 수정하기로 분기.](resonosSpring/albumVote.avif "대표")
+![앨범 6요소 평가. 투표 기록이 있으면 수정하기로 분기.](resonosSpring/albumVote.avif "대표")
 
 ![Spotify·YouTube API 임베드 + Bandsintown 공연 일정 + 분위기 투표.](resonosSpring/artist.png "대표")
 
@@ -34,7 +34,7 @@ links:
 
 ![상호작용 내용 저장 및 좋아요 수 기준 정렬.](resonosSpring/resonosStatus.avif)
 
-![관리자 — 블라인드 리뷰 즉시 열람, 전체 리뷰 수정/삭제.](resonosSpring/resonosAdmin.avif)
+![관리자 화면. 블라인드 리뷰 즉시 열람, 전체 리뷰 수정/삭제.](resonosSpring/resonosAdmin.avif)
 
 </details>
 
@@ -53,7 +53,7 @@ links:
 - **따라온 비용**: 화면을 갱신하는 책임이 서버에서 JS로 넘어와, 목록 삽입·차트 다시 그리기·숫자 갱신을 전부 응답을 받아 직접 해야 했습니다
 
 **결과** — 재생이 끊기지 않습니다.
-- **배운 것**: 기능 명세는 전부 충족한 상태였고 그래도 제품은 망가져 있었습니다. 제품이 무엇인지 알면 명세에 없는 요구가 보입니다
+- **배운 것**: 기능 명세는 다 채웠는데도 노래가 끊겨 쓸 수 없는 상태였습니다. 명세에 없는 요구는 제품을 직접 써 봐야 보였습니다
 
 ---
 

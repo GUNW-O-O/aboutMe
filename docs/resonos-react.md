@@ -16,9 +16,9 @@ links:
 <details class="shots">
 <summary><span class="closed">구현 화면 13장 보기</span><span class="opened">구현 화면 접기</span></summary>
 
-![유저가 원하는 항목으로 투표 등록/수정/삭제 — 로그인 시 투표 가능.](resonosReact/comVote.avif "대표")
+![유저가 원하는 항목으로 투표 등록/수정/삭제. 로그인 시 투표 가능.](resonosReact/comVote.avif "대표")
 
-![컨트롤러 리팩토링 전/후 — 파사드 패턴으로 컨트롤러·서비스 역할 분리.](resonosReact/comRefactoring.png "대표")
+![컨트롤러 리팩토링 전/후. 파사드 패턴으로 컨트롤러·서비스 역할 분리.](resonosReact/comRefactoring.png "대표")
 
 ![비회원은 임시 비밀번호 등록 후 게시글·댓글 작성/삭제 가능.](resonosReact/comNonMember.avif "대표")
 
@@ -26,7 +26,7 @@ links:
 
 ![기본 다크모드 웰컴 페이지.](resonosReact/welcomDark.avif)
 
-![현재 모드를 감지해 맞춤 배경을 적용 — 다크/라이트 조화 개선.](resonosReact/welcomeLight.png)
+![현재 모드를 감지해 맞춤 배경을 적용. 다크/라이트 조화 개선.](resonosReact/welcomeLight.png)
 
 ![아티스트 페이지.](resonosReact/artist.avif)
 
@@ -36,11 +36,11 @@ links:
 
 ![커뮤니티 메인 페이지.](resonosReact/comMain.png)
 
-![비회원 게시글 — 등록한 비밀번호 일치 시 가능.](resonosReact/comPostEdit.avif)
+![비회원 게시글은 등록한 비밀번호가 맞으면 수정할 수 있습니다.](resonosReact/comPostEdit.avif)
 
 ![투표 기능.](resonosReact/comPost.avif)
 
-![상호작용 버튼 저장 및 표시 — 작성자는 수정/삭제 가능.](resonosReact/comComments.avif)
+![상호작용 버튼 저장 및 표시. 작성자는 수정/삭제 가능.](resonosReact/comComments.avif)
 
 </details>
 
@@ -50,7 +50,7 @@ links:
 
 **문제** — 컨트롤러에 간단한 로직이 조금씩 쌓여 서비스 계층과 구분이 안 되는 상태였습니다.
 - SSR에서는 한 화면이 한 컨트롤러 메서드라, 앨범 목록·리뷰 현황·투표 결과·팔로우 상태를 모아 모델에 담는 조립 로직이 컨트롤러에 있어도 티가 나지 않았습니다
-- REST로 쪼개는 순간 그 조립 로직이 어디에 살아야 하는지 정해야 했고, 여기서 좋은 구조가 무엇인지 처음 제대로 고민했습니다
+- REST로 쪼개는 순간 그 조립 로직을 어디에 둬야 하는지 정해야 했고, 여기서 좋은 구조가 무엇인지 처음 제대로 고민했습니다
 
 **선택** — 초기 페이지 조회를 `Combined*Service`(파사드) 뒤로 옮기고, 컨트롤러에는 파라미터 주입과 위임 한 줄만 남겼습니다.
 - 화면 하나에 필요한 조합을 서버가 알게 했습니다. 조립을 프론트로 넘기면 왕복이 늘고, 어떤 조합이 한 화면인지라는 지식이 프론트에만 남습니다
@@ -70,7 +70,7 @@ links:
 
 **선택** — 팀이 도입한 Swagger 명세로 원인이 백엔드인지 프론트인지부터 가르고, 필요한 값을 사전에 논의하는 절차를 팀에 제안했습니다.
 - 본인 담당 응답은 명시적 DTO로 계약화했습니다
-- **배운 것**: 백/프론트가 분리되면 응답에 무엇이 담기는지가 곧 계약입니다. 전환은 화면만 바꾸는 게 아니라 REST에 맞는 컨트롤러 계층 재설계까지 포함해야 끝납니다
+- **배운 것**: 백/프론트가 분리되면 응답에 무엇이 담기는지를 계약으로 정해야 합니다. 전환은 화면만 바꾸는 게 아니라 REST에 맞는 컨트롤러 계층 재설계까지 포함해야 끝납니다
 
 ---
 
