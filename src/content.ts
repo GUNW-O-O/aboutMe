@@ -1,6 +1,6 @@
 import { marked, type Token, type Tokens } from 'marked'
 
-// 원고는 docs/(gitignore, 로컬 전용)
+// 원고는 docs/
 const raws = import.meta.glob<string>('../docs/*.md', {
   eager: true, query: '?raw', import: 'default',
 })

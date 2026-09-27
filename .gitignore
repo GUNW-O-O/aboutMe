@@ -14,7 +14,6 @@ dist-ssr
 
 .agents/
 .claude/
-docs/
 
 # Editor directories and files
 .vscode/*
