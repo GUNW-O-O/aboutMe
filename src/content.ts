@@ -1,7 +1,7 @@
 import { marked, type Token, type Tokens } from 'marked'
 
-// 원고는 docs/(gitignore, 로컬 전용). handoff.md는 설계 인계 문서라 렌더하지 않는다
-const raws = import.meta.glob<string>(['../docs/*.md', '!../docs/handoff.md'], {
+// 원고는 docs/(gitignore, 로컬 전용)
+const raws = import.meta.glob<string>('../docs/*.md', {
   eager: true, query: '?raw', import: 'default',
 })
 const assets = import.meta.glob<string>('./assets/**/*.{png,jpg,jpeg,avif,webp,gif}', {
@@ -14,6 +14,7 @@ export type Meta = {
   role?: string
   visibility?: string
   summary?: string
+  core?: string
   links?: Record<string, string>
 }
 
@@ -35,7 +36,7 @@ function parseFrontmatter(src: string): { meta: Meta; body: string } {
     if (!kv) continue
     const [, indent, key, value] = kv
     if (indent && parent) parent[key] = value
-    else if (!value) meta[key] = parent = {}
+    else if (!value || value === '{}') meta[key] = parent = {}  // `{}` 문자열이면 링크가 글자(0,1)로 풀린다
     else { meta[key] = value; parent = null }
   }
   return { meta: meta as Meta, body: src.slice(m[0].length) }
@@ -53,17 +54,19 @@ export const docs: Doc[] = Object.entries(raws).map(([path, src]) => {
   return { slug, meta, body, kind: kindOf(meta.role) }
 })
 
-export const mainDoc = docs.find(d => d.slug === 'main')
+export const mainDoc = docs.find(d => d.slug === 'home')
 
 // 메인 첫 문단은 머리말(이름 아래)로, 나머지가 본문
 const [introMd = '', ...restMd] = (mainDoc?.body.trim() ?? '').split(/\r?\n\r?\n/)
 export const mainIntro = marked.parseInline(introMd.replace(/\r?\n/g, ' ')) as string
 export const mainRest = restMd.join('\n\n')
 
-// 사이드바 순서 = 시작월 내림차순
+// 사이드바 순서 = 핵심(core: true) 먼저, 그다음 시작월 내림차순
+const isCore = (d: Doc) => d.meta.core === 'true'
 export const projects = docs
-  .filter(d => d.slug !== 'main')
-  .sort((a, b) => startOf(b.meta.period).localeCompare(startOf(a.meta.period)))
+  .filter(d => d.slug !== 'home')
+  .sort((a, b) => Number(isCore(b)) - Number(isCore(a))
+    || startOf(b.meta.period).localeCompare(startOf(a.meta.period)))
 
 export const getDoc = (slug: string) => docs.find(d => d.slug === slug)
 

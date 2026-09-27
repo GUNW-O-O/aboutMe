@@ -15,7 +15,7 @@ export default function PrintPage() {
       </p>
       <article className="doc home">
         <Byline />
-        {mainDoc && <h1>{mainDoc.meta.title}</h1>}
+        {mainDoc?.meta.title && <h1>{mainDoc.meta.title}</h1>}
         <div className="md" dangerouslySetInnerHTML={{ __html: main }} />
       </article>
       {parts.map(({ d, html }) => (

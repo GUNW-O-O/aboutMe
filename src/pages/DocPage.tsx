@@ -3,10 +3,11 @@ import { getDoc, type Doc } from '../content'
 import Article from '../shared/Article'
 
 export function DocHead({ doc }: { doc: Doc }) {
-  const { title, period, role, visibility, links = {} } = doc.meta
+  const { title, summary, period, role, visibility, links = {} } = doc.meta
   return (
     <>
       <h1>{title}</h1>
+      {summary && <p className="lede">{summary}</p>}
       <div className="meta">
         {period && <span className="mono">{period}</span>}
         {role && <span>{role}</span>}
@@ -22,6 +23,6 @@ export function DocHead({ doc }: { doc: Doc }) {
 export default function DocPage() {
   const { slug = '' } = useParams()
   const doc = getDoc(slug)
-  if (!doc || slug === 'main') return <Navigate to="/" replace />
+  if (!doc || slug === 'home') return <Navigate to="/" replace />
   return <Article key={slug} md={doc.body} head={<DocHead doc={doc} />} />
 }

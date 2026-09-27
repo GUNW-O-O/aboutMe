@@ -31,14 +31,14 @@ export function Byline() {
 
 export default function Home() {
   const [zoom, setZoom] = useState<LightboxItem | null>(null)
-  if (!mainDoc) return <main className="main"><p>docs/main.md가 없습니다.</p></main>
+  if (!mainDoc) return <main className="main"><p>docs/home.md가 없습니다.</p></main>
 
   return (
     <>
       <Article
         className="home"
         md={mainRest}
-        head={<><Byline /><h1>{mainDoc.meta.title}</h1></>}
+        head={<><Byline />{mainDoc.meta.title && <h1>{mainDoc.meta.title}</h1>}</>}
         after={
           <section>
             <hr />
