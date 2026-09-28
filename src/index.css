@@ -94,7 +94,8 @@ html::-webkit-scrollbar { display: none; }
 .gprog { position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--accent); transform: scaleX(0); transform-origin: left; }
 
 /* 본문 */
-.main { padding: 48px 56px 96px; min-width: 0; counter-reset: doc; }
+/* 오른쪽 끝 링크의 미리보기 카드(.pv)가 폭 밖으로 나가 가로 스크롤이 생기지 않게. clip은 sticky를 깨지 않는다 */
+.main { padding: 48px 56px 96px; min-width: 0; counter-reset: doc; overflow-x: clip; }
 /* 프로젝트 문서 — 시작마다 큰 모노 번호 */
 .page { margin-top: 96px; padding-top: 48px; border-top: 1px solid var(--line); scroll-margin-top: 52px; counter-increment: doc; }
 .page::before {
@@ -165,6 +166,8 @@ html::-webkit-scrollbar { display: none; }
 .doc h2.jh .no { font-family: var(--mono); font-size: 20px; font-weight: 500; color: color-mix(in srgb, var(--accent) 75%, var(--faint)); letter-spacing: -0.02em; }
 .judge { display: grid; grid-template-columns: 44px minmax(0, 1fr); column-gap: 16px; margin: 16px 0 0; }
 .judge dt { font-family: var(--mono); font-size: 12px; color: var(--faint); padding-top: .45em; letter-spacing: .02em; }
+/* 훑어 읽는 길 = 문제 → 선택 → 결과. 이 셋만 액센트 */
+.judge dt[data-l='문제'], .judge dt[data-l='선택'], .judge dt[data-l='결과'] { color: var(--accent); font-weight: 500; }
 .judge dd { margin: 0 0 14px; }
 .judge dd > :last-child { margin-bottom: 0; }
 .judge dd p { margin-bottom: .6em; }

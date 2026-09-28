@@ -137,7 +137,7 @@ export function render(md: string): { html: string; toc: TocItem[] } {
       const body = label === '결과'
         ? html.replace(/^<p><code>([^<]*→[^<]*)<\/code>\s*/, '<p><span class="delta">$1</span>')
         : html
-      return `<dt${label === '한계' ? ' class="limit"' : ''}>${label}</dt><dd>${body}</dd>`
+      return `<dt data-l="${label}"${label === '한계' ? ' class="limit"' : ''}>${label}</dt><dd>${body}</dd>`
     }).join('') + '</dl>')
     dl = null
   }
