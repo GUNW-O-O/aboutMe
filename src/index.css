@@ -101,7 +101,7 @@ html::-webkit-scrollbar { display: none; }
   content: counter(doc, decimal-leading-zero); display: block; margin-bottom: 4px;
   font: 500 44px/1 var(--mono); letter-spacing: -0.04em; color: color-mix(in srgb, var(--accent) 45%, transparent);
 }
-.doc { max-width: 40em; margin-inline: auto; font-size: 17px; line-height: 1.75; }
+.doc { max-width: 45em; margin-inline: auto; font-size: 17px; line-height: 1.75; }
 .doc h1 { font-size: 30px; line-height: 1.3; font-weight: 600; letter-spacing: -0.02em; margin: 0 0 8px; text-wrap: balance; }
 .doc .lede { font-size: 16px; line-height: 1.6; color: var(--muted); margin: 0 0 12px; text-wrap: pretty; }
 .doc h2 { font-size: 22px; line-height: 1.4; font-weight: 600; letter-spacing: -0.015em; margin: 56px 0 12px; text-wrap: balance; scroll-margin-top: 64px; }
