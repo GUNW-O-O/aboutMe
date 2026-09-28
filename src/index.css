@@ -28,57 +28,72 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .mono { font-family: var(--mono); }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-/* 셸 — 사이드바 │ 본문 │ 목차 */
-.shell { --side-w: 240px; overflow-x: clip; display: grid; grid-template-columns: var(--side-w) minmax(0, 1fr); min-height: 100vh; transition: grid-template-columns .18s ease; }
-.shell.collapsed { grid-template-columns: 48px minmax(0, 1fr); }
-.shell.collapsed .side { display: none; }
-.unfold { display: block; width: 36px; height: 36px; margin: 20px auto 0; border: 1px solid var(--line); border-radius: 6px; color: var(--muted); font-family: var(--mono); }
-.unfold:hover, .fold:hover { color: var(--text); background: var(--panel); }
-.bar, .scrim { display: none; }
-.side-wrap { position: sticky; top: 0; height: 100vh; overflow: hidden; border-right: 1px solid var(--line); }
+/* 페이지 스크롤바는 숨긴다 — 헤더 아래 진행선이 대신한다 */
+html { scrollbar-width: none; }
+html::-webkit-scrollbar { display: none; }
 
-/* 사이드바 */
-/* HOME·하단 버튼은 고정, 그 사이만 스크롤(막대 숨김). 현재 목차 항목은 JS가 보이는 곳으로 끌어온다 */
-.side { width: var(--side-w); height: 100%; display: flex; flex-direction: column; padding: 24px 16px 16px; font-size: 14px; }
-.side-scroll { flex: 1; min-height: 0; overflow: hidden auto; scrollbar-width: none; }
-.side-scroll::-webkit-scrollbar { display: none; }
-.side-head { flex: none; display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 0 0 16px; padding: 0 0 12px 8px; border-bottom: 1px solid var(--line); }
-.side .home { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; color: var(--text); text-decoration: none; }
-.fold { width: 32px; height: 32px; border-radius: 6px; color: var(--faint); font-family: var(--mono); }
-.side .label { font-family: var(--mono); font-size: 11px; color: var(--faint); letter-spacing: .04em; margin: 0 0 8px 8px; }
-.side .item {
-  position: relative; display: flex; justify-content: space-between; gap: 8px; align-items: center;
-  min-height: 36px; padding: 8px; color: var(--muted); text-decoration: none; line-height: 1.4;
+/* 글래스 헤더 — 전 문서의 절을 한 줄로 이은 트랙 */
+.gbar {
+  position: sticky; top: 0; z-index: 20; height: 52px; padding: 0 16px 0 20px;
+  display: flex; align-items: center; gap: 8px;
+  background: color-mix(in srgb, var(--bg) 72%, transparent);
+  backdrop-filter: blur(14px) saturate(1.4); -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
 }
-.side .item span { flex: none; font-size: 11px; color: var(--faint); }
-.side .item:hover { color: var(--text); }
-.side .item.active { color: var(--text); background: var(--panel); border-radius: 0 6px 6px 0; }
-.side .item.active::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--accent); }
-.side .foot { flex: none; display: flex; justify-content: space-between; gap: 8px; margin-top: 12px; padding: 16px 8px 0; border-top: 1px solid var(--line); }
-.side .foot button {
-  min-height: 36px; padding: 0 14px; border: 1px solid var(--line); border-radius: 6px;
-  font-size: 13px; color: var(--muted);
+.gtrack-wrap {
+  flex: 1; min-width: 0; overflow: hidden; margin-left: -8px;
+  mask-image: linear-gradient(to right, #000 75%, transparent); -webkit-mask-image: linear-gradient(to right, #000 75%, transparent);
 }
-.side .foot button.icon { width: 36px; padding: 0; font-size: 16px; line-height: 1; }
-.side .foot button:hover { color: var(--text); background: var(--panel); }
-
-/* 사이드바 안 목차 — 현재 문서 아래 */
-.side .sub { margin: 4px 0 12px 8px; border-left: 1px solid var(--line); }
-.side .sub button {
-  display: flex; gap: 8px; width: 100%; text-align: left; padding: 5px 8px 5px 12px; margin-left: -1px;
-  border-left: 1px solid transparent; font-size: 12.5px; line-height: 1.45; color: var(--faint);
+.gtrack { position: relative; display: flex; align-items: center; width: max-content; padding-right: 60%; }
+.ggrp { display: flex; align-items: center; }
+.ggrp + .ggrp { margin-left: 24px; }
+.ggrp button {
+  flex: none; display: flex; align-items: center; gap: 6px; min-height: 36px; padding: 0 4px;
+  font-size: 13.5px; color: var(--faint); white-space: nowrap; transition: color .2s;
 }
-.side .sub button:hover { color: var(--text); }
-.side .sub button.on { color: var(--text); border-left-color: var(--accent); }
-.side .sub .no { flex: none; font-family: var(--mono); font-size: 11px; padding-top: 1px; }
-.side .sub .tx { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.ggrp button:hover { color: var(--text); }
+.ggrp button:not(.glbl) + button::before { content: '›'; margin-right: 8px; color: var(--line); }
+.ggrp .no { font-family: var(--mono); font-size: 11.5px; }
+.ggrp button.on { color: var(--text); font-weight: 500; }
+.ggrp button.on .no { color: var(--accent); }
+/* 문서 이름 — 그 문서의 절이 다 지나가면 다음 이름에 밀려난다. 밑으로 지나가는 절을 가린다 */
+.ggrp .glbl {
+  position: sticky; left: 0; z-index: 1; padding: 0 14px 0 8px; margin-right: 6px; border-radius: 6px;
+  font-size: 14px; font-weight: 600; color: var(--text);
+  background: linear-gradient(to right, var(--bg) 85%, transparent);
+}
+.ggrp .glbl::after { content: '▾'; font-size: 10px; font-weight: 400; color: var(--faint); }
+.gcount { font-family: var(--mono); font-size: 12px; color: var(--faint); white-space: nowrap; }
+.gtool { min-width: 36px; min-height: 36px; padding: 0 8px; border-radius: 6px; font-size: 13px; color: var(--muted); }
+.gtool:hover { color: var(--text); background: var(--panel); }
+.gprog { position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--accent); transform: scaleX(0); transform-origin: left; }
+.gmenu {
+  position: fixed; top: 60px; left: 12px; z-index: 21; width: 280px; padding: 6px; border-radius: 8px;
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter: blur(14px) saturate(1.4); -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  border: 1px solid var(--line);
+  box-shadow: 0 1px 1px rgba(0,0,0,.06), 0 2px 4px rgba(0,0,0,.06), 0 8px 16px rgba(0,0,0,.08);
+}
+.gmenu button {
+  display: flex; justify-content: space-between; align-items: center; width: 100%; min-height: 36px; padding: 0 10px;
+  border-radius: 6px; font-size: 14px; color: var(--muted); text-align: left;
+}
+.gmenu button span { font-size: 11px; color: var(--faint); }
+.gmenu button:hover, .gmenu button.on { color: var(--text); background: var(--panel); }
+.gmenu button.on { font-weight: 500; }
 
 /* 본문 */
-.main { padding: 48px 56px 96px; min-width: 0; }
+.main { padding: 48px 56px 96px; min-width: 0; counter-reset: doc; }
+/* 프로젝트 문서 — 시작마다 큰 모노 번호 */
+.page { margin-top: 96px; padding-top: 48px; border-top: 1px solid var(--line); scroll-margin-top: 52px; counter-increment: doc; }
+.page::before {
+  content: counter(doc, decimal-leading-zero); display: block; margin-bottom: 4px;
+  font: 500 44px/1 var(--mono); letter-spacing: -0.04em; color: color-mix(in srgb, var(--accent) 45%, transparent);
+}
 .doc { max-width: 40em; margin-inline: auto; font-size: 17px; line-height: 1.75; }
 .doc h1 { font-size: 30px; line-height: 1.3; font-weight: 600; letter-spacing: -0.02em; margin: 0 0 8px; text-wrap: balance; }
 .doc .lede { font-size: 16px; line-height: 1.6; color: var(--muted); margin: 0 0 12px; text-wrap: pretty; }
-.doc h2 { font-size: 22px; line-height: 1.4; font-weight: 600; letter-spacing: -0.015em; margin: 56px 0 12px; text-wrap: balance; scroll-margin-top: 24px; }
+.doc h2 { font-size: 22px; line-height: 1.4; font-weight: 600; letter-spacing: -0.015em; margin: 56px 0 12px; text-wrap: balance; scroll-margin-top: 64px; }
 .doc h3 { font-size: 18px; font-weight: 600; margin: 32px 0 8px; }
 .doc p { margin: 0 0 1em; text-wrap: pretty; }
 .doc ul, .doc ol { padding-left: 1.25em; margin: 0 0 1em; }
@@ -136,7 +151,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 
 /* 판단 블록 — 번호 열과 라벨 열은 같은 px 폭 */
 .doc h2.jh { display: grid; grid-template-columns: 44px minmax(0, 1fr); column-gap: 16px; align-items: baseline; }
-.doc h2.jh .no { font-family: var(--mono); font-size: 20px; font-weight: 500; color: var(--faint); letter-spacing: -0.02em; }
+.doc h2.jh .no { font-family: var(--mono); font-size: 20px; font-weight: 500; color: color-mix(in srgb, var(--accent) 75%, var(--faint)); letter-spacing: -0.02em; }
 .judge { display: grid; grid-template-columns: 44px minmax(0, 1fr); column-gap: 16px; margin: 16px 0 0; }
 .judge dt { font-family: var(--mono); font-size: 12px; color: var(--faint); padding-top: .45em; letter-spacing: .02em; }
 .judge dd { margin: 0 0 14px; }
@@ -176,36 +191,18 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .lightbox-card figcaption button { width: 44px; height: 44px; border-radius: 6px; }
 .lightbox-card img { display: block; width: 100%; height: auto; border-radius: 8px; }
 
-/* 인쇄 페이지 */
-.print-all .page { margin-top: 64px; padding-top: 48px; border-top: 1px solid var(--line); }
-.print-hint button { font-size: 13px; padding: 8px 14px; border: 1px solid var(--line); border-radius: 6px; min-height: 44px; }
-
 @media (max-width: 1100px) {
-  .shell { --side-w: 220px; }
   .main { padding: 40px 32px 80px; }
 }
 
 @media (max-width: 768px) {
-  .shell, .shell.collapsed { display: block; }
-  .shell.collapsed .side { display: flex; }
-  .side { width: auto; }
-  .unfold, .fold { display: none; }
-  .bar {
-    display: flex; align-items: center; gap: 8px; position: sticky; top: 0; z-index: 20;
-    height: 52px; padding: 0 8px; background: var(--bg); border-bottom: 1px solid var(--line); font-size: 14px; font-weight: 600;
-  }
-  .bar button { width: 44px; height: 44px; font-size: 18px; }
-  .bar .divider { width: 1px; height: 20px; background: var(--line); }
-  .bar-home { display: inline-flex; align-items: center; min-height: 44px; padding: 0 8px; font-size: 16px; color: var(--text); text-decoration: none; }
-  .side-wrap {
-    position: fixed; top: 52px; left: 0; bottom: 0; width: min(300px, 85vw); height: auto; z-index: 30;
-    background: var(--bg); transform: translateX(-100%); transition: transform .18s ease; visibility: hidden;
-  }
-  .side-wrap.open { transform: none; visibility: visible; }
-  .side .item { min-height: 44px; }
-  .side .foot button { min-height: 44px; }
-  .side .foot button.icon { width: 44px; }
-  .scrim { display: block; position: fixed; inset: 52px 0 0 0; z-index: 25; background: rgba(0,0,0,.45); }
+  .gbar { padding: 0 8px 0 16px; }
+  .gcount { display: none; }
+  .gtool, .ggrp button { min-height: 44px; }
+  .gmenu { left: 8px; right: 8px; width: auto; }
+  .gmenu button { min-height: 44px; }
+  .page { margin-top: 64px; padding-top: 36px; }
+  .page::before { font-size: 34px; }
   .main { padding: 28px 16px 64px; }
   .doc { font-size: 16px; }
   .doc h1 { font-size: 26px; }
@@ -228,8 +225,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
     color-scheme: light;
   }
   @page { margin: 16mm 14mm; }
-  .shell { display: block; }
-  .bar, .scrim, .side-wrap, .print-hint, .pv { display: none !important; }
+  .gbar, .gmenu, .pv, .page::before { display: none !important; }
   .main { padding: 0; }
   .doc { max-width: none; font-size: 10.5pt; line-height: 1.65; }
   .doc h1 { font-size: 18pt; }
@@ -240,7 +236,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   .doc a { border: 0; color: inherit; }
   .doc a.ext[href^='http']::after { content: ' (' attr(href) ')'; font-size: 8pt; color: var(--faint); }
   .doc a.int::after { content: ''; }
-  .print-all .page { break-before: page; border: 0; margin: 0; padding: 0; }
+  .page { break-before: page; border: 0; margin: 0; padding: 0; }
   .fig, .cert { break-inside: avoid; }
   /* PDF엔 대표 화면만. 접힌 블록은 beforeprint에서 펼친다(main.tsx) */
   .shots summary { display: none; }
