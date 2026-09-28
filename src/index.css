@@ -32,27 +32,51 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 html { scrollbar-width: none; }
 html::-webkit-scrollbar { display: none; }
 
-/* 글래스 헤더 — 전 문서의 절을 한 줄로 이은 트랙 */
+/* 글래스 헤더 — 두 면: 읽기 면(절 트랙) ↔ 이동 면(목차). 위로 스크롤하면 이동 면이 아래에서 올라온다 */
 .gbar {
   position: sticky; top: 0; z-index: 20; height: 52px; padding: 0 16px 0 20px;
   display: flex; align-items: center; gap: 8px;
-  background: color-mix(in srgb, var(--bg) 72%, transparent);
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
   backdrop-filter: blur(14px) saturate(1.4); -webkit-backdrop-filter: blur(14px) saturate(1.4);
   border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
 }
-.gtrack-wrap {
-  flex: 1; min-width: 0; overflow: hidden; margin-left: -8px;
-  mask-image: linear-gradient(to right, #000 75%, transparent); -webkit-mask-image: linear-gradient(to right, #000 75%, transparent);
+.gfaces { position: relative; flex: 1; min-width: 0; align-self: stretch; overflow: hidden; margin-left: -8px; }
+.gfaces > * {
+  position: absolute; inset: 0; display: flex; align-items: center;
+  transition: transform .34s cubic-bezier(.2,.7,.2,1), opacity .34s;
 }
+.gbar.nav .gtrack-wrap { transform: translateY(-70%); opacity: 0; pointer-events: none; }
+.gbar:not(.nav) .gindex { transform: translateY(70%); opacity: 0; pointer-events: none; }
+
+/* 이동 면 — Home + 프로젝트. 현재 문서 밑줄 = 그 안에서 읽은 만큼 */
+.gindex { gap: 2px; overflow-x: auto; scrollbar-width: none; }
+.gindex::-webkit-scrollbar { display: none; }
+.gindex button {
+  position: relative; flex: none; display: flex; align-items: center; gap: 6px; min-height: 36px; padding: 0 8px;
+  border-radius: 6px; font-size: 13.5px; color: var(--muted); white-space: nowrap;
+}
+.gindex button:hover { color: var(--text); background: color-mix(in srgb, var(--panel) 80%, transparent); }
+.gindex .no { font-family: var(--mono); font-size: 11.5px; color: color-mix(in srgb, var(--accent) 75%, var(--muted)); }
+.gindex button.on { color: var(--text); font-weight: 500; }
+.gindex button::after {
+  content: ''; position: absolute; left: 8px; right: 8px; bottom: 5px; height: 2px; border-radius: 1px;
+  background: var(--accent); transform: scaleX(var(--p, 0)); transform-origin: left; opacity: 0; transition: opacity .2s;
+}
+.gindex button.on::after { opacity: 1; }
+
+/* 읽기 면 — 전 문서의 절을 한 줄로. 세로 스크롤에 묶여 흐른다 */
+.gtrack-wrap { overflow: hidden; }
+/* 대기하는 다음 문서가 없을 때(마지막 문서)만 오른쪽 끝을 흐린다 */
+.gtrack-wrap.last { mask-image: linear-gradient(to right, #000 80%, transparent); -webkit-mask-image: linear-gradient(to right, #000 80%, transparent); }
 .gtrack { position: relative; display: flex; align-items: center; width: max-content; padding-right: 60%; }
 .ggrp { display: flex; align-items: center; }
 .ggrp + .ggrp { margin-left: 24px; }
 .ggrp button {
   flex: none; display: flex; align-items: center; gap: 6px; min-height: 36px; padding: 0 4px;
-  font-size: 13.5px; color: var(--faint); white-space: nowrap; transition: color .2s;
+  font-size: 13.5px; color: var(--muted); white-space: nowrap; transition: color .2s;
 }
 .ggrp button:hover { color: var(--text); }
-.ggrp button:not(.glbl) + button::before { content: '›'; margin-right: 8px; color: var(--line); }
+.ggrp button:not(.glbl) + button::before { content: '›'; margin-right: 8px; color: var(--faint); }
 .ggrp .no { font-family: var(--mono); font-size: 11.5px; }
 .ggrp button.on { color: var(--text); font-weight: 500; }
 .ggrp button.on .no { color: var(--accent); }
@@ -62,25 +86,12 @@ html::-webkit-scrollbar { display: none; }
   font-size: 14px; font-weight: 600; color: var(--text);
   background: linear-gradient(to right, var(--bg) 85%, transparent);
 }
-.ggrp .glbl::after { content: '▾'; font-size: 10px; font-weight: 400; color: var(--faint); }
-.gcount { font-family: var(--mono); font-size: 12px; color: var(--faint); white-space: nowrap; }
+/* 다음 문서 이름 — 아직 트랙 밖이면 오른쪽 끝에 붙어 대기하다가, 현재 문서 절이 끝나면 흐름에 딸려 나온다 */
+.ggrp .glbl.wait { color: var(--muted); padding: 0 8px 0 28px; background: linear-gradient(to left, var(--bg) 70%, transparent); }
+.ggrp .glbl.wait:hover { color: var(--text); }
 .gtool { min-width: 36px; min-height: 36px; padding: 0 8px; border-radius: 6px; font-size: 13px; color: var(--muted); }
 .gtool:hover { color: var(--text); background: var(--panel); }
 .gprog { position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--accent); transform: scaleX(0); transform-origin: left; }
-.gmenu {
-  position: fixed; top: 60px; left: 12px; z-index: 21; width: 280px; padding: 6px; border-radius: 8px;
-  background: color-mix(in srgb, var(--bg) 82%, transparent);
-  backdrop-filter: blur(14px) saturate(1.4); -webkit-backdrop-filter: blur(14px) saturate(1.4);
-  border: 1px solid var(--line);
-  box-shadow: 0 1px 1px rgba(0,0,0,.06), 0 2px 4px rgba(0,0,0,.06), 0 8px 16px rgba(0,0,0,.08);
-}
-.gmenu button {
-  display: flex; justify-content: space-between; align-items: center; width: 100%; min-height: 36px; padding: 0 10px;
-  border-radius: 6px; font-size: 14px; color: var(--muted); text-align: left;
-}
-.gmenu button span { font-size: 11px; color: var(--faint); }
-.gmenu button:hover, .gmenu button.on { color: var(--text); background: var(--panel); }
-.gmenu button.on { font-weight: 500; }
 
 /* 본문 */
 .main { padding: 48px 56px 96px; min-width: 0; counter-reset: doc; }
@@ -197,10 +208,12 @@ html::-webkit-scrollbar { display: none; }
 
 @media (max-width: 768px) {
   .gbar { padding: 0 8px 0 16px; }
-  .gcount { display: none; }
-  .gtool, .ggrp button { min-height: 44px; }
-  .gmenu { left: 8px; right: 8px; width: auto; }
-  .gmenu button { min-height: 44px; }
+  /* 폰은 목차 면만 — 절 트랙은 폭이 모자라 읽히지 않는다 */
+  .gtrack-wrap { display: none; }
+  .gbar .gindex, .gbar:not(.nav) .gindex { transform: none; opacity: 1; pointer-events: auto; }
+  .gtool, .gindex button { min-height: 44px; }
+  .gprint { display: none; }
+  .gindex button::after { bottom: 8px; }
   .page { margin-top: 64px; padding-top: 36px; }
   .page::before { font-size: 34px; }
   .main { padding: 28px 16px 64px; }
@@ -225,7 +238,7 @@ html::-webkit-scrollbar { display: none; }
     color-scheme: light;
   }
   @page { margin: 16mm 14mm; }
-  .gbar, .gmenu, .pv, .page::before { display: none !important; }
+  .gbar, .pv, .page::before { display: none !important; }
   .main { padding: 0; }
   .doc { max-width: none; font-size: 10.5pt; line-height: 1.65; }
   .doc h1 { font-size: 18pt; }
