@@ -86,7 +86,7 @@ export default function Home() {
       {projects.map(d => (
         <article key={d.slug} id={`doc-${d.slug}`} className="doc page">
           <DocHead doc={d} />
-          <div className="md" dangerouslySetInnerHTML={{ __html: render(d.body).html }} />
+          <div className="md" dangerouslySetInnerHTML={{ __html: render(d.body, d.kind === '회사').html }} />
         </article>
       ))}
       {zoom && <Lightbox item={zoom} onClose={() => setZoom(null)} />}

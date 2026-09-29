@@ -118,10 +118,11 @@ export type TocItem = { id: string; text: string; no?: string }
 /**
  * md → html. 판단(`**문제** — …` 문단들)은 dl 판단 블록으로, 그 앞 ##에는 번호를 붙인다.
  * 라벨 문단 뒤에 이어지는 목록·문단은 다음 ##나 --- 전까지 직전 라벨 칸에 넣는다.
+ * numberAll: 회사 문서는 판단 블록이 없는 ##에도 번호를 붙인다.
  */
 const cache = new Map<string, { html: string; toc: TocItem[] }>()
 
-export function render(md: string): { html: string; toc: TocItem[] } {
+export function render(md: string, numberAll = false): { html: string; toc: TocItem[] } {
   const hit = cache.get(md)
   if (hit) return hit
   const tokens = marked.lexer(md)
@@ -147,7 +148,7 @@ export function render(md: string): { html: string; toc: TocItem[] } {
     if (t.type === 'heading' && (t as Tokens.Heading).depth === 2) {
       const text = (t as Tokens.Heading).text
       const id = slugify(plain(text))
-      let judged = false
+      let judged = numberAll
       for (let j = i + 1; j < tokens.length; j++) {
         const n = tokens[j]
         if (n.type === 'hr' || (n.type === 'heading' && (n as Tokens.Heading).depth <= 2)) break
@@ -183,5 +184,5 @@ export const CERT_ID = '자격증'
 export const tocFor = (slug?: string): TocItem[] => {
   if (!slug) return [...render(mainRest).toc, { id: CERT_ID, text: '자격증' }]
   const d = getDoc(slug)
-  return d ? render(d.body).toc : []
+  return d ? render(d.body, d.kind === '회사').toc : []
 }
