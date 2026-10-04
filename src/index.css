@@ -173,6 +173,21 @@ html::-webkit-scrollbar { display: none; }
 .fig { display: grid; gap: 6px; width: 100%; margin: 8px 0 20px; text-align: left; }
 .fig img { width: 100%; height: auto; border: 1px solid var(--line); border-radius: 6px; }
 .fig span { font-size: 13px; color: var(--muted); }
+/* 판단 절의 순서도 — 원고에 <figure class="dg"><svg>로 직접 쓴다. 색은 기존 토큰만 */
+.dg { margin: 4px 0 24px; padding: 16px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); overflow-x: auto; }
+.dg svg { display: block; width: 100%; min-width: 600px; height: auto; font-family: var(--sans); font-size: 13px; }
+.dg figcaption { margin-top: 12px; font-size: 13px; line-height: 1.5; color: var(--muted); }
+/* 글자가 세로선·화살표와 겹치는 자리는 배경색 테두리로 가린다 */
+.dg text { fill: var(--muted); paint-order: stroke; stroke: var(--panel); stroke-width: 5px; stroke-linejoin: round; }
+.dg .t { fill: var(--text); font-weight: 500; stroke: none; }
+.dg .ac { fill: var(--accent); }
+.dg .fa { fill: var(--faint); font-size: 12px; }
+.dg .hd { fill: var(--bg); stroke: var(--line); }
+.dg .ll { stroke: var(--line); stroke-dasharray: 3 4; }
+.dg .ar { fill: none; stroke: var(--muted); }
+.dg .ah { fill: var(--muted); }
+.dg .lk { fill: color-mix(in srgb, var(--accent) 22%, var(--bg)); stroke: var(--accent); }
+.dg .out { fill: none; stroke: var(--faint); stroke-dasharray: 4 3; }
 .shots { margin: 8px 0 40px; }
 .shots summary {
   display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 18px; cursor: pointer; list-style: none;
@@ -244,7 +259,7 @@ html::-webkit-scrollbar { display: none; }
   .doc a.ext[href^='http']::after { content: ' (' attr(href) ')'; font-size: 8pt; color: var(--faint); }
   .doc a.int::after { content: ''; }
   .page { break-before: page; border: 0; margin: 0; padding: 0; }
-  .fig { break-inside: avoid; }
+  .fig, .dg { break-inside: avoid; }
   /* PDF엔 대표 화면만. 접힌 블록은 beforeprint에서 펼친다(main.tsx) */
   .shots summary { display: none; }
   .fig:not(.featured) { display: none; }

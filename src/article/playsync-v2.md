@@ -20,6 +20,22 @@ V1 MVP는 "돌아가긴 한다"에서 멈춰 있었습니다. V2는 그 코드�
 
 ## 테이블 병합 시 좌석 이동 주체를 서버에서 사람으로 전환
 
+<figure class="dg">
+<svg viewBox="0 0 760 300" role="img" aria-label="테이블을 합칠 때 상점이 좌석을 비우고 참가자가 새 자리 태블릿에 참가 OTP를 입력해 앉는 순서도">
+<defs><marker id="ah3" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path class="ah" d="M0 0 8 4 0 8z"/></marker></defs>
+<rect class="hd" x="24" y="6" width="112" height="28" rx="6"/><text class="t" x="80" y="25" text-anchor="middle">상점 콘솔</text><rect class="hd" x="174" y="6" width="112" height="28" rx="6"/><text class="t" x="230" y="25" text-anchor="middle">참가자</text><rect class="hd" x="334" y="6" width="112" height="28" rx="6"/><text class="t" x="390" y="25" text-anchor="middle">새 자리 태블릿</text><rect class="hd" x="504" y="6" width="112" height="28" rx="6"/><text class="t" x="560" y="25" text-anchor="middle">서버</text>
+<line class="ll" x1="80" y1="34" x2="80" y2="288"/><line class="ll" x1="230" y1="34" x2="230" y2="288"/><line class="ll" x1="390" y1="34" x2="390" y2="288"/><line class="ll" x1="560" y1="34" x2="560" y2="288"/>
+<line class="ar" x1="80" y1="66" x2="552" y2="66" marker-end="url(#ah3)"/><text class="" x="90" y="59">① 합칠 테이블의 좌석 비움</text>
+<text class="fa" x="574" y="70">칩은 참가 기록에 남음</text>
+<line class="ar" x1="230" y1="110" x2="382" y2="110" marker-end="url(#ah3)"/><text class="" x="240" y="103">② 칩을 들고 걸어가 참가 OTP 입력</text>
+<line class="ar" x1="390" y1="148" x2="552" y2="148" marker-end="url(#ah3)"/><text class="" x="400" y="141">③ OTP · 좌석 번호</text>
+<path class="ar" d="M560 166h26v16h-18" marker-end="url(#ah3)"/><text x="604" y="178">④ OTP로 참가 기록 조회</text>
+<path class="ar" d="M560 206h26v16h-18" marker-end="url(#ah3)"/><text x="604" y="218">⑤ 좌석 확정</text>
+<line class="ar" x1="560" y1="268" x2="398" y2="268" marker-end="url(#ah3)"/><text class="ac" x="400" y="261">⑥ 좌석 토큰 발급 · 칩은 참가 기록의 값 그대로</text>
+</svg>
+<figcaption>서버가 좌석을 재배치하지 않아 여러 테이블을 함께 잠글 일이 없고, 같은 자리에 겹친 요청은 DB 유니크 제약이 거절합니다</figcaption>
+</figure>
+
 **문제** — 대회 막바지에는 테이블을 합칩니다. 3/3/3명을 9명 한 테이블로, 4/4/5명을 6/7명 두 테이블로 한꺼번에 옮깁니다.
 
 **대안** — 처음에는 서버가 칩량을 보고 좌석을 재분배하려 했습니다.
@@ -37,6 +53,25 @@ V1 MVP는 "돌아가긴 한다"에서 멈춰 있었습니다. V2는 그 코드�
 ---
 
 ## 서버 재시작 시 정지 시간 보정과 재개 권한 설계
+
+<figure class="dg">
+<svg viewBox="0 0 720 404" role="img" aria-label="서버가 재시작한 뒤 대회를 멈춰 두었다가 딜러 태블릿이 모두 돌아오면 블라인드 시간을 보정하고 딜러가 재개하는 순서도">
+<defs><marker id="ah4" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path class="ah" d="M0 0 8 4 0 8z"/></marker></defs>
+<rect class="hd" x="54" y="6" width="112" height="28" rx="6"/><text class="t" x="110" y="25" text-anchor="middle">서버</text><rect class="hd" x="234" y="6" width="112" height="28" rx="6"/><text class="t" x="290" y="25" text-anchor="middle">DB</text><rect class="hd" x="414" y="6" width="112" height="28" rx="6"/><text class="t" x="470" y="25" text-anchor="middle">좌석 태블릿</text><rect class="hd" x="574" y="6" width="112" height="28" rx="6"/><text class="t" x="630" y="25" text-anchor="middle">딜러 태블릿</text>
+<line class="ll" x1="110" y1="34" x2="110" y2="392"/><line class="ll" x1="290" y1="34" x2="290" y2="392"/><line class="ll" x1="470" y1="34" x2="470" y2="392"/><line class="ll" x1="630" y1="34" x2="630" y2="392"/>
+<rect class="lk" x="104" y="182" width="12" height="148" rx="3"/><text class="ac" x="96" y="262" text-anchor="end">대회 정지</text>
+<line class="ar" x1="110" y1="62" x2="282" y2="62" marker-end="url(#ah4)"/><text class="" x="120" y="55">하트비트 · 5초마다</text>
+<rect class="out" x="54" y="80" width="112" height="30" rx="6"/><text class="fa" x="110" y="100" text-anchor="middle">서버 정지 → 재시작</text>
+<line class="ar" x1="110" y1="146" x2="282" y2="146" marker-end="url(#ah4)"/><text class="" x="120" y="139">① 마지막 하트비트로 멈춘 시각 계산</text>
+<line class="ar" x1="110" y1="182" x2="282" y2="182" marker-end="url(#ah4)"/><text class="" x="120" y="175">② 대회를 SYNCING으로</text>
+<path class="ar" d="M110 198h26v16h-18" marker-end="url(#ah4)"/><text x="154" y="210">③ 테이블 정지 · 남은 턴 타이머 무효</text>
+<line class="ar" x1="470" y1="258" x2="118" y2="258" marker-end="url(#ah4)"/><text class="" x="120" y="251">재접속</text>
+<line class="ar" x1="630" y1="294" x2="118" y2="294" marker-end="url(#ah4)"/><text class="" x="120" y="287">재접속 · 좌석보다 늦게</text>
+<line class="ar" x1="110" y1="330" x2="282" y2="330" marker-end="url(#ah4)"/><text class="ac" x="120" y="323">④ 딜러 전원 복귀 → 블라인드 기준 시각을 멈춘 시간만큼 미룸</text>
+<line class="ar" x1="630" y1="372" x2="118" y2="372" marker-end="url(#ah4)"/><text class="" x="120" y="365">⑤ 「이어서 진행」 → 그 테이블의 턴 재개</text>
+</svg>
+<figcaption>서버가 돌아와도 딜러 태블릿이 모두 붙기 전에는 대회가 멈춰 있고, 각 테이블은 딜러가 눌러야 다시 시작합니다</figcaption>
+</figure>
 
 **문제** — 서버가 멈췄다 돌아오면 멈춘 시간이 블라인드 시간에 그대로 들어갔습니다.
 
@@ -63,23 +98,74 @@ V1 MVP는 "돌아가긴 한다"에서 멈춰 있었습니다. V2는 그 코드�
 
 ## 테이블 상태 쓰기 경로의 락 단일화
 
-**문제** — 핸드 도중 늦게 온 사람을 폴드로 앉히는 설계는 있었지만, 앉는 순간 다른 사람의 액션이 같이 들어오는 레이스 컨디션이 있었습니다.
-- 이 경우를 재현하는 테스트는 세 번 돌아도 실패하지 않았고, 테스트가 락을 먼저 잡게 하면 재현되지만 제품 코드는 그대로라 테스트 대신 코드를 봤습니다
-- 이를 계기로 테이블 상태를 쓰는 모든 경로의 레이스 컨디션 전수조사를 시작했습니다
+<figure class="dg">
+<svg viewBox="0 0 720 392" role="img" aria-label="착석과 액션이 동시에 들어올 때 mutateSnapshot이 락, 다시 읽기, 쓰기를 차례로 처리하는 순서도">
+<defs><marker id="ah1" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path class="ah" d="M0 0 8 4 0 8z"/></marker></defs>
+<rect class="hd" x="14" y="6" width="112" height="28" rx="6"/><text class="t" x="70" y="25" text-anchor="middle">착석 요청</text><rect class="hd" x="159" y="6" width="112" height="28" rx="6"/><text class="t" x="215" y="25" text-anchor="middle">액션 요청</text><rect class="hd" x="344" y="6" width="112" height="28" rx="6"/><text class="t" x="400" y="25" text-anchor="middle">mutateSnapshot</text><rect class="hd" x="594" y="6" width="112" height="28" rx="6"/><text class="t" x="650" y="25" text-anchor="middle">Redis</text>
+<line class="ll" x1="70" y1="34" x2="70" y2="380"/><line class="ll" x1="215" y1="34" x2="215" y2="380"/><line class="ll" x1="400" y1="34" x2="400" y2="380"/><line class="ll" x1="650" y1="34" x2="650" y2="380"/>
+<rect class="lk" x="644" y="98" width="12" height="142" rx="3"/><rect class="lk" x="644" y="280" width="12" height="76" rx="3"/>
+<text class="ac" x="662" y="172">락</text><text class="ac" x="662" y="322">락</text>
+<text class="" x="80" y="57">바꿀 내용만 넘김</text><line class="ar" x1="70" y1="64" x2="392" y2="64" marker-end="url(#ah1)"/>
+<text class="" x="410" y="91">① 테이블 락 획득</text><line class="ar" x1="400" y1="98" x2="642" y2="98" marker-end="url(#ah1)"/>
+<text class="" x="225" y="125">바꿀 내용만 넘김</text><line class="ar" x1="215" y1="132" x2="392" y2="132" marker-end="url(#ah1)"/>
+<text class="fa" x="225" y="150">락이 풀릴 때까지 대기</text>
+<text class="" x="410" y="159">② 스냅샷 다시 읽기</text><line class="ar" x1="400" y1="166" x2="642" y2="166" marker-end="url(#ah1)"/>
+<path class="ar" d="M400 186h26v16h-18" marker-end="url(#ah1)"/><text x="444" y="198">③ 바꿀 내용 적용</text>
+<text class="" x="410" y="233">④ 쓰기 · 락 해제</text><line class="ar" x1="400" y1="240" x2="642" y2="240" marker-end="url(#ah1)"/>
+<text class="" x="410" y="273">① 락 획득 (액션 차례)</text><line class="ar" x1="400" y1="280" x2="642" y2="280" marker-end="url(#ah1)"/>
+<text class="ac" x="410" y="311">② 다시 읽기 · 착석이 반영된 상태</text><line class="ar" x1="400" y1="318" x2="642" y2="318" marker-end="url(#ah1)"/>
+<text class="" x="410" y="349">③ 적용 → ④ 쓰기 · 락 해제</text><line class="ar" x1="400" y1="356" x2="642" y2="356" marker-end="url(#ah1)"/>
+</svg>
+<figcaption>예전에는 ①~④를 14곳이 각자 썼습니다. 지금은 함수 하나가 맡아, 늦게 온 요청은 항상 앞 요청이 반영된 상태를 읽습니다</figcaption>
+</figure>
 
-**원인** — 테이블 상태를 쓰는 14곳이 락을 잡고 읽고 고치고 쓰는 과정을 각자 반복했고, 락 안에서 다시 읽는 한 줄이 유일한 방어였습니다.
-- 그 시점에 락 밖에서 읽은 값으로 쓰는 곳은 없어, 당장은 문제가 없었습니다
-- **함정**: 그 한 줄을 지워도 실패하는 테스트가 없었습니다. 테스트가 지켜 주지 않으니, 급하게 고치다 지워도 알 수 없는 상태였습니다
+**문제** — 핸드 도중 착석과 다른 사람의 액션이 같은 순간에 들어오는 레이스 컨디션이 있었습니다.
+- 테이블 상태를 쓰는 14곳이 잠그고, 다시 읽고, 쓰는 과정을 각자 반복했습니다
+- 락 안에서 다시 읽는 한 줄이 유일한 방어였는데, 그 줄을 지워도 실패하는 테스트가 없었습니다
 
-**선택** — 전수조사 뒤 어디서든 안전하게 쓸 수 있는 방법을 찾아, 14곳이 각자 하던 "잠그고, 다시 읽고, 쓰기"를 함수 하나로 모았습니다.
-- `mutateSnapshot`이 락·재읽기·쓰기를 맡고, 호출하는 쪽은 상태를 직접 읽지 않으니 다시 읽기를 빠뜨릴 자리가 없습니다
-- 락 없이 쓰는 네 곳은 별도 함수로 이유를 남기게 하고, 이 둘 말고는 상태를 쓸 수 없게 막았습니다
-- **블라인드 레벨 갱신은 락 없이**: 대회 전체가 함께 보는 값이라, 락을 걸면 한 테이블이 핸드를 시작하는 동안 다른 테이블이 시작하지 못합니다. 이유는 코드 주석에 남겼습니다
-- **리바인 대기는 락 밖으로**: 최대 15초를 기다리는 동안 락을 쥐고 있어 테이블 전체가 멈췄습니다. 대상자끼리 서로 기다리면 안 된다는 조건부터 정했고, 전원에게 동시에 물어 수락한 순간에만 짧게 락을 잡습니다. 정산은 팟 분배(락 안) → 리바인 대기(락 밖) → 탈락 확정과 다음 핸드 준비(락 안)로 나뉩니다. 핸드 시작은 `WAITING`에서만 되므로 락 밖 구간에 다음 핸드가 끼어들 수 없습니다
+**선택** — 14곳의 "잠그고, 다시 읽고, 쓰기"를 `mutateSnapshot` 함수 하나로 모았습니다.
+- 호출하는 쪽은 상태를 직접 읽지 않고 바꿀 내용만 넘깁니다
+- 락 없이 써야 하는 곳은 이유를 인자로 남기는 별도 함수로만 허용했습니다
+- 대회 전체가 함께 보는 블라인드 레벨은 락을 걸지 않았습니다. 걸면 한 테이블이 다른 테이블의 시작을 막습니다
 
-**한계** — 핸드 전체는 다섯 구간이고 그중 둘이 락 밖인데, 그 틈을 전부 막지는 않았습니다.
-- 좌석 해제나 테이블 삭제는 운영자가 쉬는 시간에 콘솔로 조작하는 일이라 핸드 도중에 들어올 일이 없습니다
-- 락 대신, 전제가 깨졌을 때 조용히 틀리지 않도록 상태 검사만 남겼습니다
+**결과** — 다시 읽기를 빠뜨릴 수 있는 자리가 코드에서 없어졌습니다.
+- 실제 쓰기 함수는 비공개라, 서비스 밖에서는 위 두 함수로만 상태를 쓸 수 있습니다
+
+**한계** — 핸드 다섯 구간 중 둘은 락 밖이고, 그 틈은 상태 검사로만 지킵니다.
+
+---
+
+## 리바인 대기 구간의 락 분리
+
+<figure class="dg">
+<svg viewBox="0 0 720 400" role="img" aria-label="정산 다섯 구간 가운데 리바인 대기와 DB 체크포인트만 락 밖에서 처리하는 순서도">
+<defs><marker id="ah2" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path class="ah" d="M0 0 8 4 0 8z"/></marker></defs>
+<rect class="hd" x="74" y="6" width="112" height="28" rx="6"/><text class="t" x="130" y="25" text-anchor="middle">정산</text><rect class="hd" x="334" y="6" width="112" height="28" rx="6"/><text class="t" x="390" y="25" text-anchor="middle">테이블 스냅샷</text><rect class="hd" x="564" y="6" width="112" height="28" rx="6"/><text class="t" x="620" y="25" text-anchor="middle">칩을 다 잃은 사람들</text>
+<line class="ll" x1="130" y1="34" x2="130" y2="388"/><line class="ll" x1="390" y1="34" x2="390" y2="388"/><line class="ll" x1="620" y1="34" x2="620" y2="388"/>
+<rect class="lk" x="384" y="54" width="12" height="22" rx="3"/><rect class="lk" x="384" y="160" width="12" height="16" rx="3"/><rect class="lk" x="384" y="246" width="12" height="22" rx="3"/><rect class="lk" x="384" y="354" width="12" height="22" rx="3"/>
+<rect class="out" x="54" y="96" width="110" height="112" rx="6"/><text class="fa" x="62" y="200">락 밖 · 최대 15초</text>
+<rect class="out" x="54" y="286" width="110" height="44" rx="6"/><text class="fa" x="62" y="322">락 밖</text>
+<text class="" x="140" y="59">① 팟 분배</text><line class="ar" x1="130" y1="66" x2="382" y2="66" marker-end="url(#ah2)"/>
+<text class="fa" x="404" y="70">상태 HAND_END</text>
+<text class="" x="140" y="111">② 리바인 질문 · 전원에게 동시에</text><line class="ar" x1="130" y1="118" x2="612" y2="118" marker-end="url(#ah2)"/>
+<text class="" x="400" y="161">수락한 순간에만 짧은 락 · 칩 반영</text><line class="ar" x1="620" y1="168" x2="398" y2="168" marker-end="url(#ah2)"/>
+<text class="" x="140" y="251">③ 다시 읽고 탈락 확정</text><line class="ar" x1="130" y1="258" x2="382" y2="258" marker-end="url(#ah2)"/>
+<path class="ar" d="M130 296h26v16h-18" marker-end="url(#ah2)"/><text x="174" y="308">④ DB 체크포인트</text>
+<text class="" x="140" y="359">⑤ 다음 핸드 준비</text><line class="ar" x1="130" y1="366" x2="382" y2="366" marker-end="url(#ah2)"/>
+<text class="fa" x="404" y="370">상태 WAITING</text>
+<text class="ac" x="404" y="222">HAND_END인 동안은 다음 핸드가 시작되지 않음</text>
+</svg>
+<figcaption>사람과 DB를 기다리는 구간만 락 밖에 두고, 그 사이 다음 핸드는 상태값이 막습니다</figcaption>
+</figure>
+
+**문제** — 정산 중 리바인(칩을 다 잃은 사람이 칩을 다시 사서 이어 가는 것) 응답을 최대 15초 기다리는 동안 락을 쥐고 있어, 테이블 전체가 멈췄습니다.
+
+**선택** — 정산을 다섯 구간으로 나누고, 사람과 DB를 기다리는 두 구간만 락 밖에 뒀습니다.
+- 팟 분배(락 안) → 리바인 대기(락 밖) → 탈락 확정(락 안) → DB 체크포인트(락 밖) → 다음 핸드 준비(락 안)
+- 대상자끼리 서로 기다리지 않도록 전원에게 동시에 묻고, 수락한 순간에만 짧게 락을 잡습니다
+
+**결과** — 응답을 기다리는 동안에는 락을 쥐지 않습니다.
+- 핸드 시작은 `WAITING`에서만 되므로, 락 밖 구간에 다음 핸드가 끼어들 수 없습니다
 
 ---
 
