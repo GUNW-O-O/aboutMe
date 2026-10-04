@@ -15,6 +15,7 @@ export type Meta = {
   visibility?: string
   summary?: string
   core?: string
+  archive?: string
   links?: Record<string, string>
 }
 
@@ -60,10 +61,15 @@ export const mainRest = mainDoc?.body.trim() ?? ''
 
 // 사이드바 순서 = 핵심(core: true) 먼저, 그다음 시작월 내림차순
 const isCore = (d: Doc) => d.meta.core === 'true'
-export const projects = docs
+const isArchived = (d: Doc) => d.meta.archive === 'true'
+const ordered = docs
   .filter(d => d.slug !== 'home')
   .sort((a, b) => Number(isCore(b)) - Number(isCore(a))
     || startOf(b.meta.period).localeCompare(startOf(a.meta.period)))
+// 한 페이지 스크롤에 싣는 문서
+export const projects = ordered.filter(d => !isArchived(d))
+// archive: true — 헤더 목차에 올리지 않고, 스크롤 끝에 접어 둔다
+export const archived = ordered.filter(isArchived)
 
 export const getDoc = (slug: string) => docs.find(d => d.slug === slug)
 
@@ -128,6 +134,7 @@ export function render(md: string, numberAll = false): { html: string; toc: TocI
   const toc: TocItem[] = []
   let no = 0
   let dl: { label: string; html: string }[] | null = null
+  let fold = false   // <details class="more"> 안 — 접어 둔 절은 헤더 목차에 올리지 않는다
 
   const flush = () => {
     if (!dl) return
@@ -142,6 +149,8 @@ export function render(md: string, numberAll = false): { html: string; toc: TocI
 
   tokens.forEach((t, i) => {
     if (t.type === 'heading' || t.type === 'hr') flush()
+    // 닫는 태그가 직전 판단 블록의 칸으로 들어가지 않게 먼저 끊는다
+    if (t.type === 'html' && /^<\/?details/.test(t.raw)) { flush(); fold = t.raw.startsWith('<details class="more"') }
     if (t.type === 'heading' && (t as Tokens.Heading).depth === 2) {
       const text = (t as Tokens.Heading).text
       const id = slugify(plain(text))
@@ -152,7 +161,7 @@ export function render(md: string, numberAll = false): { html: string; toc: TocI
         if (n.type === 'paragraph' && LABEL_RE.test(n.raw)) { judged = true; break }
       }
       const num = judged ? String(++no).padStart(2, '0') : undefined
-      toc.push({ id, text: plain(text), no: num })
+      if (!fold) toc.push({ id, text: plain(text), no: num })
       const inner = marked.parseInline(text) as string
       out.push(num
         ? `<h2 id="${id}" class="jh"><span class="no">${num}</span><span>${inner}</span></h2>`

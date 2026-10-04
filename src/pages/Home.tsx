@@ -1,6 +1,6 @@
 import { useEffect, useState, type MouseEvent } from 'react'
 import { useLocation, useParams, useSearchParams } from 'react-router-dom'
-import { mainDoc, mainRest, projects, render, type Doc } from '../content'
+import { archived, mainDoc, mainRest, projects, render, shortTitle, type Doc } from '../content'
 import Lightbox, { type LightboxItem } from '../shared/Lightbox'
 import photo from '../assets/gunwoo-avatar.jpg'
 
@@ -31,7 +31,9 @@ function DocHead({ doc }: { doc: Doc }) {
         {role && <span>{role}</span>}
         {visibility && <span>{visibility}</span>}
         {Object.entries(links).map(([label, url]) => (
-          <a key={label} className="ext" href={url} target="_blank" rel="noopener noreferrer">{label}</a>
+          <a key={label} className="ext" href={url} target="_blank" rel="noopener noreferrer">
+            {label === 'repo' ? 'GitHub 리포지토리' : `GitHub 리포지토리 · ${label}`}
+          </a>
         ))}
       </div>
     </>
@@ -48,7 +50,11 @@ export default function Home() {
 
   useEffect(() => {
     const el = (h && document.getElementById(h)) || (slug && document.getElementById(`doc-${slug}`))
-    if (el) el.scrollIntoView()
+    if (el) {
+      // 접어 둔 절·보관 문서로 가는 링크면 감싼 블록을 모두 펼친다
+      for (let d = el.closest('details'); d; d = d.parentElement?.closest('details') ?? null) d.open = true
+      el.scrollIntoView()
+    }
     else window.scrollTo(0, 0)
   }, [slug, h, key])
 
@@ -70,6 +76,17 @@ export default function Home() {
           <div className="md" dangerouslySetInnerHTML={{ __html: render(d.body, d.kind === '회사').html }} />
         </article>
       ))}
+      {archived.length > 0 && (
+        <article className="doc">
+          {archived.map(d => (
+            <details key={d.slug} id={`doc-${d.slug}`} className="more">
+              <summary>{shortTitle(d)} · {d.meta.period}</summary>
+              <DocHead doc={d} />
+              <div className="md" dangerouslySetInnerHTML={{ __html: render(d.body, d.kind === '회사').html }} />
+            </details>
+          ))}
+        </article>
+      )}
       {zoom && <Lightbox item={zoom} onClose={() => setZoom(null)} />}
     </main>
   )
