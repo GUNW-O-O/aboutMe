@@ -56,10 +56,7 @@ export const docs: Doc[] = Object.entries(raws).map(([path, src]) => {
 
 export const mainDoc = docs.find(d => d.slug === 'home')
 
-// 메인 첫 문단은 머리말(이름 아래)로, 나머지가 본문
-const [introMd = '', ...restMd] = (mainDoc?.body.trim() ?? '').split(/\r?\n\r?\n/)
-export const mainIntro = marked.parseInline(introMd.replace(/\r?\n/g, ' ')) as string
-export const mainRest = restMd.join('\n\n')
+export const mainRest = mainDoc?.body.trim() ?? ''
 
 // 사이드바 순서 = 핵심(core: true) 먼저, 그다음 시작월 내림차순
 const isCore = (d: Doc) => d.meta.core === 'true'
@@ -178,11 +175,9 @@ export function render(md: string, numberAll = false): { html: string; toc: TocI
   return result
 }
 
-export const CERT_ID = '자격증'
-
 /** 사이드바에 펼칠 목차 — slug 없으면 메인 */
 export const tocFor = (slug?: string): TocItem[] => {
-  if (!slug) return [...render(mainRest).toc, { id: CERT_ID, text: '자격증' }]
+  if (!slug) return render(mainRest).toc
   const d = getDoc(slug)
   return d ? render(d.body, d.kind === '회사').toc : []
 }

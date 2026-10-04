@@ -1,17 +1,8 @@
 import { useEffect, useState, type MouseEvent } from 'react'
 import { useLocation, useParams, useSearchParams } from 'react-router-dom'
-import { CERT_ID, mainDoc, mainIntro, mainRest, projects, render, type Doc } from '../content'
+import { mainDoc, mainRest, projects, render, type Doc } from '../content'
 import Lightbox, { type LightboxItem } from '../shared/Lightbox'
-import photo from '../assets/gunwoo.jpg'
-import sqld from '../assets/certificate/SQLD.png'
-import adsp from '../assets/certificate/ADsP.png'
-import webd from '../assets/certificate/webd.png'
-
-const certs: LightboxItem[] = [
-  { src: adsp, title: 'ADsP', sub: '2025.09 · K-DATA' },
-  { src: sqld, title: 'SQLD', sub: '2025.06 · K-DATA' },
-  { src: webd, title: '웹디자인개발기능사', sub: '2025.06 · 한국산업인력공단' },
-]
+import photo from '../assets/gunwoo-avatar.jpg'
 
 function Byline() {
   return (
@@ -19,7 +10,7 @@ function Byline() {
       <div className="photo"><img src={photo} alt="고건우 프로필 사진" /></div>
       <div className="byline-text">
         <div className="name">고건우</div>
-        <p className="intro" dangerouslySetInnerHTML={{ __html: mainIntro }} />
+        <div className="role">풀스택 웹 개발자 · Spring Boot · NestJS · Next.js · React</div>
         <div className="links">
           <a className="ext" href="https://github.com/GUNW-O-O" target="_blank" rel="noopener noreferrer">GitHub</a>
           <a href="mailto:go971230@gmail.com">Email</a>
@@ -72,16 +63,6 @@ export default function Home() {
         <Byline />
         {mainDoc?.meta.title && <h1>{mainDoc.meta.title}</h1>}
         <div className="md" dangerouslySetInnerHTML={{ __html: render(mainRest).html }} />
-        <hr />
-        <h2 id={CERT_ID}>자격증</h2>
-        <div className="certs">
-          {certs.map(c => (
-            <button key={c.title} type="button" className="cert" onClick={() => setZoom(c)}>
-              <img src={c.src} alt={`${c.title} 자격증`} loading="lazy" />
-              <span>{c.title}</span>
-            </button>
-          ))}
-        </div>
       </article>
       {projects.map(d => (
         <article key={d.slug} id={`doc-${d.slug}`} className="doc page">
