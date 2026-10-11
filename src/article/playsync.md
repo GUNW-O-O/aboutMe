@@ -1,8 +1,8 @@
 ---
 title: Playsync (V1)
-period: 2026.02.24 – 03.15
+period: 2026.02 – 03
 role: 개인 · 단독 개발
-summary: 오프라인 홀덤 대회의 좌석·게임 진행·정산을 처리하는 실시간 서버 MVP. 진행 중 상태는 Redis, 확정 결과는 DB로 나눠 핸드 진행 중 DB 쓰기를 0회로 만들었습니다.
+summary: 오프라인 홀덤 대회의 좌석·게임 진행·정산을 처리하는 실시간 서버 MVP. 진행 중 상태는 Redis, 확정 결과는 DB로 나눠, 핸드가 진행되는 동안에는 DB에 쓰지 않고 정산과 탈락 시점에만 씁니다.
 stack: [NestJS, WebSocket, Next.js, Redis, PostgreSQL, Prisma, BullMQ, Docker, JWT]
 links:
   repo: https://github.com/GUNW-O-O/playsync
@@ -48,7 +48,7 @@ links:
 <line class="ar" x1="80" y1="140" x2="262" y2="140" marker-end="url(#ah5)"/><text class="" x="90" y="133">② 액션</text>
 <line class="ar" x1="270" y1="170" x2="462" y2="170" marker-end="url(#ah5)"/><text class="" x="280" y="163">스냅샷 읽기 → 적용 → 저장</text>
 <text class="fa" x="280" y="190">베팅이 끝날 때까지 ② 반복</text>
-<text class="ac" x="484" y="130">여기까지 DB 쓰기 0회</text>
+<text class="ac" x="484" y="130">여기까지 DB에 쓰지 않음</text>
 <line class="ar" x1="80" y1="234" x2="262" y2="234" marker-end="url(#ah5)"/><text class="" x="90" y="227">③ 승자 입력</text>
 <line class="ar" x1="270" y1="264" x2="652" y2="264" marker-end="url(#ah5)"/><text class="ac" x="280" y="257">④ 탈락 처리 · 최종 칩 저장</text>
 <line class="ar" x1="270" y1="308" x2="462" y2="308" marker-end="url(#ah5)"/><text class="" x="280" y="301">⑤ 정산된 스냅샷 저장</text>
@@ -62,9 +62,9 @@ links:
 **선택** — 진행 중인 상태는 Redis, 끝난 결과는 PostgreSQL로 역할을 갈랐습니다. 서버는 게임 로직과 통신만 맡습니다.
 - **관점을 바꾼 지점**: 어떻게 빨리 쓸지보다 이 데이터가 지금 DB에 있어야 하는지를 먼저 물었습니다. 핸드 중간 상태는 나중에 조회할 일이 없습니다
 - DB 트랜잭션은 정산과 탈락처럼 결과가 확정되는 순간에만 실행합니다
-- **블라인드 레벨**: 서버 타이머를 두지 않고 핸드 시작 시점에 계산합니다(Lazy Update). 증가 연산이 아니라 레벨 인덱스 기준이라 여러 테이블이 동시에 확인해도 두 번 오르지 않습니다
+- **블라인드 레벨**: 서버 타이머를 두지 않고, 핸드를 시작하거나 대회 정보를 조회할 때 경과 시간으로 계산합니다(Lazy Update). 증가 연산이 아니라 레벨 인덱스 기준이라 여러 사용처에서 동시에 확인해도 두 번 오르지 않습니다
 
-**결과** — 핸드가 진행되는 동안에는 DB에 쓰지 않고, 정산 시점에 1~2회만 씁니다.
+**결과** — 핸드가 진행되는 동안에는 DB에 쓰지 않고, 정산과 탈락 시점에만 씁니다.
 
 <details class="more">
 <summary>나머지 항목</summary>
