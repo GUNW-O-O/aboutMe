@@ -2,7 +2,7 @@
 title: MTechLabs — 뇌 MRI 분석·교육 소프트웨어와 영상 제작 자동화
 period: 2026.06 – 재직 중
 role: MTechLabs · 웹 개발자(계약직)
-summary: MTechLabs에서 뇌 MRI 분석 소프트웨어, 뇌 해부 교육 소프트웨어, 영상 제작 자동화, MRI 3D 에셋 파이프라인을 맡았습니다.
+summary: MTechLabs에서 뇌 MRI 분석 소프트웨어와 뇌 해부 교육 소프트웨어를 만듭니다. 분석은 단계별로 다시 돌릴 수 있게 나눴고, 교육 소프트웨어는 전시용 미니 PC에서 챕터 로딩을 4.9초에서 1.6초로 줄였습니다.
 stack: [Claude Code, Node, ffmpeg, TTS, Electron, React, TypeScript, Three.js, Zustand, Vite, Tailwind, Playwright, Vue 3, Flask, Python, FastSurfer, VTK]
 ---
 
