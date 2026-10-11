@@ -9,7 +9,7 @@ function Byline() {
     <div className="byline">
       <div className="photo"><img src={photo} alt="고건우 프로필 사진" /></div>
       <div className="byline-text">
-        <div className="name">고건우</div>
+        <div className="name">고건우<span className="role">주니어 개발자</span></div>
         <p className="intro">
           문제의 해결 방안이 떠오르면 그 방안이 통하지 않는 상황부터 찾습니다.
           대안을 세워 비교하고, 고른 하나는 그 상황을 실제로 만들어 확인합니다.
