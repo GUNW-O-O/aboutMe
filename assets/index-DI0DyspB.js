@@ -60,9 +60,9 @@ Error generating stack: `+l.message+`
 Please change the parent <Route path="${C}"> to <Route path="${C==="/"?"*":`${C}/*`}">.`)}let k=jt(),z;if(s){let C=typeof s=="string"?Pl(s):s;Me(m==="/"||C.pathname?.startsWith(m),`When overriding the location using \`<Routes location>\` or \`useRoutes(routes, location)\`, the location pathname must begin with the portion of the URL pathname that was matched by all parent routes. The current pathname base is "${m}" but pathname "${C.pathname}" was given in the \`location\` prop.`),z=C}else z=k;let q=z.pathname||"/",H=q;if(m!=="/"){let C=m.replace(/^\//,"").split("/");H="/"+q.replace(/^\//,"").split("/").slice(C.length).join("/")}let j=Id(i,{pathname:H});yt(S||j!=null,`No routes matched location "${z.pathname}${z.search}${z.hash}" `),yt(j==null||j[j.length-1].route.element!==void 0||j[j.length-1].route.Component!==void 0||j[j.length-1].route.lazy!==void 0,`Matched leaf route at location "${z.pathname}${z.search}${z.hash}" does not have an element or Component. This means it will render an <Outlet /> with a null value by default resulting in an "empty" page.`);let B=Q0(j&&j.map(C=>Object.assign({},C,{params:Object.assign({},p,C.params),pathname:al([m,o.encodeLocation?o.encodeLocation(C.pathname).pathname:C.pathname]),pathnameBase:C.pathnameBase==="/"?m:al([m,o.encodeLocation?o.encodeLocation(C.pathnameBase).pathname:C.pathnameBase])})),h,r,c);return s&&B?D.createElement(Jn.Provider,{value:{location:{pathname:"/",search:"",hash:"",state:null,key:"default",...z},navigationType:"POP"}},B):B}function q0(){let i=$0(),s=O0(i)?`${i.status} ${i.statusText}`:i instanceof Error?i.message:JSON.stringify(i),r=i instanceof Error?i.stack:null,c="rgba(200,200,200, 0.5)",o={padding:"0.5rem",backgroundColor:c},h={padding:"2px 4px",backgroundColor:c},g=null;return console.error("Error handled by React Router default ErrorBoundary:",i),g=D.createElement(D.Fragment,null,D.createElement("p",null,"💿 Hey developer 👋"),D.createElement("p",null,"You can provide a way better UX than this when your app throws errors by providing your own ",D.createElement("code",{style:h},"ErrorBoundary")," or"," ",D.createElement("code",{style:h},"errorElement")," prop on your route.")),D.createElement(D.Fragment,null,D.createElement("h2",null,"Unexpected Application Error!"),D.createElement("h3",{style:{fontStyle:"italic"}},s),r?D.createElement("pre",{style:o},r):null,g)}var j0=D.createElement(q0,null),Y0=class extends D.Component{constructor(i){super(i),this.state={location:i.location,revalidation:i.revalidation,error:i.error}}static getDerivedStateFromError(i){return{error:i}}static getDerivedStateFromProps(i,s){return s.location!==i.location||s.revalidation!=="idle"&&i.revalidation==="idle"?{error:i.error,location:i.location,revalidation:i.revalidation}:{error:i.error!==void 0?i.error:s.error,location:s.location,revalidation:i.revalidation||s.revalidation}}componentDidCatch(i,s){console.error("React Router caught the following error during render",i,s)}render(){return this.state.error!==void 0?D.createElement(Nt.Provider,{value:this.props.routeContext},D.createElement(or.Provider,{value:this.state.error,children:this.props.component})):this.props.children}};function G0({routeContext:i,match:s,children:r}){let c=D.useContext(ja);return c&&c.static&&c.staticContext&&(s.route.errorElement||s.route.ErrorBoundary)&&(c.staticContext._deepestRenderedBoundaryId=s.route.id),D.createElement(Nt.Provider,{value:i},r)}function Q0(i,s=[],r=null,c=null){if(i==null){if(!r)return null;if(r.errors)i=r.matches;else if(s.length===0&&!r.initialized&&r.matches.length>0)i=r.matches;else return null}let o=i,h=r?.errors;if(h!=null){let y=o.findIndex(m=>m.route.id&&h?.[m.route.id]!==void 0);Me(y>=0,`Could not find a matching route for errors on route IDs: ${Object.keys(h).join(",")}`),o=o.slice(0,Math.min(o.length,y+1))}let g=!1,p=-1;if(r)for(let y=0;y<o.length;y++){let m=o[y];if((m.route.HydrateFallback||m.route.hydrateFallbackElement)&&(p=y),m.route.id){let{loaderData:S,errors:k}=r,z=m.route.loader&&!S.hasOwnProperty(m.route.id)&&(!k||k[m.route.id]===void 0);if(m.route.lazy||z){g=!0,p>=0?o=o.slice(0,p+1):o=[o[0]];break}}}return o.reduceRight((y,m,S)=>{let k,z=!1,q=null,H=null;r&&(k=h&&m.route.id?h[m.route.id]:void 0,q=m.route.errorElement||j0,g&&(p<0&&S===0?(cp("route-fallback",!1,"No `HydrateFallback` element provided to render during initial hydration"),z=!0,H=null):p===S&&(z=!0,H=m.route.hydrateFallbackElement||null)));let j=s.concat(o.slice(0,S+1)),B=()=>{let C;return k?C=q:z?C=H:m.route.Component?C=D.createElement(m.route.Component,null):m.route.element?C=m.route.element:C=y,D.createElement(G0,{match:m,routeContext:{outlet:y,matches:j,isDataRoute:r!=null},children:C})};return r&&(m.route.ErrorBoundary||m.route.errorElement||S===0)?D.createElement(Y0,{location:r.location,revalidation:r.revalidation,component:q,error:k,children:B(),routeContext:{outlet:null,matches:j,isDataRoute:!0}}):B()},null)}function hr(i){return`${i} must be used within a data router.  See https://reactrouter.com/en/main/routers/picking-a-router.`}function X0(i){let s=D.useContext(ja);return Me(s,hr(i)),s}function Z0(i){let s=D.useContext(Ti);return Me(s,hr(i)),s}function V0(i){let s=D.useContext(Nt);return Me(s,hr(i)),s}function dr(i){let s=V0(i),r=s.matches[s.matches.length-1];return Me(r.route.id,`${i} can only be used on routes that contain a unique "id"`),r.route.id}function K0(){return dr("useRouteId")}function $0(){let i=D.useContext(or),s=Z0("useRouteError"),r=dr("useRouteError");return i!==void 0?i:s.errors?.[r]}function J0(){let{router:i}=X0("useNavigate"),s=dr("useNavigate"),r=D.useRef(!1);return up(()=>{r.current=!0}),D.useCallback(async(o,h={})=>{yt(r.current,np),r.current&&(typeof o=="number"?i.navigate(o):await i.navigate(o,{fromRouteId:s,...h}))},[i,s])}var Nd={};function cp(i,s,r){!s&&!Nd[i]&&(Nd[i]=!0,yt(!1,r))}D.memo(W0);function W0({routes:i,future:s,state:r}){return sp(i,void 0,r,s)}function rp({to:i,replace:s,state:r,relative:c}){Me(Ya(),"<Navigate> may be used only in the context of a <Router> component.");let{static:o}=D.useContext(Ot);yt(!o,"<Navigate> must not be used on the initial render in a <StaticRouter>. This is a no-op, but you should modify your code so the <Navigate> is only ever rendered in response to some user interaction or state change.");let{matches:h}=D.useContext(Nt),{pathname:g}=jt(),p=fr(),y=rr(i,cr(h),g,c==="path"),m=JSON.stringify(y);return D.useEffect(()=>{p(JSON.parse(m),{replace:s,state:r,relative:c})},[p,m,c,s,r]),null}function Zn(i){Me(!1,"A <Route> is only ever to be used as the child of <Routes> element, never rendered directly. Please wrap your <Route> in a <Routes>.")}function F0({basename:i="/",children:s=null,location:r,navigationType:c="POP",navigator:o,static:h=!1}){Me(!Ya(),"You cannot render a <Router> inside another <Router>. You should never have more than one in your app.");let g=i.replace(/^\/*/,"/"),p=D.useMemo(()=>({basename:g,navigator:o,static:h,future:{}}),[g,o,h]);typeof r=="string"&&(r=Pl(r));let{pathname:y="/",search:m="",hash:S="",state:k=null,key:z="default"}=r,q=D.useMemo(()=>{let H=nl(y,g);return H==null?null:{location:{pathname:H,search:m,hash:S,state:k,key:z},navigationType:c}},[g,y,m,S,k,z,c]);return yt(q!=null,`<Router basename="${g}"> is not able to match the URL "${y}${m}${S}" because it does not start with the basename, so the <Router> won't render anything.`),q==null?null:D.createElement(Ot.Provider,{value:p},D.createElement(Jn.Provider,{children:s,value:q}))}function P0({children:i,location:s}){return L0(er(i),s)}function er(i,s=[]){let r=[];return D.Children.forEach(i,(c,o)=>{if(!D.isValidElement(c))return;let h=[...s,o];if(c.type===D.Fragment){r.push.apply(r,er(c.props.children,h));return}Me(c.type===Zn,`[${typeof c.type=="string"?c.type:c.type.name}] is not a <Route> component. All component children of <Routes> must be a <Route> or <React.Fragment>`),Me(!c.props.index||!c.props.children,"An index route cannot have child routes.");let g={id:c.props.id||h.join("-"),caseSensitive:c.props.caseSensitive,element:c.props.element,Component:c.props.Component,index:c.props.index,path:c.props.path,loader:c.props.loader,action:c.props.action,hydrateFallbackElement:c.props.hydrateFallbackElement,HydrateFallback:c.props.HydrateFallback,errorElement:c.props.errorElement,ErrorBoundary:c.props.ErrorBoundary,hasErrorBoundary:c.props.hasErrorBoundary===!0||c.props.ErrorBoundary!=null||c.props.errorElement!=null,shouldRevalidate:c.props.shouldRevalidate,handle:c.props.handle,lazy:c.props.lazy};c.props.children&&(g.children=er(c.props.children,h)),r.push(g)}),r}var yi="get",vi="application/x-www-form-urlencoded";function Ai(i){return i!=null&&typeof i.tagName=="string"}function I0(i){return Ai(i)&&i.tagName.toLowerCase()==="button"}function ey(i){return Ai(i)&&i.tagName.toLowerCase()==="form"}function ty(i){return Ai(i)&&i.tagName.toLowerCase()==="input"}function ly(i){return!!(i.metaKey||i.altKey||i.ctrlKey||i.shiftKey)}function ay(i,s){return i.button===0&&(!s||s==="_self")&&!ly(i)}function tr(i=""){return new URLSearchParams(typeof i=="string"||Array.isArray(i)||i instanceof URLSearchParams?i:Object.keys(i).reduce((s,r)=>{let c=i[r];return s.concat(Array.isArray(c)?c.map(o=>[r,o]):[[r,c]])},[]))}function ny(i,s){let r=tr(i);return s&&s.forEach((c,o)=>{r.has(o)||s.getAll(o).forEach(h=>{r.append(o,h)})}),r}var mi=null;function uy(){if(mi===null)try{new FormData(document.createElement("form"),0),mi=!1}catch{mi=!0}return mi}var iy=new Set(["application/x-www-form-urlencoded","multipart/form-data","text/plain"]);function Jc(i){return i!=null&&!iy.has(i)?(yt(!1,`"${i}" is not a valid \`encType\` for \`<Form>\`/\`<fetcher.Form>\` and will default to "${vi}"`),null):i}function sy(i,s){let r,c,o,h,g;if(ey(i)){let p=i.getAttribute("action");c=p?nl(p,s):null,r=i.getAttribute("method")||yi,o=Jc(i.getAttribute("enctype"))||vi,h=new FormData(i)}else if(I0(i)||ty(i)&&(i.type==="submit"||i.type==="image")){let p=i.form;if(p==null)throw new Error('Cannot submit a <button> or <input type="submit"> without a <form>');let y=i.getAttribute("formaction")||p.getAttribute("action");if(c=y?nl(y,s):null,r=i.getAttribute("formmethod")||p.getAttribute("method")||yi,o=Jc(i.getAttribute("formenctype"))||Jc(p.getAttribute("enctype"))||vi,h=new FormData(p,i),!uy()){let{name:m,type:S,value:k}=i;if(S==="image"){let z=m?`${m}.`:"";h.append(`${z}x`,"0"),h.append(`${z}y`,"0")}else m&&h.append(m,k)}}else{if(Ai(i))throw new Error('Cannot submit element that is not <form>, <button>, or <input type="submit|image">');r=yi,c=null,o=vi,g=i}return h&&o==="text/plain"&&(g=h,h=void 0),{action:c,method:r.toLowerCase(),encType:o,formData:h,body:g}}Object.getOwnPropertyNames(Object.prototype).sort().join("\0");function pr(i,s){if(i===!1||i===null||typeof i>"u")throw new Error(s)}function cy(i,s,r){let c=typeof i=="string"?new URL(i,typeof window>"u"?"server://singlefetch/":window.location.origin):i;return c.pathname==="/"?c.pathname=`_root.${r}`:s&&nl(c.pathname,s)==="/"?c.pathname=`${s.replace(/\/$/,"")}/_root.${r}`:c.pathname=`${c.pathname.replace(/\/$/,"")}.${r}`,c}async function ry(i,s){if(i.id in s)return s[i.id];try{let r=await import(i.module);return s[i.id]=r,r}catch(r){return console.error(`Error loading route module \`${i.module}\`, reloading page...`),console.error(r),window.__reactRouterContext&&window.__reactRouterContext.isSpaMode,window.location.reload(),new Promise(()=>{})}}function oy(i){return i==null?!1:i.href==null?i.rel==="preload"&&typeof i.imageSrcSet=="string"&&typeof i.imageSizes=="string":typeof i.rel=="string"&&typeof i.href=="string"}async function fy(i,s,r){let c=await Promise.all(i.map(async o=>{let h=s.routes[o.route.id];if(h){let g=await ry(h,r);return g.links?g.links():[]}return[]}));return my(c.flat(1).filter(oy).filter(o=>o.rel==="stylesheet"||o.rel==="preload").map(o=>o.rel==="stylesheet"?{...o,rel:"prefetch",as:"style"}:{...o,rel:"prefetch"}))}function Ud(i,s,r,c,o,h){let g=(y,m)=>r[m]?y.route.id!==r[m].route.id:!0,p=(y,m)=>r[m].pathname!==y.pathname||r[m].route.path?.endsWith("*")&&r[m].params["*"]!==y.params["*"];return h==="assets"?s.filter((y,m)=>g(y,m)||p(y,m)):h==="data"?s.filter((y,m)=>{let S=c.routes[y.route.id];if(!S||!S.hasLoader)return!1;if(g(y,m)||p(y,m))return!0;if(y.route.shouldRevalidate){let k=y.route.shouldRevalidate({currentUrl:new URL(o.pathname+o.search+o.hash,window.origin),currentParams:r[0]?.params||{},nextUrl:new URL(i,window.origin),nextParams:y.params,defaultShouldRevalidate:!0});if(typeof k=="boolean")return k}return!0}):[]}function hy(i,s,{includeHydrateFallback:r}={}){return dy(i.map(c=>{let o=s.routes[c.route.id];if(!o)return[];let h=[o.module];return o.clientActionModule&&(h=h.concat(o.clientActionModule)),o.clientLoaderModule&&(h=h.concat(o.clientLoaderModule)),r&&o.hydrateFallbackModule&&(h=h.concat(o.hydrateFallbackModule)),o.imports&&(h=h.concat(o.imports)),h}).flat(1))}function dy(i){return[...new Set(i)]}function py(i){let s={},r=Object.keys(i).sort();for(let c of r)s[c]=i[c];return s}function my(i,s){let r=new Set;return new Set(s),i.reduce((c,o)=>{let h=JSON.stringify(py(o));return r.has(h)||(r.add(h),c.push({key:h,link:o})),c},[])}function op(){let i=D.useContext(ja);return pr(i,"You must render this element inside a <DataRouterContext.Provider> element"),i}function gy(){let i=D.useContext(Ti);return pr(i,"You must render this element inside a <DataRouterStateContext.Provider> element"),i}var mr=D.createContext(void 0);mr.displayName="FrameworkContext";function fp(){let i=D.useContext(mr);return pr(i,"You must render this element inside a <HydratedRouter> element"),i}function yy(i,s){let r=D.useContext(mr),[c,o]=D.useState(!1),[h,g]=D.useState(!1),{onFocus:p,onBlur:y,onMouseEnter:m,onMouseLeave:S,onTouchStart:k}=s,z=D.useRef(null);D.useEffect(()=>{if(i==="render"&&g(!0),i==="viewport"){let j=C=>{C.forEach(P=>{g(P.isIntersecting)})},B=new IntersectionObserver(j,{threshold:.5});return z.current&&B.observe(z.current),()=>{B.disconnect()}}},[i]),D.useEffect(()=>{if(c){let j=setTimeout(()=>{g(!0)},100);return()=>{clearTimeout(j)}}},[c]);let q=()=>{o(!0)},H=()=>{o(!1),g(!1)};return r?i!=="intent"?[h,z,{}]:[h,z,{onFocus:Qn(p,q),onBlur:Qn(y,H),onMouseEnter:Qn(m,q),onMouseLeave:Qn(S,H),onTouchStart:Qn(k,q)}]:[!1,z,{}]}function Qn(i,s){return r=>{i&&i(r),r.defaultPrevented||s(r)}}function vy({page:i,...s}){let{router:r}=op(),c=D.useMemo(()=>Id(r.routes,i,r.basename),[r.routes,i,r.basename]);return c?D.createElement(xy,{page:i,matches:c,...s}):null}function by(i){let{manifest:s,routeModules:r}=fp(),[c,o]=D.useState([]);return D.useEffect(()=>{let h=!1;return fy(i,s,r).then(g=>{h||o(g)}),()=>{h=!0}},[i,s,r]),c}function xy({page:i,matches:s,...r}){let c=jt(),{manifest:o,routeModules:h}=fp(),{basename:g}=op(),{loaderData:p,matches:y}=gy(),m=D.useMemo(()=>Ud(i,s,y,o,c,"data"),[i,s,y,o,c]),S=D.useMemo(()=>Ud(i,s,y,o,c,"assets"),[i,s,y,o,c]),k=D.useMemo(()=>{if(i===c.pathname+c.search+c.hash)return[];let H=new Set,j=!1;if(s.forEach(C=>{let P=o.routes[C.route.id];!P||!P.hasLoader||(!m.some(K=>K.route.id===C.route.id)&&C.route.id in p&&h[C.route.id]?.shouldRevalidate||P.hasClientLoader?j=!0:H.add(C.route.id))}),H.size===0)return[];let B=cy(i,g,"data");return j&&H.size>0&&B.searchParams.set("_routes",s.filter(C=>H.has(C.route.id)).map(C=>C.route.id).join(",")),[B.pathname+B.search]},[g,p,c,o,m,s,i,h]),z=D.useMemo(()=>hy(S,o),[S,o]),q=by(S);return D.createElement(D.Fragment,null,k.map(H=>D.createElement("link",{key:H,rel:"prefetch",as:"fetch",href:H,...r})),z.map(H=>D.createElement("link",{key:H,rel:"modulepreload",href:H,...r})),q.map(({key:H,link:j})=>D.createElement("link",{key:H,nonce:r.nonce,...j})))}function Sy(...i){return s=>{i.forEach(r=>{typeof r=="function"?r(s):r!=null&&(r.current=s)})}}var hp=typeof window<"u"&&typeof window.document<"u"&&typeof window.document.createElement<"u";try{hp&&(window.__reactRouterVersion="7.8.1")}catch{}function _y({basename:i,children:s,window:r}){let c=D.useRef();c.current==null&&(c.current=r0({window:r,v5Compat:!0}));let o=c.current,[h,g]=D.useState({action:o.action,location:o.location}),p=D.useCallback(y=>{D.startTransition(()=>g(y))},[g]);return D.useLayoutEffect(()=>o.listen(p),[o,p]),D.createElement(F0,{basename:i,children:s,location:h.location,navigationType:h.action,navigator:o})}var dp=/^(?:[a-z][a-z0-9+.-]*:|\/\/)/i,pp=D.forwardRef(function({onClick:s,discover:r="render",prefetch:c="none",relative:o,reloadDocument:h,replace:g,state:p,target:y,to:m,preventScrollReset:S,viewTransition:k,...z},q){let{basename:H}=D.useContext(Ot),j=typeof m=="string"&&dp.test(m),B,C=!1;if(typeof m=="string"&&j&&(B=m,hp))try{let re=new URL(window.location.href),_e=m.startsWith("//")?new URL(re.protocol+m):new URL(m),Ue=nl(_e.pathname,H);_e.origin===re.origin&&Ue!=null?m=Ue+_e.search+_e.hash:C=!0}catch{yt(!1,`<Link to="${m}"> contains an invalid URL which will probably break when clicked - please update to a valid URL path.`)}let P=C0(m,{relative:o}),[K,fe,$]=yy(c,z),ze=Ay(m,{replace:g,state:p,target:y,preventScrollReset:S,relative:o,viewTransition:k});function ae(re){s&&s(re),re.defaultPrevented||ze(re)}let ie=D.createElement("a",{...z,...$,href:B||P,onClick:C||h?s:ae,ref:Sy(q,fe),target:y,"data-discover":!j&&r==="render"?"true":void 0});return K&&!j?D.createElement(D.Fragment,null,ie,D.createElement(vy,{page:P})):ie});pp.displayName="Link";var Ey=D.forwardRef(function({"aria-current":s="page",caseSensitive:r=!1,className:c="",end:o=!1,style:h,to:g,viewTransition:p,children:y,...m},S){let k=Wn(g,{relative:m.relative}),z=jt(),q=D.useContext(Ti),{navigator:H,basename:j}=D.useContext(Ot),B=q!=null&&Oy(k)&&p===!0,C=H.encodeLocation?H.encodeLocation(k).pathname:k.pathname,P=z.pathname,K=q&&q.navigation&&q.navigation.location?q.navigation.location.pathname:null;r||(P=P.toLowerCase(),K=K?K.toLowerCase():null,C=C.toLowerCase()),K&&j&&(K=nl(K,j)||K);const fe=C!=="/"&&C.endsWith("/")?C.length-1:C.length;let $=P===C||!o&&P.startsWith(C)&&P.charAt(fe)==="/",ze=K!=null&&(K===C||!o&&K.startsWith(C)&&K.charAt(C.length)==="/"),ae={isActive:$,isPending:ze,isTransitioning:B},ie=$?s:void 0,re;typeof c=="function"?re=c(ae):re=[c,$?"active":null,ze?"pending":null,B?"transitioning":null].filter(Boolean).join(" ");let _e=typeof h=="function"?h(ae):h;return D.createElement(pp,{...m,"aria-current":ie,className:re,ref:S,style:_e,to:g,viewTransition:p},typeof y=="function"?y(ae):y)});Ey.displayName="NavLink";var Ry=D.forwardRef(({discover:i="render",fetcherKey:s,navigate:r,reloadDocument:c,replace:o,state:h,method:g=yi,action:p,onSubmit:y,relative:m,preventScrollReset:S,viewTransition:k,...z},q)=>{let H=Dy(),j=wy(p,{relative:m}),B=g.toLowerCase()==="get"?"get":"post",C=typeof p=="string"&&dp.test(p),P=K=>{if(y&&y(K),K.defaultPrevented)return;K.preventDefault();let fe=K.nativeEvent.submitter,$=fe?.getAttribute("formmethod")||g;H(fe||K.currentTarget,{fetcherKey:s,method:$,navigate:r,replace:o,state:h,relative:m,preventScrollReset:S,viewTransition:k})};return D.createElement("form",{ref:q,method:B,action:j,onSubmit:c?y:P,...z,"data-discover":!C&&i==="render"?"true":void 0})});Ry.displayName="Form";function Ty(i){return`${i} must be used within a data router.  See https://reactrouter.com/en/main/routers/picking-a-router.`}function mp(i){let s=D.useContext(ja);return Me(s,Ty(i)),s}function Ay(i,{target:s,replace:r,state:c,preventScrollReset:o,relative:h,viewTransition:g}={}){let p=fr(),y=jt(),m=Wn(i,{relative:h});return D.useCallback(S=>{if(ay(S,s)){S.preventDefault();let k=r!==void 0?r:$n(y)===$n(m);p(i,{replace:k,state:c,preventScrollReset:o,relative:h,viewTransition:g})}},[y,p,m,r,c,s,i,o,h,g])}function ky(i){yt(typeof URLSearchParams<"u","You cannot use the `useSearchParams` hook in a browser that does not support the URLSearchParams API. If you need to support Internet Explorer 11, we recommend you load a polyfill such as https://github.com/ungap/url-search-params.");let s=D.useRef(tr(i)),r=D.useRef(!1),c=jt(),o=D.useMemo(()=>ny(c.search,r.current?null:s.current),[c.search]),h=fr(),g=D.useCallback((p,y)=>{const m=tr(typeof p=="function"?p(new URLSearchParams(o)):p);r.current=!0,h("?"+m,y)},[h,o]);return[o,g]}var My=0,zy=()=>`__${String(++My)}__`;function Dy(){let{router:i}=mp("useSubmit"),{basename:s}=D.useContext(Ot),r=K0();return D.useCallback(async(c,o={})=>{let{action:h,method:g,encType:p,formData:y,body:m}=sy(c,s);if(o.navigate===!1){let S=o.fetcherKey||zy();await i.fetch(S,r,o.action||h,{preventScrollReset:o.preventScrollReset,formData:y,body:m,formMethod:o.method||g,formEncType:o.encType||p,flushSync:o.flushSync})}else await i.navigate(o.action||h,{preventScrollReset:o.preventScrollReset,formData:y,body:m,formMethod:o.method||g,formEncType:o.encType||p,replace:o.replace,state:o.state,fromRouteId:r,flushSync:o.flushSync,viewTransition:o.viewTransition})},[i,s,r])}function wy(i,{relative:s}={}){let{basename:r}=D.useContext(Ot),c=D.useContext(Nt);Me(c,"useFormAction must be used inside a RouteContext");let[o]=c.matches.slice(-1),h={...Wn(i||".",{relative:s})},g=jt();if(i==null){h.search=g.search;let p=new URLSearchParams(h.search),y=p.getAll("index");if(y.some(S=>S==="")){p.delete("index"),y.filter(k=>k).forEach(k=>p.append("index",k));let S=p.toString();h.search=S?`?${S}`:""}}return(!i||i===".")&&o.route.index&&(h.search=h.search?h.search.replace(/^\?/,"?index&"):"?index"),r!=="/"&&(h.pathname=h.pathname==="/"?r:al([r,h.pathname])),$n(h)}function Oy(i,{relative:s}={}){let r=D.useContext(ap);Me(r!=null,"`useViewTransitionState` must be used within `react-router-dom`'s `RouterProvider`.  Did you accidentally import `RouterProvider` from `react-router`?");let{basename:c}=mp("useViewTransitionState"),o=Wn(i,{relative:s});if(!r.isTransitioning)return!1;let h=nl(r.currentLocation.pathname,c)||r.currentLocation.pathname,g=nl(r.nextLocation.pathname,c)||r.nextLocation.pathname;return bi(o.pathname,g)!=null||bi(o.pathname,h)!=null}const Ny=`---
 title: 할건해야짐
 period: 2025.05.16 – 05.28
-role: 4인 팀 · 매출·운동기구 모듈
+role: 4인 팀 · 매출, 운동기구 모듈
 archive: true
-summary: 헬스장 통합 관리 웹서비스(4인 팀, 2주). 첫 팀 프로젝트였고, 매출·운동기구 모듈을 맡아 트레이너별 매출을 차트로 시각화했습니다.
+summary: 헬스장 통합 관리 웹서비스(4인 팀, 2주). 첫 팀 프로젝트였고 매출과 운동기구 모듈을 맡아 트레이너별 매출을 차트로 시각화했습니다.
 stack: [Java, JSP, Servlet, MVC-2, MySQL, chart.js]
 links:
   repo: https://github.com/ruff1376/AI3_MINI1_TEAM3
@@ -94,7 +94,7 @@ links:
 **문제** — 매출을 음수로 넣으면 차트가 깨졌습니다.
 - 명세에 없는 입력으로, 직접 테스트하다 음수를 넣어 보고 알았습니다
 
-**선택** — 뷰에서 필수값을 검증하고, 컨트롤러에서 0 미만을 예외로 처리해 에러 메시지를 띄웠습니다.
+**선택** — 뷰에서 필수값을 검증하고 컨트롤러에서 0 미만을 예외로 처리해 에러 메시지를 띄웠습니다.
 
 **결과** — 음수 매출은 에러 메시지와 함께 거절됩니다.
 
@@ -113,9 +113,9 @@ placement: 메인 — 프로젝트를 고르지 않았을 때 보이는 본문
 
 ## About Me
 
-- **현장과 제품 목적에서 설계 범위를 정합니다.** 오프라인 홀덤 대회는 인원이 줄면 테이블을 합칩니다. 서버가 좌석을 다시 배정해도 사람은 걸어가야 하고, 새 자리 태블릿은 누가 앉았는지 모릅니다. 그래서 좌석 재배치를 만들지 않고, 참가자가 새 자리 태블릿에 자기 참가 OTP를 입력해 앉게 했습니다([Playsync V2](./playsync-v2.md#테이블-병합-시-좌석-이동-주체를-서버에서-사람으로-전환))
+- **현장과 제품 목적에서 설계 범위를 정합니다.** 오프라인 홀덤 대회는 인원이 줄면 테이블을 합칩니다. 서버가 좌석을 다시 배정해도 사람은 걸어가야 하고, 새 자리 태블릿은 누가 앉았는지 모릅니다. 그래서 좌석 재배치를 만들지 않고 참가자가 새 자리 태블릿에 자기 참가 OTP를 입력해 앉게 했습니다([Playsync V2](./playsync-v2.md#테이블-병합-시-좌석-이동-주체를-서버에서-사람으로-전환))
   - [MR.Brain-Edu](./mtechlabs.md#뇌-해부-교육-소프트웨어)
-- **맞게 돌아가는지는 측정으로 확인합니다.** 서버를 강제로 종료했다 다시 띄우자 111명이 재참여 결제 의사를 묻는 시간 안에 답하지 못해 탈락했습니다. 태블릿이 모두 재접속해야 대회가 다시 진행되게 바꿔 같은 측정에서 0명을 확인했고, 멈춘 대회가 다시 풀리기까지 걸리는 시간도 407초에서 104초로 줄였습니다([Playsync V2](./playsync-v2.md#서버-재시작-시-정지-시간-보정과-재개-권한-설계))
+- **맞게 돌아가는지는 측정으로 확인합니다.** 서버를 강제로 종료했다 다시 띄우자 111명이 재참여 결제 의사를 묻는 시간 안에 답하지 못해 탈락했습니다. 태블릿이 모두 재접속해야 대회가 다시 진행되게 바꿔 같은 측정에서 0명을 확인했습니다. 그 대신 멈춘 대회가 풀리기까지 407초가 걸리게 되어, 원인을 하나씩 고쳐 104초로 줄였습니다([Playsync V2](./playsync-v2.md#서버-재시작-시-정지-시간-보정과-재개-권한-설계))
   - [MR.Brain-Edu](./mtechlabs.md#뇌-해부-교육-소프트웨어), [Playsync V2 측정 도구](./playsync-v2.md#부하-측정-도구의-지연-집계-오류-수정)
 - **정한 규칙은 코드로 강제합니다.** 게임 테이블의 상태를 고치는 코드 14곳을 함수 하나로 모으고, 그 밖에서는 상태를 쓸 수 없게 막았습니다([Playsync V2](./playsync-v2.md#게임-테이블-상태의-락-범위-설계))
   - [영상 제작 자동화](./mtechlabs.md#영상-제작-자동화), [MRI 3D 에셋 파이프라인](./mtechlabs.md#mri-3d-에셋-파이프라인)
@@ -128,7 +128,7 @@ title: Lexi-hub
 period: 2025.09.01 – 09.15
 role: 개인 · 단독 개발
 archive: true
-summary: 커스텀 단어장을 타이핑으로 외우는 학습 서비스. 프론트·백엔드·Flutter를 혼자 만들었고, 한글 조합 중인 글자를 오타로 판정하던 문제를 판정 시점을 바꿔 풀었습니다.
+summary: 커스텀 단어장을 타이핑으로 외우는 학습 서비스. 프론트, 백엔드, Flutter를 혼자 만들었고 한글 조합 중인 글자를 오타로 판정하던 문제를 판정 시점을 바꿔 풀었습니다.
 stack: [React, TypeScript, FSD, NestJS, MongoDB, JWT, Flutter]
 links:
   frontend: https://github.com/GUNW-O-O/lexi-hub
@@ -136,7 +136,7 @@ links:
   flutter: https://github.com/GUNW-O-O/lexi-hub-flutter
 ---
 
-팀 프로젝트에서 못 해 본 것(TypeScript, 인증/인가, NoSQL 모델링)을 골라 넣은 학습용 프로젝트입니다.
+팀 프로젝트에서 못 해 본 것(TypeScript, 인증과 인가, NoSQL 모델링)을 골라 넣은 학습용 프로젝트입니다.
 
 <details class="shots">
 <summary><span class="closed">구현 화면 9장 보기</span><span class="opened">구현 화면 접기</span></summary>
@@ -166,14 +166,14 @@ links:
 ## 한글 조합 중 글자의 오타 판정 유예
 
 **문제** — 한글은 한 글자가 여러 번에 걸쳐 만들어져 글자 단위로 비교하면 조합 중인 글자가 오타로 찍혔습니다.
-- "간"을 치면 \`ㄱ\` → \`가\` → \`간\` 순으로 값이 바뀝니다. 앞의 둘은 틀린 글자가 아니라 아직 안 끝난 글자입니다
+- "간"을 치면 \`ㄱ\`, \`가\`, \`간\` 순으로 값이 바뀝니다. 앞의 둘은 틀린 글자가 아니라 아직 안 끝난 글자입니다
 - 정확히 친 사람도 입력하는 내내 빨간 글자를 보게 됩니다
 - typing.works를 레퍼런스로 두고 비슷하게 구현하다가 직접 타이핑하며 겪었습니다
 
-**선택** — 입력 중인 글자는 판정을 미루고, 다음 글자가 들어오는 시점에 이전 글자를 최종 판정합니다.
+**선택** — 입력 중인 글자는 판정을 미루고 다음 글자가 들어오는 시점에 이전 글자를 최종 판정합니다.
 - 다음 글자가 들어왔다는 건 앞 글자의 조합이 끝났다는 뜻이라 입력 순서만으로 판정할 수 있습니다
 - 마지막 글자는 색으로 판정하지 않고, Enter를 누를 때 입력 전체를 정답과 비교합니다
-- 먼저 화면에 그릴 글자 상태를 입력됨 / 대기 / 오타 셋으로 나눴고, 그 과정에서 이 규칙에 도달했습니다
+- 먼저 화면에 그릴 글자 상태를 입력됨, 대기, 오타 셋으로 나눴고 그 과정에서 이 규칙에 도달했습니다
 
 **결과** — 정확히 치는 동안에는 빨간 글자가 나오지 않습니다.
 
@@ -191,7 +191,7 @@ links:
 
 ## 일괄 추가 시 마지막 항목만 반영되던 결함 수정
 
-**문제** — JSON/CSV로 단어를 일괄 추가하면 마지막 단어 하나만 목록에 들어갔습니다.
+**문제** — JSON이나 CSV로 단어를 일괄 추가하면 마지막 단어 하나만 목록에 들어갔습니다.
 
 **원인** — 단건 추가를 전제로 만든 함수에 배열이 들어오고 있었습니다.
 
@@ -199,7 +199,7 @@ links:
 
 </details>
 `,Cy=`---
-title: MTechLabs — 뇌 MRI 분석·교육 소프트웨어와 영상 제작 자동화
+title: MTechLabs — 뇌 MRI 분석, 교육 소프트웨어와 영상 제작 자동화
 period: 2026.06 – 재직 중
 role: MTechLabs · 웹 개발자(계약직)
 summary: MTechLabs에서 뇌 MRI 분석 소프트웨어와 뇌 해부 교육 소프트웨어를 작업했습니다. 분석은 단계별로 다시 돌릴 수 있게 나눴고, 교육 소프트웨어는 미니 PC에서 챕터 로딩을 4.9초에서 1.6초로 줄였습니다.
@@ -241,7 +241,7 @@ stack: [Claude Code, Node, ffmpeg, TTS, Electron, React, TypeScript, Three.js, Z
 - 삭제는 상태만 되돌려 결과 파일이 계속 남았습니다
 
 **선택** — DB에 저장된 결과 파일을 기준으로 삼아 실행과 삭제를 단계와 파일 단위로 나눴습니다.
-- **삭제**: 분석 서버의 파일을 먼저 지우고, 실패하면 DB를 건드리지 않아 웹에서 다시 시도할 수 있습니다
+- **삭제**: 분석 서버의 파일을 먼저 지우고 실패하면 DB를 건드리지 않아 웹에서 다시 시도할 수 있습니다
 - **재생성**: 파일별로 DB와 분석 서버에 있는지 보여 주고 빠진 것만 다시 만듭니다. DB에는 없고 분석 서버에만 남은 캐시는 지우고 다시 받습니다
 - **3D**: 외부 뷰어 프로그램을 띄워 스크립트를 돌리던 단계를 걷어내고, 서버에서 만든 메시를 브라우저 3D 뷰어로 봅니다
 - **조회**: 촬영 영상 묶음(시리즈) 목록 응답에 분석 상태를 함께 내려 줍니다
@@ -254,19 +254,19 @@ stack: [Claude Code, Node, ffmpeg, TTS, Electron, React, TypeScript, Three.js, Z
 
 MR.Brain-Edu · 2026.06 – 10 · 단독
 
-전시장 키오스크에서 관람객이 설명 없이 만지는 뇌 해부 교육 데스크톱 앱입니다. 주제만 받았고, 무엇을 만들지부터 혼자 정했습니다. 무인 운영이라 방치되면 초기 화면으로 돌아가고, 의료기기 소프트웨어(SaMD)로 읽힐 수 있는 기능과 문구는 넣지 않았습니다. 수치는 공개 문헌의 집단 평균만 출처와 함께 보여 줍니다.
+전시장 키오스크에서 관람객이 설명 없이 만지는 뇌 해부 교육 데스크톱 앱입니다. 주제만 받았고 무엇을 만들지부터 혼자 정했습니다. 무인 운영이라 방치되면 초기 화면으로 돌아가고, 의료기기 소프트웨어(SaMD)로 읽힐 수 있는 기능과 문구는 넣지 않았습니다. 수치는 공개 문헌의 집단 평균만 출처와 함께 보여 줍니다.
 
-### 저사양 기기의 로딩·프레임 최적화
+### 저사양 기기의 로딩과 프레임 최적화
 
-**문제** — 앱은 챕터로 나뉘는데, 미니 PC에서 챕터 전환이 느리고 줌인할 때 프레임이 떨어졌습니다. 소프트웨어만 판매하는 옵션이 있어 고객 기기 사양은 제각각입니다.
+**문제** — 앱은 챕터로 나뉘는데 미니 PC에서 챕터 전환이 느리고 줌인할 때 프레임이 떨어졌습니다. 소프트웨어만 판매하는 옵션이 있어 고객 기기 사양은 제각각입니다.
 
 **선택** — 로딩과 프레임을 나눠 각각 줄였습니다.
 - **로딩**: 단면 여섯 칸이 따로 쓰던 캔버스를 하나로 합치고, 단면 텍스처를 원본과 같은 8비트로 올리게 바꿨습니다. 화질은 그대로입니다
 - **프레임**: 렌더 화질과 투명 표현을 관리자 설정으로 빼 기기에 맞춰 고르게 하고, 기본값을 가볍게 했습니다. 뇌가 화면을 꽉 채울수록 칠할 픽셀이 늘어 프레임이 떨어져, 한 챕터에만 있던 줌 한도를 3D 챕터 전부에 같은 기준으로 걸었습니다
 
 **결과** — \`챕터 로딩 4.9초 → 1.6초\` 미니 PC(Ryzen 5 3500U)에서 최적화 전후 빌드를 같은 자동 시나리오로 5회씩 돌린 값입니다.
-- 2D↔3D 연동 챕터 평균 26fps → 58fps, 3D 조작 챕터 42fps → 59fps
-- 메모리 최대 2.1GB → 1.1GB
+- 2D와 3D를 연동한 챕터는 평균 26fps에서 58fps로, 3D 조작 챕터는 42fps에서 59fps로 올랐습니다
+- 메모리 최대치는 2.1GB에서 1.1GB로 줄었습니다
 
 <details class="more">
 <summary>나머지 항목</summary>
@@ -282,7 +282,7 @@ MR.Brain-Edu · 2026.06 – 10 · 단독
   - 장면과 문장 자체는 쌓지 않습니다. 쌓인 사례가 본보기가 되어 다음 영상이 같은 장면을 찍어 냈기 때문입니다
 - **점수가 아무것도 걸러 내지 못하는 것을 확인하고 채점을 없앴습니다.**
   - 처음에는 사람이 승인한 8편의 작업 기록에서 직접 만든 결정 추출 도구 [what-i-decided](https://github.com/GUNW-O-O/what-i-decided)로 사람의 지적을 뽑아 감점 항목으로 만들었습니다
-  - 네 영역을 세어 보니 대본은 10번 중 반려 0번, 컷은 14번 중 반려 1번이었고, 사람의 반려는 모두 점수표 밖에서 나왔습니다
+  - 네 영역을 세어 보니 대본은 10번 중 반려 0번, 컷은 14번 중 반려 1번이었고 사람의 반려는 모두 점수표 밖에서 나왔습니다
   - 점수 대신 대본은 두 안 중에서 고르게 하고, 컷은 통과 조건과 가장 약한 컷의 대안 제안으로 바꿨습니다
   - 맥락 없는 새 에이전트로 두 번 시험해 문서의 어긋남 48곳을 고쳤습니다
 - **자동화해도 품질이 떨어지지 않게, 지킬 규칙은 코드로 걸고 돈이 드는 지점은 사람이 정합니다.**
@@ -300,9 +300,9 @@ MR.Brain-Edu · 2026.06 – 10 · 단독
 
 mri2mesh · 2026.07 – 08 · 단독
 
-MRI를 올리면 영역별 3D 메시(GLB)를 뽑는 로컬 도구로, MR.Brain-Edu가 쓰는 에셋을 만듭니다. 환자 MRI는 익명화하고, 실패하면 진행을 멈춥니다. 영역 분석이 끝나면 원본을 지웁니다. 메시 생성 방식을 바꿔 가며 결과를 나란히 비교할 수 있습니다.
+MRI를 올리면 영역별 3D 메시(GLB)를 뽑는 로컬 도구로, MR.Brain-Edu가 쓰는 에셋을 만듭니다. 환자 MRI는 익명화하고 실패하면 진행을 멈춥니다. 영역 분석이 끝나면 원본을 지웁니다. 메시 생성 방식을 바꿔 가며 결과를 나란히 비교할 수 있습니다.
 
-- **메시 표면 전체에 한곳을 향하는 가시가 있었습니다. 원인은 백질 저신호 영역이었고, 그 영역 자체를 제거하는 방법도 있었지만 본체와 떨어진 조각만 걸렀습니다.**
+- **메시 표면 전체에 한곳을 향하는 가시가 있었습니다. 원인은 백질 저신호 영역이었고 그 영역 자체를 제거하는 방법도 있었지만 본체와 떨어진 조각만 걸렀습니다.**
   - 해당 영역은 나이가 들수록 늘어나 빼면 노화 교육에서 보여 줄 것이 사라집니다
 
 </details>
@@ -319,7 +319,7 @@ links:
 
 단말은 폰, 좌석 태블릿, 딜러 태블릿, 전광판 넷입니다. 카드는 사람 딜러가 실물로 돌리고, 칩과 팟, 좌석, 상금은 서버가 관리합니다.
 
-[V1](./playsync.md) MVP는 대회 하나가 끝까지 진행되는 데서 멈춰 있었습니다. V2는 그 코드를 가져와, 요청이 겹치거나 서버와 회선이 끊겨도 칩, 좌석, 순위가 어긋나지 않게 만드는 작업입니다.
+[V1](./playsync.md) MVP는 대회 하나가 끝까지 진행되는 데서 멈춰 있었습니다. V2는 그 코드를 가져와 요청이 겹치거나 서버와 회선이 끊겨도 칩, 좌석, 순위가 어긋나지 않게 만드는 작업입니다.
 
 ---
 
@@ -347,7 +347,7 @@ links:
 **문제** — 서버가 멈췄다 돌아왔을 때 대회를 이어 가는 복구 코드가 없었습니다. 멈춰 있던 시간에도 블라인드(시간에 따라 오르는 기본 베팅액) 시계가 흘러, 돌아오면 레벨이 올라가 있었습니다.
 
 **대안** — 두 가지 방법을 버렸습니다.
-- **상점이 기록(V1)**: 상점이 장애 시점을 적어 시작 시각을 미루는 방식은, 복구는 플랫폼이 자동으로 해야 한다고 보고 버렸습니다
+- **상점이 장애 시점 적기(V1)**: 상점이 장애 시점을 적어 시작 시각을 미루는 방식은, 복구는 플랫폼이 자동으로 해야 한다고 보고 버렸습니다
 - **복구 후 정해 둔 시간 기다리기**: 몇 초로 잡든 짧으면 태블릿이 아직 꺼진 사람이 폴드되고 길면 다 모인 테이블이 기다립니다. 근거를 댈 수 없는 값이라 버렸습니다
 
 **선택** — 멈춘 시간은 서버가 계산합니다. 대회 정지는 태블릿이 모두 재접속하면 서버가 풀고, 각 테이블의 턴은 테이블을 직접 보는 딜러가 "이어서 진행"을 눌러 재개합니다.
@@ -362,13 +362,13 @@ links:
 
 ## 재시작 뒤 대회 정지 해제 시간의 원인별 단축
 
-**문제** — 재시작 뒤 5분 안에 대회가 다시 진행되는 것을 합격선으로 잡았는데, 대회 하나에 667테이블을 모은 측정에서 정지 해제까지 407초가 걸렸습니다.
+**문제** — 딜러와 좌석 태블릿이 모두 재접속해야 정지가 풀리게 바꾸자, 푸는 데 걸리는 시간이 늘었습니다. 합격선은 재시작 뒤 5분인데, 대회 하나에 667테이블을 모은 측정에서 정지 해제까지 407초가 걸렸습니다.
 
 **원인** — 서버는 2분째부터 부하가 거의 없는데 기기가 늦게 재접속하고 있었습니다.
 
 **선택** — 원인마다 하나씩 고치고 같은 측정을 반복했습니다.
-- **재접속 대기**: 실패할 때마다 대기를 두 배(80, 160, 320초)로 늘려, 가장 늦은 한 대를 대회 전체가 기다렸습니다. 5, 10, 20, 40초 간격으로 바꾸고 기기마다 그 간격을 절반까지 늘리거나 줄여 흩었습니다. 407초가 198초로 줄었습니다
-- **접속을 받는 속도**: 접속 티켓은 초당 200장 나가는데 57대만 접속했습니다. 같은 Node 버전에서 실험하니 리스너 하나는 이벤트 루프 한 바퀴에 접속을 하나만 받았고, 리스너 8개는 8개를 받았습니다. 같은 포트에 리스너를 16개 두어 198초가 104초로 줄었습니다
+- **재접속 대기**: 실패할 때마다 대기를 두 배(80, 160, 320초)로 늘려 가장 늦은 한 대를 대회 전체가 기다렸습니다. 5, 10, 20, 40초 간격으로 바꾸고 기기마다 그 간격을 절반만큼 늘리거나 줄여 흩었습니다. 407초가 198초로 줄었습니다
+- **접속을 받는 속도**: 접속 티켓은 초당 200장 나가는데 접속은 초당 57대만 받았습니다. 같은 Node 버전에서 실험하니 리스너 하나는 이벤트 루프 한 바퀴에 접속을 하나만 받았고, 리스너 8개는 8개를 받았습니다. 같은 포트에 리스너를 16개 두어 198초가 104초로 줄었습니다
 - **DB 조회**: 기기마다 좌석 토큰 세대를 세 번 조회했습니다. 실행 중인 조회에 뒤따라온 조회를 쿼리 하나로 묶어 DB 연결 대기가 1,246건에서 102건으로 줄었습니다
 - **사람이 기다리는 시간**: 옆자리 태블릿은 접속됐는데 "40초 후 재시도"를 보며 기다릴 사람은 없어, 재접속 안내 줄에 "지금 다시 연결" 버튼을 넣었습니다
 
@@ -378,17 +378,17 @@ links:
 
 ## 대회장 회선 장애의 감지 기준과 정지 범위
 
-**문제** — 처음에는 회선이 돌아올 때 재접속이 몰리는 것만 처리하면 된다고 봤습니다. 서버가 내려가면 대회가 멈추지만, 회선이 끊기면 서버는 그 대회를 계속 진행해 차례인 사람이 30초마다 한 명씩 자동 폴드됩니다. 문제는 끊긴 동안 대회가 진행되는 것이었습니다.
+**문제** — 처음에는 회선이 돌아올 때 재접속이 몰리는 것만 처리하면 된다고 봤습니다. 서버가 내려가면 대회가 멈추지만 회선이 끊기면 서버는 그 대회를 계속 진행해 차례인 사람이 30초마다 한 명씩 자동 폴드됩니다. 문제는 끊긴 동안 대회가 진행되는 것이었습니다.
 
 **대안** — 두 가지를 택하지 않았습니다.
 - **상점 콘솔의 수동 정지 버튼**: 대회를 임의로 멈추는 버튼은 만들지 않았습니다. 문제가 생기면 서버가 멈추고 화면에 원인을 알립니다
 - **딜러 응답이 없으면 턴 타임아웃 미루기**: 정상적인 타임아웃까지 미뤄질 수 있어 받지 않았습니다
 
 **선택** — 그 대회에 응답하는 딜러 태블릿이 하나도 남지 않으면 그 대회만 멈춥니다.
-- **감지**: 딜러 소켓만 2초마다 확인해, 그 대회의 딜러가 모두 연달아 두 번 답이 없으면 대회를 멈춥니다. 끊김을 아는 시간이 10.7초에서 5.7초로 줄었습니다
+- **감지**: 딜러 소켓만 2초마다 확인해 그 대회의 딜러가 모두 연달아 두 번 답이 없으면 대회를 멈춥니다. 끊김을 아는 시간이 10.7초에서 5.7초로 줄었습니다
 - **새로고침**: 딜러가 한 대뿐인 파이널 테이블은 새로고침만으로 멈출 수 있어, 스스로 닫은 경우에는 10초 뒤에도 딜러가 없을 때만 멈춥니다
 - **멈춘 동안**: 타임아웃이 지나도 폴드 처리하지 않고, 리바인을 묻던 자리는 재개 뒤 다시 묻습니다
-- **해제**: 해제 절차는 서버 재시작과 같고, 화면에는 원인을 인터넷 연결로 표시합니다
+- **해제**: 해제 절차는 서버 재시작과 같고 화면에는 원인을 인터넷 연결로 표시합니다
 
 **결과** — \`337건 → 0건\` 200테이블 대회 하나의 회선을 90초 끊은 측정에서 발생한 시간 초과 폴드입니다. 20초 끊김은 131건에서 0건이 됐습니다.
 
@@ -431,12 +431,12 @@ links:
 <figcaption>서버가 좌석을 재배치하지 않아 여러 테이블을 함께 잠글 일이 없고, 같은 자리에 겹친 요청은 DB 유니크 제약이 거절합니다</figcaption>
 </figure>
 
-**문제** — 인원이 줄면 테이블을 합쳐야 하고, 옮긴 사람을 새 자리에서 다시 확인해야 합니다.
+**문제** — 인원이 줄면 테이블을 합쳐야 하고 옮긴 사람을 새 자리에서 다시 확인해야 합니다.
 
 **대안** — 처음에는 서버가 칩량을 보고 좌석을 재분배하려 했고, 여러 테이블을 잠그는 락까지 설계했습니다.
 - **막힌 곳**: 서버가 좌석을 옮겨도 새 자리 태블릿은 그 사람이 맞는지 모릅니다. 로그인은 원래 태블릿에 남고 사람만 걸어갑니다.
 
-**선택** — 상점(대회 주체)은 좌석만 비우고, 사람이 걸어가 폰의 참가 OTP를 새 자리 태블릿에 입력합니다.
+**선택** — 상점(대회 주체)은 좌석만 비우고 사람이 걸어가 폰의 참가 OTP를 새 자리 태블릿에 입력합니다.
 - **칩**: 좌석 기록에 있던 칩을 참가 기록으로 옮겨, 좌석을 비워도 칩이 남습니다
 - **무차별 대입**: 횟수로 막으면 그 제한이 대회를 멈추는 수단이 되어, OTP를 8자리로 늘리고 등록된 매장 태블릿에서만 기기별 상한 안에서 입력을 받습니다([탈취 시 대응](./playsync-v2.md#참가-otp-탈취-시-대응-경로와-입장-요청-상한-기준))
 
@@ -473,8 +473,8 @@ links:
 - **쓰기 경로**: 14곳이 잠그고, 다시 읽고, 쓰는 과정을 각자 구현하고 있었습니다. \`mutateSnapshot\` 하나가 셋을 맡고 실제 쓰기 함수는 비공개라, 다시 읽기를 빠뜨릴 자리가 없습니다
 - **락 없는 쓰기**: 부팅 복구와 방금 만든 테이블 두 곳만 허용하고, 미리 정해 둔 이유를 인자로 넘겨야 통과합니다
 - **정산**: 리바인 응답을 최대 15초 기다리는 동안 락을 잡아 테이블 전체가 멈췄습니다. 리바인 대기와 핸드 결과 DB 저장을 락 밖으로 뺐고, 그동안 테이블은 \`HAND_END\` 상태라 다음 핸드가 끼어들지 못합니다
-- **리바인**: 전원에게 동시에 묻고, 수락한 순간에만 짧게 락을 잡습니다
-- **블라인드 레벨**: 대회 전체가 함께 보는 값이라, 락을 걸면 한 테이블이 다른 테이블의 시작을 막아 걸지 않았습니다
+- **리바인**: 전원에게 동시에 묻고 수락한 순간에만 짧게 락을 잡습니다
+- **블라인드 레벨**: 대회 전체가 함께 보는 값이라 락을 걸면 한 테이블이 다른 테이블의 시작을 막아 걸지 않았습니다
 
 **결과** — 락과 트랜잭션은 실제 Redis, PostgreSQL 컨테이너를 띄워 검증했습니다.
 
@@ -482,14 +482,14 @@ links:
 
 ## 참가 OTP 탈취 시 대응 경로와 입장 요청 상한 기준
 
-**문제** — 참가 OTP에 횟수 제한을 두지 않기로 한 결정의 허점을 다시 따졌습니다. OTP가 탈취된 뒤 접속을 끊을 방법이 없었고, 피하려던 "대회가 멈춘다"가 요청 상한을 통해 다시 생겼습니다.
+**문제** — 참가 OTP에 횟수 제한을 두지 않기로 한 결정의 허점을 다시 따졌습니다. OTP가 탈취된 뒤 접속을 끊을 방법이 없었고, 피하려던 "대회가 멈춘다"가 요청 상한 때문에 다시 생겼습니다.
 
 **대안** — 요청을 IP로 구분하는 안은 택하지 않았습니다. \`X-Forwarded-For\`는 위조할 수 있고, 매장 와이파이에 접속한 공격자는 태블릿과 주소가 같습니다.
 
-**선택** — 횟수 제한 없음은 그대로 두고, 탈취된 뒤에 접속을 끊을 수단과 입력할 수 있는 기기의 범위를 정했습니다.
+**선택** — 횟수 제한 없음은 그대로 두고 탈취된 뒤에 접속을 끊을 수단과 입력할 수 있는 기기의 범위를 정했습니다.
 - **같은 OTP로 재입장**: OTP를 알아내면 앉아 있는 사람의 자리에 들어가, 두 기기가 같은 명의로 액션을 보낼 수 있었습니다. 입장할 때마다 좌석 토큰 세대를 올려 마지막 입장만 유효하게 하고, 이전 기기의 소켓은 서버가 닫습니다
-- **좌석 해제 뒤 복귀**: 해제해도 좌석 토큰과 열린 소켓이 남아, 피해자가 다시 앉으면 공격자도 함께 돌아왔습니다. 해제할 때도 세대를 올리고, 탈취가 의심되면 OTP를 새로 발급합니다
-- **틀린 OTP 600번**: 한 대가 틀린 OTP를 계속 보내자 모든 대회의 태블릿이 30초 동안 재입장하지 못했습니다. 태블릿은 매장이 관리하는 기기라, 상점이 등록한 태블릿에만 기기 토큰을 발급하고 요청 상한을 기기 단위로 적용했습니다
+- **좌석 해제 뒤 복귀**: 해제해도 좌석 토큰과 열린 소켓이 남아, 피해자가 다시 앉으면 공격자도 함께 돌아왔습니다. 해제할 때도 세대를 올리고 탈취가 의심되면 OTP를 새로 발급합니다
+- **틀린 OTP 600번**: 한 대가 틀린 OTP를 계속 보내자 모든 대회의 태블릿이 30초 동안 재입장하지 못했습니다. 태블릿은 매장이 관리하는 기기라 상점이 등록한 태블릿에만 기기 토큰을 발급하고 요청 상한을 기기 단위로 적용했습니다
 
 **결과** — 탈취부터 피해자 복귀까지를 스텁 없는 시나리오 테스트 하나로 이어 돌립니다.
 
@@ -544,7 +544,7 @@ links:
 title: Playsync (V1)
 period: 2026.02 – 03
 role: 개인 · 단독 개발
-summary: 오프라인 홀덤 대회의 좌석·게임 진행·정산을 처리하는 실시간 서버 MVP. 진행 중 상태는 Redis, 확정 결과는 DB로 나눠, 핸드가 진행되는 동안에는 DB에 쓰지 않고 정산과 탈락 시점에만 씁니다.
+summary: 오프라인 홀덤 대회의 좌석, 게임 진행, 정산을 처리하는 실시간 서버 MVP. 진행 중 상태는 Redis, 확정 결과는 DB로 나눠, 핸드가 진행되는 동안에는 DB에 쓰지 않고 정산과 탈락 시점에만 씁니다.
 stack: [NestJS, WebSocket, Next.js, Redis, PostgreSQL, Prisma, BullMQ, Docker, JWT]
 links:
   repo: https://github.com/GUNW-O-O/playsync
@@ -553,7 +553,7 @@ links:
 
 오프라인 홀덤 대회의 좌석 예약, 게임 진행, 탈락과 정산을 처리하는 실시간 서버입니다. 카드 배분과 승자 결정만 오프라인에서 합니다.
 
-동작하는 MVP까지 갔고, 거기서 멈추기로 했습니다. 검증은 크롬 창 네 개를 띄워 직접 눌러 보는 수동 확인이었습니다. Redis 영속화는 옵션만 켜 두고 되살리는 코드는 만들지 않았습니다. V2에서 코드를 전부 다시 읽자 정상 입력에서만 맞는 곳이 드러났습니다(음수 레이즈, 락 없는 읽기·쓰기, 사이드팟 칩 소실, 상금 미지급). 후속은 [Playsync V2](./playsync-v2.md)입니다.
+동작하는 MVP까지 갔고 거기서 멈추기로 했습니다. 검증은 크롬 창 네 개를 띄워 직접 눌러 보는 수동 확인이었습니다. Redis 영속화는 옵션만 켜 두고 되살리는 코드는 만들지 않았습니다. V2에서 코드를 전부 다시 읽자 정상 입력에서만 맞는 곳이 드러났습니다(음수 레이즈, 락 없는 읽기와 쓰기, 사이드팟 칩 소실, 상금 미지급). 후속은 [Playsync V2](./playsync-v2.md)입니다.
 
 <details class="shots">
 <summary><span class="closed">구현 화면 8장 보기</span><span class="opened">구현 화면 접기</span></summary>
@@ -604,7 +604,7 @@ links:
 **선택** — 진행 중인 상태는 Redis, 끝난 결과는 PostgreSQL로 역할을 갈랐습니다. 서버는 게임 로직과 통신만 맡습니다.
 - **관점을 바꾼 지점**: 어떻게 빨리 쓸지보다 이 데이터가 지금 DB에 있어야 하는지를 먼저 물었습니다. 핸드 중간 상태는 나중에 조회할 일이 없습니다
 - DB 트랜잭션은 정산과 탈락처럼 결과가 확정되는 순간에만 실행합니다
-- **블라인드 레벨**: 서버 타이머를 두지 않고, 핸드를 시작하거나 대회 정보를 조회할 때 경과 시간으로 계산합니다(Lazy Update). 증가 연산이 아니라 레벨 인덱스 기준이라 여러 사용처에서 동시에 확인해도 두 번 오르지 않습니다
+- **블라인드 레벨**: 서버 타이머를 두지 않고 핸드를 시작하거나 대회 정보를 조회할 때 경과 시간으로 계산합니다(Lazy Update). 증가 연산이 아니라 레벨 인덱스 기준이라 여러 사용처에서 동시에 확인해도 두 번 오르지 않습니다
 
 **결과** — 핸드가 진행되는 동안에는 DB에 쓰지 않고, 정산과 탈락 시점에만 씁니다.
 
@@ -627,12 +627,12 @@ links:
 
 ## 반복 조회(N+1) 제거와 탈락 일괄 처리
 
-**문제** — 리바인·탈락 흐름에서 반복문이 플레이어를 한 건씩 조회하고 UPDATE했습니다.
+**문제** — 리바인과 탈락 흐름에서 반복문이 플레이어를 한 건씩 조회하고 UPDATE했습니다.
 - 여러 명이 한 핸드에 같이 탈락하면 트랜잭션이 사람 수만큼 따로 열렸습니다
 - 비효율을 발견하고 조사하다 N+1 패턴임을 알았습니다
 
 **선택** — 대회 정보는 반복문 밖에서 한 번만 조회해 넘기고, 탈락 확정자는 한 트랜잭션에서 일괄 처리했습니다.
-- IN절 \`updateMany\`/\`deleteMany\`로 묶었습니다
+- IN절 \`updateMany\`와 \`deleteMany\`로 묶었습니다
 
 **결과** — 반복 읽기가 사라졌습니다. 한 핸드에 함께 탈락한 사람들이 반복 순서대로 서로 다른 등수를 받던 것도 같은 등수로 기록됩니다.
 
@@ -640,15 +640,15 @@ links:
 `,qy=`---
 title: Resonos
 period: 2025.06 – 09
-role: 4인 팀 · 아티스트·트랙·앨범 도메인 풀스택 + 커뮤니티 프론트
-summary: 앨범·트랙·아티스트에 리뷰와 분위기 투표를 남기는 음악 커뮤니티(4인 팀). 메인 화면 3종을 화면부터 DB까지 맡아 상호작용을 전면 비동기로 바꿨고, 이어서 REST API와 React로 전환했습니다.
+role: 4인 팀 · 아티스트, 트랙, 앨범 도메인 풀스택과 커뮤니티 프론트
+summary: 앨범, 트랙, 아티스트에 리뷰와 분위기 투표를 남기는 음악 커뮤니티(4인 팀). 메인 화면 3종을 화면부터 DB까지 맡아 상호작용을 전면 비동기로 바꿨고, 이어서 REST API와 React로 전환했습니다.
 stack: [Spring Boot, Thymeleaf, MyBatis, MySQL, React, YouTube API, Spotify API, Swagger, CKEditor 5, chart.js]
 links:
   thymeleaf: https://github.com/ruff1376/Resonos
   react: https://github.com/Lee-0210/Resonos_React
 ---
 
-React 전환에서는 Thymeleaf 버전에서 맡았던 아티스트·트랙·앨범을 백엔드와 프론트 양쪽으로 옮겼습니다. 새로 생긴 커뮤니티는 백엔드와 프론트를 나누자고 제안해 프론트엔드를 담당했습니다. 기존 Thymeleaf 레포를 결과물로 남기려고 별도 레포에서 전환했습니다.
+React 전환에서는 Thymeleaf 버전에서 맡았던 아티스트, 트랙, 앨범을 백엔드와 프론트 양쪽으로 옮겼습니다. 새로 생긴 커뮤니티는 백엔드와 프론트를 나누자고 제안해 프론트엔드를 담당했습니다. 기존 Thymeleaf 레포를 결과물로 남기려고 별도 레포에서 전환했습니다.
 
 <details class="shots">
 <summary><span class="closed">구현 화면 23장 보기</span><span class="opened">구현 화면 접기</span></summary>
@@ -705,14 +705,14 @@ React 전환에서는 Thymeleaf 버전에서 맡았던 아티스트·트랙·앨
 
 ## 재생 끊김 해소를 위한 상호작용 전면 비동기 전환
 
-**문제** — 서버 렌더링이라 리뷰 등록·좋아요 같은 상호작용마다 페이지가 통째로 새로 그려졌고, 플레이어까지 새로 로드돼 듣던 노래가 멈췄습니다.
+**문제** — 서버 렌더링이라 리뷰 등록이나 좋아요 같은 상호작용마다 페이지가 통째로 새로 그려졌고, 플레이어까지 새로 로드돼 듣던 노래가 멈췄습니다.
 - 기능 명세에 없던 문제로, 직접 사용 테스트를 하며 노래를 들으면서 리뷰를 쓰다가 겪었습니다
 - 음악 커뮤니티에서 재생이 끊기는 건 그냥 넘길 수 없는 문제였습니다
 
 **선택** — 한 기능만 비동기로 바꿔서는 다른 기능에서 여전히 끊겨, 사용자 상호작용을 전면 비동기로 바꿨습니다.
-- 리뷰 등록·더보기, 6요소 분위기 투표, 아티스트 팔로우, 좋아요, 가려진 리뷰 확인까지
+- 리뷰 등록과 더보기, 6요소 분위기 투표, 아티스트 팔로우, 좋아요, 가려진 리뷰 확인까지
 - 리뷰는 서버가 Thymeleaf 조각을 렌더해 보내고 화면이 그 자리만 바꿉니다. 좋아요와 분위기 투표는 값만 받아 숫자와 차트를 다시 그립니다
-- **따라온 비용**: 화면을 갱신하는 책임이 서버에서 JS로 넘어와, 목록 삽입·차트 다시 그리기·숫자 갱신을 전부 응답을 받아 직접 해야 했습니다
+- **따라온 비용**: 화면을 갱신하는 책임이 서버에서 JS로 넘어와, 목록 삽입, 차트 다시 그리기, 숫자 갱신을 전부 응답을 받아 직접 해야 했습니다
 - **플레이어**: 임베드가 막힌 뮤직비디오가 있어 뮤직비디오가 있든 없든 Spotify 플레이어를 항상 띄워 어느 곡이든 들으며 리뷰를 쓸 수 있게 했습니다. 로그인하면 풀버전까지 재생되는 것을 확인하고 넣었습니다
 
 **결과** — 리뷰를 쓰고, 더보기로 리뷰를 더 불러오고, 좋아요를 눌러도 재생이 이어집니다.
@@ -740,20 +740,20 @@ React 전환에서는 Thymeleaf 버전에서 맡았던 아티스트·트랙·앨
 **문제** — YouTube API로 뮤직비디오를 찾아 영상 ID를 저장했는데, 다른 아티스트 영상이나 리액션 영상이 들어갔습니다.
 - 처음에는 제외 키워드만 있었습니다. 잘 동작하는 줄 알다가 저장된 데이터를 보니, 제목만 같고 주제가 다른 영상, 다른 영상과 합쳐진 영상이 들어 있었습니다
 
-**선택** — 검색 결과를 그대로 믿지 않고, 후보를 거른 뒤 점수로 줄 세워 최고점을 고릅니다.
-- **거르기**: 영상 제목과 채널명 어디에도 아티스트명이 없으면 제외합니다(공식 채널은 통과). 리액션·커버·직캠 같은 제외 키워드가 제목에 있어도 제외합니다
+**선택** — 검색 결과를 그대로 믿지 않고 후보를 거른 뒤 점수로 줄 세워 최고점을 고릅니다.
+- **거르기**: 영상 제목과 채널명 어디에도 아티스트명이 없으면 제외합니다(공식 채널은 통과). 리액션, 커버, 직캠 같은 제외 키워드가 제목에 있어도 제외합니다
 - **점수**: 공식 채널 +15, 제목의 MV 표기 +5, 아티스트명 +3, 곡 제목 +2, 둘 다 있으면 +2
-- **검색어**: "아티스트 - 제목 mv"로 먼저 찾고, 후보가 없으면 제목에서 영문·한글·일문만 뽑은 검색어, 아티스트명, 제목 순으로 다시 찾습니다. 제목의 feat. 뒤는 지우고 검색합니다
+- **검색어**: "아티스트 - 제목 mv"로 먼저 찾고, 후보가 없으면 제목에서 영문, 한글, 일문만 뽑은 검색어 아티스트명, 제목 순으로 다시 찾습니다. 제목의 feat. 뒤는 지우고 검색합니다
 - **저장**: YouTube API에는 일일 쿼터가 있어 같은 곡을 볼 때마다 검색하면 언젠가 막힙니다. 한 번 찾은 결과는 DB에서 읽습니다
-- 제외·공식 채널 키워드 목록은 AI로 생성·보강했습니다
+- 제외 키워드와 공식 채널 키워드 목록은 AI로 만들고 보강했습니다
 
 **결과** — 잘못 고르더라도 같은 음원이거나 다른 언어 번역 영상에 그칩니다.
 
 ---
 
-## 백엔드·프론트 분업 후 응답 누락 대응
+## 백엔드와 프론트 분업 후 응답 누락 대응
 
-**문제** — 백/프론트가 갈리자 응답에 프론트 렌더에 필요한 값이 빠져 백엔드를 다시 고치는 일이 반복됐습니다.
+**문제** — 백엔드와 프론트가 갈리자 응답에 프론트 렌더에 필요한 값이 빠져 백엔드를 다시 고치는 일이 반복됐습니다.
 - 서버 렌더링일 때는 화면과 데이터가 한 사람 머릿속에 있었습니다
 
 **선택** — 팀이 도입한 Swagger 명세로 원인이 백엔드인지 프론트인지부터 가르고, 필요한 값을 사전에 논의하는 절차를 팀에 제안했습니다.
@@ -765,7 +765,7 @@ React 전환에서는 Thymeleaf 버전에서 맡았던 아티스트·트랙·앨
 ## REST 전환 시 화면 조립 로직의 파사드 분리
 
 **문제** — 컨트롤러에 간단한 로직이 조금씩 쌓여 서비스 계층과 구분이 안 되는 상태였습니다.
-- 서버 렌더링에서는 한 화면이 한 컨트롤러 메서드라, 앨범 목록·리뷰 현황·투표 결과·팔로우 상태를 모아 모델에 담는 조립 로직이 컨트롤러에 있어도 티가 나지 않았습니다
+- 서버 렌더링에서는 한 화면이 한 컨트롤러 메서드라, 앨범 목록, 리뷰 현황, 투표 결과, 팔로우 상태를 모아 모델에 담는 조립 로직이 컨트롤러에 있어도 티가 나지 않았습니다
 - REST로 쪼개는 순간 그 조립 로직을 어디에 둘지 정해야 했습니다
 
 **선택** — 초기 페이지 조회를 \`Combined*Service\`(파사드) 뒤로 옮기고, 컨트롤러에는 파라미터 주입과 위임 한 줄만 남겼습니다.
@@ -784,7 +784,7 @@ React 전환에서는 Thymeleaf 버전에서 맡았던 아티스트·트랙·앨
 - 데이터가 오기 전에 화면을 그리려다 깨졌습니다
 - Bandsintown 공연 일정 위젯이 나오지 않았습니다. 위젯 스크립트는 로드될 때 한 번만 DOM을 훑는데, 그때 대상 요소가 아직 없었습니다
 
-**선택** — 데이터가 온 뒤에 그리고, 요소가 생긴 뒤에 다시 훑게 했습니다.
+**선택** — 데이터가 온 뒤에 그리고 요소가 생긴 뒤에 다시 훑게 했습니다.
 - **데이터**: \`isLoading\` 상태로 로딩 전 렌더를 막았습니다
 - **위젯**: \`useEffect\`에서 스크립트를 동적으로 넣고 로드가 끝나면 \`init()\`으로 다시 훑게 했고, 이미 로드돼 있으면 \`init()\`만 다시 부릅니다
 
