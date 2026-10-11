@@ -107,7 +107,6 @@ links:
 **원인** — null 체크 누락이었습니다. 개발 중에는 항상 데이터가 있어 "아무것도 없는 상태"를 지나쳤습니다.
 - 기구를 등록해 두고 기구 화면을 만들고, 매출을 넣어 두고 매출 화면을 만들었습니다
 
-**한계** — 기간 안에 고치지 못한 채 제출했습니다.
 `,Uy=`---
 placement: 메인 — 프로젝트를 고르지 않았을 때 보이는 본문
 ---
@@ -116,13 +115,13 @@ placement: 메인 — 프로젝트를 고르지 않았을 때 보이는 본문
 
 - **현장과 제품 목적에서 설계 범위를 정합니다.** 오프라인 홀덤 대회는 인원이 줄면 테이블을 합칩니다. 서버가 좌석을 다시 배정해도 사람은 걸어가야 하고, 새 자리 태블릿은 누가 앉았는지 모릅니다. 그래서 좌석 재배치를 만들지 않고, 참가자가 새 자리 태블릿에 자기 참가 OTP를 입력해 앉게 했습니다([Playsync V2](./playsync-v2.md#테이블-병합-시-좌석-이동-주체를-서버에서-사람으로-전환))
   - [MR.Brain-Edu](./mtechlabs.md#뇌-해부-교육-소프트웨어)
-- **맞게 돌아가는지는 측정으로 확인합니다.** 부하 테스트에서 동시에 앉은 인원이 11,790명에서 멈췄을 때, 메모리가 남았는데도 Node가 스스로 종료한 것을 찾아 힙 상한을 조정했습니다. 게임 로직은 가볍고 CPU 부하는 로그인 bcrypt에서 생긴다는 것까지 확인했습니다([Playsync V2](./playsync-v2.md#동시-접속-한계의-원인-규명과-수용-인원-기준-재정의))
-  - [MR.Brain-Edu](./mtechlabs.md#뇌-해부-교육-소프트웨어) · [Playsync V2 측정 도구](./playsync-v2.md#부하-측정-도구의-지연-집계-오류-수정)
-- **정한 규칙은 코드로 강제합니다.** 게임 테이블의 상태를 고치는 코드 14곳이 저마다 '잠그고, 다시 읽고, 쓰기'를 직접 구현하고 있었습니다. 함수 하나로 모으고, 그 밖에서는 상태를 쓸 수 없게 막았습니다([Playsync V2](./playsync-v2.md#게임-테이블-상태의-락-범위-설계))
-  - [영상 제작 자동화](./mtechlabs.md#영상-제작-자동화) · [MRI 3D 에셋 파이프라인](./mtechlabs.md#mri-3d-에셋-파이프라인)
+- **맞게 돌아가는지는 측정으로 확인합니다.** 1,000테이블 9,000명 규모에서 서버를 실제로 종료했다 재시작하자 111명이 리바인 응답 시간 초과로 탈락했습니다. 태블릿이 모두 재접속해야 대회가 다시 진행되게 바꾸고, 같은 측정에서 0명을 확인했습니다([Playsync V2](./playsync-v2.md#서버-재시작-시-정지-시간-보정과-재개-권한-설계))
+  - [MR.Brain-Edu](./mtechlabs.md#뇌-해부-교육-소프트웨어), [Playsync V2 측정 도구](./playsync-v2.md#부하-측정-도구의-지연-집계-오류-수정)
+- **정한 규칙은 코드로 강제합니다.** 게임 테이블의 상태를 고치는 코드 14곳을 함수 하나로 모으고, 그 밖에서는 상태를 쓸 수 없게 막았습니다([Playsync V2](./playsync-v2.md#게임-테이블-상태의-락-범위-설계))
+  - [영상 제작 자동화](./mtechlabs.md#영상-제작-자동화), [MRI 3D 에셋 파이프라인](./mtechlabs.md#mri-3d-에셋-파이프라인)
 - **쓰는 사람의 자리에서 문제를 찾습니다.** 노래를 들으며 리뷰를 쓰다 재생이 끊기는 걸 겪고 상호작용을 전면 비동기로 바꿨습니다([Resonos](./resonos.md#재생-끊김-해소를-위한-상호작용-전면-비동기-전환))
-  - [Lexi-hub](./lexi-hub.md#한글-조합-중-글자의-오타-판정-유예) · [Playsync V1](./playsync.md#리바인-응답의-개별-즉시-반영)
-- **에이전트에 맡기기 전에 스펙을 쓰고, 끝나면 화면에서 전체 흐름을 돌려 확인합니다.** 구현은 스펙에 맞춘 테스트부터 쓰게 하고, 대회 한 판을 시작부터 세 가지 마무리(최후 1인 · 합의 분배 · 중단 환불)까지 실제 백엔드 위에서 돌렸습니다([Playsync V2](./playsync-v2.md#테스트-계층-설계와-실제-장애-검증))
+  - [Lexi-hub](./lexi-hub.md#한글-조합-중-글자의-오타-판정-유예), [Playsync V1](./playsync.md#리바인-응답의-개별-즉시-반영)
+- **에이전트에 맡길 요구사항을 명확히 하고, 끝나면 화면에서 전체 흐름을 돌려 확인합니다.** 요구사항을 스펙으로 먼저 적어 그 스펙에 맞춘 테스트부터 쓰게 하고, 끝나면 대회 한 판을 시작부터 세 가지 마무리까지 실제 백엔드 위에서 돌렸습니다([Playsync V2](./playsync-v2.md#테스트-계층-설계와-실제-장애-검증))
   - [영상 제작 자동화](./mtechlabs.md#영상-제작-자동화)
 `,By=`---
 title: Lexi-hub
@@ -276,7 +275,7 @@ MR.Brain-Edu · 2026.06 – 08 · 단독
 
 2026.09 – 10 · 단독
 
-책 홍보, 강연, 유튜브에 쓰는 뇌 영역 40곳의 설명 영상 제작 루프를, 한 편을 만들 때마다 다음 편이 나아지도록 설계했습니다. 한 편은 책 원문 요약 → 대본 → 음성 합성·자막 → 장면 아이디어 → 컷 설계 → 영상 생성 프롬프트 → AI 영상 생성 → 잇기·자막 입히기를 지납니다. 처음에는 단계마다 사람이 승인했습니다. 지금은 단계마다 쓰는 에이전트와 보는 에이전트를 나누고 반복 작업은 코드가 맡아, 사람은 유료인 영상 생성 전에 에이전트가 호출할 때와 완성본에만 들어옵니다.
+책 홍보, 강연, 유튜브에 쓰는 뇌 영역 40곳의 설명 영상 제작 루프를, 한 편을 만들 때마다 다음 편이 나아지도록 설계했습니다. 한 편은 책 원문 요약부터 영상 생성, 자막 입히기까지 여덟 단계를 지납니다. 처음에는 단계마다 사람이 승인했습니다. 지금은 단계마다 쓰는 에이전트와 보는 에이전트를 나누고 반복 작업은 코드가 맡아, 사람은 유료인 영상 생성 전에 에이전트가 호출할 때와 완성본에만 들어옵니다.
 
 - **사람의 지적은 그 영상의 사례가 아니라 다음 영상에도 쓰이는 원칙으로 쌓습니다.**
   - 지적을 받으면 그 자리에서 이번 영상을 고치고, 「원함 → 이렇게 했더니 → 이렇게 나왔다 → 문제 → 다음엔」 한 줄을 남깁니다
@@ -312,7 +311,7 @@ title: Playsync V2
 period: 2026.07 – 진행 중
 role: 개인 · 단독 개발
 core: true
-summary: 네 단말이 한 상태를 공유하는 오프라인 홀덤 대회 운영 서버. 좌석 이동과 재시작 복구를 현장 제약에 맞춰 설계하고, 1코어 512MB에서 12,420명 동시 착석을 k6로 실측했습니다.
+summary: 네 단말이 한 상태를 공유하는 오프라인 홀덤 대회 운영 서버. 좌석 이동은 현장 제약에 맞춰 사람에게 맡기고, 서버와 회선 장애는 실제로 일으켜 측정해 장애로 인한 탈락 111명과 폴드 337건을 0으로 줄였습니다.
 stack: [TypeScript, NestJS, Next.js, PostgreSQL, Redis, BullMQ, WebSocket, Docker, GitHub Actions, k6]
 links:
   repo: https://github.com/GUNW-O-O/playsync-V2
@@ -320,8 +319,7 @@ links:
 
 단말은 폰, 좌석 태블릿, 딜러 태블릿, 전광판 넷입니다. 카드는 사람 딜러가 실물로 돌리고, 칩과 팟, 좌석, 상금은 서버가 관리합니다.
 
-[V1](./playsync.md) MVP는 "돌아가긴 한다"에서 멈춰 있었습니다. V2는 그 코드를 가져와 "정확하게 돌아간다"로
-옮기는 작업입니다.
+[V1](./playsync.md) MVP는 대회 하나가 끝까지 진행되는 데서 멈춰 있었습니다. V2는 그 코드를 가져와, 요청이 겹치거나 서버와 회선이 끊겨도 칩, 좌석, 순위가 어긋나지 않게 만드는 작업입니다.
 
 ---
 
@@ -335,72 +333,82 @@ links:
 <line class="ar" x1="80" y1="66" x2="552" y2="66" marker-end="url(#ah3)"/><text class="" x="90" y="59">① 합칠 테이블의 좌석 비움</text>
 <text class="fa" x="574" y="70">칩은 참가 기록에 남음</text>
 <line class="ar" x1="230" y1="110" x2="382" y2="110" marker-end="url(#ah3)"/><text class="" x="240" y="103">② 새 자리로 걸어가 참가 OTP 입력</text>
-<line class="ar" x1="390" y1="148" x2="552" y2="148" marker-end="url(#ah3)"/><text class="" x="400" y="141">③ OTP · 좌석 번호</text>
+<line class="ar" x1="390" y1="148" x2="552" y2="148" marker-end="url(#ah3)"/><text class="" x="400" y="141">③ OTP와 좌석 번호</text>
 <path class="ar" d="M560 166h26v16h-18" marker-end="url(#ah3)"/><text x="604" y="178">④ OTP로 참가 기록 조회</text>
 <path class="ar" d="M560 206h26v16h-18" marker-end="url(#ah3)"/><text x="604" y="218">⑤ 좌석 확정</text>
-<line class="ar" x1="560" y1="268" x2="398" y2="268" marker-end="url(#ah3)"/><text class="ac" x="400" y="261">⑥ 좌석 토큰 발급 · 칩은 참가 기록의 값 그대로</text>
+<line class="ar" x1="560" y1="268" x2="398" y2="268" marker-end="url(#ah3)"/><text class="ac" x="400" y="261">⑥ 좌석 토큰 발급, 칩은 참가 기록의 값 그대로</text>
 </svg>
 <figcaption>서버가 좌석을 재배치하지 않아 여러 테이블을 함께 잠글 일이 없고, 같은 자리에 겹친 요청은 DB 유니크 제약이 거절합니다</figcaption>
 </figure>
 
-**문제** — 인원이 줄면 여러 테이블의 사람을 한꺼번에 옮겨 테이블을 합쳐야 합니다. 누가 어디로 갈지 정하고, 옮긴 사람을 새 자리에서 다시 확인해야 합니다.
+**문제** — 인원이 줄면 테이블을 합쳐야 하고, 옮긴 사람을 새 자리에서 다시 확인해야 합니다.
 
-**대안** — 처음에는 서버가 칩량을 보고 좌석을 재분배하려 했습니다.
-- 여러 테이블을 함께 잠그는 락과, 임시 좌석을 거치는 2단계 이동까지 설계를 마쳤습니다
+**대안** — 처음에는 서버가 칩량을 보고 좌석을 재분배하려 했고, 여러 테이블을 잠그는 락까지 설계했습니다.
 - **막힌 곳**: 서버가 좌석을 옮겨도 새 자리 태블릿은 그 사람이 맞는지 모릅니다. 로그인은 원래 태블릿에 남고 사람만 걸어갑니다.
 
 **선택** — 상점(대회 주체)은 좌석만 비우고, 사람이 걸어가 폰의 참가 OTP를 새 자리 태블릿에 입력합니다.
-- **8자리, 횟수 제한은 두지 않음**: 틀린 횟수가 쌓일 때 대회 전체의 입력을 막으면, 그 제한이 곧 대회를 멈추는 공격 수단이 됩니다. 참가자 200명이면 6자리는 적중 확률 1/5,000, 8자리는 1/500,000입니다
-- **태블릿·IP 단위 제한도 넣지 않았습니다**: 작정한 공격자는 주소를 바꿔 가며 옵니다. 입력하는 태블릿은 직원이 있는 행사장 안에 있어 결제하지 않은 외부인이 8자리를 계속 쳐 볼 수 없습니다. 위협에 비해 드는 품이 컸습니다
-- **좌석은 앉는 순간 정해집니다**: 결제할 때 정하지 않습니다
+- **칩**: 좌석 기록에 있던 칩을 참가 기록으로 옮겨, 좌석을 비워도 칩이 남습니다
+- **횟수 제한**: 틀린 횟수로 입력을 막으면 그 제한이 대회를 멈추는 공격 수단이 됩니다. 횟수 제한 없이 8자리로 했습니다([탈취 시 대응](./playsync-v2.md#참가-otp-탈취-시-대응-경로와-입장-요청-상한-기준))
 
 **결과** — 여러 테이블을 동시에 잠그지 않으니 교착 상태가 생길 수 없습니다.
-- 좌석 예매 관련 락을 제거했습니다
-- 칩을 좌석 기록에서 참가 기록으로 옮겨 좌석을 비워도 칩이 남습니다
 
 ---
 
 ## 서버 재시작 시 정지 시간 보정과 재개 권한 설계
 
 <figure class="dg">
-<svg viewBox="0 0 720 404" role="img" aria-label="서버가 재시작한 뒤 대회를 멈춰 두었다가 딜러 태블릿이 모두 돌아오면 블라인드 시간을 보정하고 딜러가 재개하는 순서도">
+<svg viewBox="0 0 720 404" role="img" aria-label="서버가 재시작한 뒤 대회를 멈춰 두었다가 딜러와 좌석 태블릿이 모두 돌아오면 블라인드 시간을 보정하고 딜러가 재개하는 순서도">
 <defs><marker id="ah4" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path class="ah" d="M0 0 8 4 0 8z"/></marker></defs>
 <rect class="hd" x="54" y="6" width="112" height="28" rx="6"/><text class="t" x="110" y="25" text-anchor="middle">서버</text><rect class="hd" x="234" y="6" width="112" height="28" rx="6"/><text class="t" x="290" y="25" text-anchor="middle">DB</text><rect class="hd" x="414" y="6" width="112" height="28" rx="6"/><text class="t" x="470" y="25" text-anchor="middle">좌석 태블릿</text><rect class="hd" x="574" y="6" width="112" height="28" rx="6"/><text class="t" x="630" y="25" text-anchor="middle">딜러 태블릿</text>
 <line class="ll" x1="110" y1="34" x2="110" y2="392"/><line class="ll" x1="290" y1="34" x2="290" y2="392"/><line class="ll" x1="470" y1="34" x2="470" y2="392"/><line class="ll" x1="630" y1="34" x2="630" y2="392"/>
 <rect class="lk" x="104" y="182" width="12" height="148" rx="3"/><text class="ac" x="96" y="262" text-anchor="end">대회 정지</text>
-<line class="ar" x1="110" y1="62" x2="282" y2="62" marker-end="url(#ah4)"/><text class="" x="120" y="55">하트비트 · 5초마다</text>
-<rect class="out" x="54" y="80" width="112" height="30" rx="6"/><text class="fa" x="110" y="100" text-anchor="middle">서버 정지 → 재시작</text>
+<line class="ar" x1="110" y1="62" x2="282" y2="62" marker-end="url(#ah4)"/><text class="" x="120" y="55">하트비트, 5초마다</text>
+<rect class="out" x="54" y="80" width="112" height="30" rx="6"/><text class="fa" x="110" y="100" text-anchor="middle">서버 정지 후 재시작</text>
 <line class="ar" x1="110" y1="146" x2="282" y2="146" marker-end="url(#ah4)"/><text class="" x="120" y="139">① 마지막 하트비트로 멈춘 시각 계산</text>
 <line class="ar" x1="110" y1="182" x2="282" y2="182" marker-end="url(#ah4)"/><text class="" x="120" y="175">② 대회를 SYNCING으로</text>
-<path class="ar" d="M110 198h26v16h-18" marker-end="url(#ah4)"/><text x="154" y="210">③ 테이블 정지 · 남은 턴 타이머 무효</text>
+<path class="ar" d="M110 198h26v16h-18" marker-end="url(#ah4)"/><text x="154" y="210">③ 테이블 정지, 남은 턴 타이머 무효</text>
 <line class="ar" x1="470" y1="258" x2="118" y2="258" marker-end="url(#ah4)"/><text class="" x="120" y="251">재접속</text>
-<line class="ar" x1="630" y1="294" x2="118" y2="294" marker-end="url(#ah4)"/><text class="" x="120" y="287">재접속 · 좌석보다 늦게</text>
-<line class="ar" x1="110" y1="330" x2="282" y2="330" marker-end="url(#ah4)"/><text class="ac" x="120" y="323">④ 딜러 전원 복귀 → 블라인드 기준 시각을 멈춘 시간만큼 미룸</text>
-<line class="ar" x1="630" y1="372" x2="118" y2="372" marker-end="url(#ah4)"/><text class="" x="120" y="365">⑤ 「이어서 진행」 → 그 테이블의 턴 재개</text>
+<line class="ar" x1="630" y1="294" x2="118" y2="294" marker-end="url(#ah4)"/><text class="" x="120" y="287">재접속</text>
+<line class="ar" x1="110" y1="330" x2="282" y2="330" marker-end="url(#ah4)"/><text class="ac" x="120" y="323">④ 딜러와 좌석 전원 복귀 시 블라인드 기준 시각을 멈춘 시간만큼 미룸</text>
+<line class="ar" x1="630" y1="372" x2="118" y2="372" marker-end="url(#ah4)"/><text class="" x="120" y="365">⑤ "이어서 진행"을 누르면 그 테이블의 턴 재개</text>
 </svg>
-<figcaption>서버가 돌아와도 딜러 태블릿이 모두 붙기 전에는 대회가 멈춰 있고, 각 테이블은 딜러가 눌러야 다시 시작합니다</figcaption>
+<figcaption>서버가 돌아와도 딜러와 좌석 태블릿이 모두 다시 접속하기 전에는 대회가 멈춰 있고, 각 테이블은 딜러가 눌러야 다시 시작합니다</figcaption>
 </figure>
 
-**문제** — 서버가 멈춰 있던 시간에도 블라인드(시간에 따라 오르는 기본 베팅액) 시계가 흘러, 돌아오면 레벨이 올라가 있었습니다.
+**문제** — 서버가 멈췄다 돌아왔을 때 대회를 이어 가는 복구 코드가 없었습니다. 멈춰 있던 시간에도 블라인드(시간에 따라 오르는 기본 베팅액) 시계가 흘러, 돌아오면 레벨이 올라가 있었습니다.
 
-**대안** — 세 가지 방법을 차례로 버렸습니다.
-- **상점이 기록(V1)**: 상점이 장애 시점을 적고, 복구되면 그만큼 대회 시작 시각을 미뤄 적는 방식입니다. 복구는 플랫폼이 자동으로 해야 한다고 보고 기각했습니다
-- **블라인드 시간만 미루기**: 차례 제한 시간은 보정하지 않아 남아 있던 타이머가 재시작 직후 한꺼번에 만료되고 차례였던 사람이 자동 폴드됐습니다
-- **복구 후 60초 기다리기**: 남은 타이머를 무효로 하고 차례를 다시 주면서 60초를 얹어, 복구 뒤 그만큼 기다리게 했습니다. 짧으면 태블릿이 아직 꺼진 사람이 폴드되고 길면 다 모인 테이블이 기다리는, 근거 없는 값이라 버렸습니다
+**대안** — 두 가지 방법을 버렸습니다.
+- **상점이 기록(V1)**: 상점이 장애 시점을 적어 시작 시각을 미루는 방식은, 복구는 플랫폼이 자동으로 해야 한다고 보고 버렸습니다
+- **복구 후 정해 둔 시간 기다리기**: 몇 초로 잡든 짧으면 태블릿이 아직 꺼진 사람이 폴드되고 길면 다 모인 테이블이 기다립니다. 근거를 댈 수 없는 값이라 버렸습니다
 
 **선택** — 멈춘 시간은 서버가 계산하고, 다시 시작하는 시점은 테이블을 직접 보는 딜러가 정합니다.
-- 시작 시각을 둘로 나눠 실제 시작 시각은 DB에 그대로 두고 블라인드 계산용 기준 시각만 미룹니다
-- 멈춘 테이블에서는 플레이어 조작을 거절하고, 딜러가 「이어서 진행」을 누를 때 차례 타이머를 다시 겁니다
-- **대회 정지(\`SYNCING\`)**: 서버가 돌아와도 그 대회의 딜러 태블릿이 모두 다시 붙기 전까지는 대회 전체를 멈춰 둡니다. 화면과 블라인드 시간이 함께 멈추고, 풀리는 순간 멈춘 시간만큼 한 번 보정합니다
-- **재접속 순서**: 좌석 태블릿이 40초에 걸쳐 흩어져 먼저 붙고 딜러 태블릿은 그 뒤에 붙습니다. 딜러가 화면을 볼 때는 플레이어가 이미 돌아와 있습니다
-- **40초의 근거**: 660소켓(66테이블)이 한꺼번에 다시 붙자 분당 요청 상한 600에 60개가 걸려 30초를 기다렸고, 전원이 돌아오는 데 31.9초가 걸렸습니다. 상한을 푼 테스트에서는 2.1초였습니다. 상한은 그대로 두고 흩어지는 폭을 그보다 길게 잡았습니다
-- 반만 닫힌 채 살아 있는 것처럼 보이는 소켓을 10초마다 ping/pong으로 확인해 먼저 정리했습니다. 딜러 복귀 수를 믿을 수 있어야 해서입니다
+- **블라인드**: 블라인드 계산용 기준 시각만 멈춘 시간만큼 미뤄, 재시작 뒤에도 레벨이 그대로입니다
+- **턴 타이머**: 멈춘 테이블은 플레이어 조작을 거절하고 딜러가 "이어서 진행"을 누를 때 타이머를 다시 설정해, 차례였던 사람이 자동 폴드되지 않습니다
+- **대회 정지(\`SYNCING\`)**: 좌석 태블릿이 덜 돌아온 채 정지가 해제돼 111명이 리바인 응답 시간 초과로 탈락했습니다. 딜러와 좌석 태블릿이 모두 재접속해야 해제되게 바꿨습니다
+- **끝내 재접속하지 않는 자리**: 자동 해제하지 않고, 상점이 복귀 현황을 보고 "지금 진행"으로 해제합니다
 
-**결과** — 서버가 멈췄다 돌아와도 블라인드가 앞서가지 않고, 플레이어가 덜 돌아온 테이블이 먼저 시작되지 않습니다.
-
-**한계** — 복구는 핸드 단위까지입니다. 카드가 실물이라 중간에 끊긴 핸드는 딜러가 다시 딜하면 되고, 지키는 선은 "다음 핸드가 맞는 자리에서 시작된다"까지입니다.
+**결과** — \`111명 → 0명\` 1,000테이블 9,000명 규모에서 서버를 실제로 종료했다 재시작한 측정에서 장애 때문에 탈락한 사람입니다.
 
 ---
+
+## 대회장 회선 장애의 감지 기준과 정지 범위
+
+**문제** — 처음에는 회선이 돌아올 때 재접속이 몰리는 것만 처리하면 된다고 봤습니다. 서버가 내려가면 대회가 멈추지만, 회선이 끊기면 서버는 그 대회를 계속 진행해 차례인 사람이 30초마다 한 명씩 자동 폴드됩니다. 문제는 끊긴 동안 대회가 진행되는 것이었습니다.
+
+**대안** — 두 가지를 택하지 않았습니다.
+- **상점 콘솔의 수동 정지 버튼**: 대회를 임의로 멈추는 버튼은 만들지 않았습니다. 문제가 생기면 서버가 멈추고 화면에 원인을 알립니다
+- **딜러 응답이 없으면 턴 타임아웃 미루기**: 정상적인 타임아웃까지 미뤄질 수 있어 받지 않았습니다
+
+**선택** — 그 대회에 응답하는 딜러 태블릿이 하나도 남지 않으면 그 대회만 멈춥니다.
+- **감지**: 딜러 소켓만 2초마다 확인해, 그 대회의 딜러가 모두 연달아 두 번 답이 없으면 대회를 멈춥니다. 끊김을 아는 시간이 10.7초에서 5.7초로 줄었습니다
+- **새로고침**: 딜러가 한 대뿐인 파이널 테이블은 새로고침만으로 멈출 수 있어, 스스로 닫은 경우에는 10초 뒤에도 딜러가 없을 때만 멈춥니다
+- **멈춘 동안**: 타임아웃이 지나도 폴드 처리하지 않고, 리바인을 묻던 자리는 재개 뒤 다시 묻습니다
+- **해제**: 해제 절차는 서버 재시작과 같고, 화면에는 원인을 인터넷 연결로 표시합니다
+
+**결과** — \`337건 → 0건\` 90초 끊김에서 발생한 시간 초과 폴드입니다. 20초 끊김은 131건에서 0건이 됐습니다.
+
+<details class="more">
+<summary>나머지 항목</summary>
 
 ## 게임 테이블 상태의 락 범위 설계
 
@@ -410,12 +418,12 @@ links:
 <rect class="hd" x="74" y="6" width="112" height="28" rx="6"/><text class="t" x="130" y="25" text-anchor="middle">정산</text><rect class="hd" x="334" y="6" width="112" height="28" rx="6"/><text class="t" x="390" y="25" text-anchor="middle">테이블 스냅샷</text><rect class="hd" x="564" y="6" width="112" height="28" rx="6"/><text class="t" x="620" y="25" text-anchor="middle">칩을 다 잃은 사람들</text>
 <line class="ll" x1="130" y1="34" x2="130" y2="388"/><line class="ll" x1="390" y1="34" x2="390" y2="388"/><line class="ll" x1="620" y1="34" x2="620" y2="388"/>
 <rect class="lk" x="384" y="54" width="12" height="22" rx="3"/><rect class="lk" x="384" y="160" width="12" height="16" rx="3"/><rect class="lk" x="384" y="246" width="12" height="22" rx="3"/><rect class="lk" x="384" y="354" width="12" height="22" rx="3"/>
-<rect class="out" x="54" y="96" width="110" height="112" rx="6"/><text class="fa" x="62" y="200">락 밖 · 최대 15초</text>
+<rect class="out" x="54" y="96" width="110" height="112" rx="6"/><text class="fa" x="62" y="200">락 밖, 최대 15초</text>
 <rect class="out" x="54" y="286" width="110" height="44" rx="6"/><text class="fa" x="62" y="322">락 밖</text>
 <text class="" x="140" y="59">① 팟 분배</text><line class="ar" x1="130" y1="66" x2="382" y2="66" marker-end="url(#ah2)"/>
 <text class="fa" x="404" y="70">상태 HAND_END</text>
-<text class="" x="140" y="111">② 리바인(칩 재구매) 질문 · 전원에게 동시에</text><line class="ar" x1="130" y1="118" x2="612" y2="118" marker-end="url(#ah2)"/>
-<text class="" x="400" y="161">수락한 순간에만 짧은 락 · 칩 반영</text><line class="ar" x1="620" y1="168" x2="398" y2="168" marker-end="url(#ah2)"/>
+<text class="" x="140" y="111">② 리바인(칩 재구매) 질문, 전원에게 동시에</text><line class="ar" x1="130" y1="118" x2="612" y2="118" marker-end="url(#ah2)"/>
+<text class="" x="400" y="161">수락한 순간에만 짧은 락, 칩 반영</text><line class="ar" x1="620" y1="168" x2="398" y2="168" marker-end="url(#ah2)"/>
 <text class="" x="140" y="251">③ 다시 읽고 탈락 확정</text><line class="ar" x1="130" y1="258" x2="382" y2="258" marker-end="url(#ah2)"/>
 <path class="ar" d="M130 296h26v16h-18" marker-end="url(#ah2)"/><text x="174" y="308">④ 핸드 결과 DB 저장</text>
 <text class="" x="140" y="359">⑤ 다음 핸드 준비</text><line class="ar" x1="130" y1="366" x2="382" y2="366" marker-end="url(#ah2)"/>
@@ -426,85 +434,95 @@ links:
 </figure>
 
 **문제** — 테이블 상태(스냅샷)는 Redis에 JSON 한 덩어리로 저장돼 두 요청이 겹치면 나중에 쓴 쪽이 앞선 쓰기를 통째로 지웁니다.
-- 핸드 도중 착석과 다른 사람의 액션이 같은 순간에 들어올 때가 그랬습니다. 지워진 쪽이 이미 보낸 화면 갱신과 DB 기록은 그대로 남아 Redis만 그 전 상태가 됩니다
-- 상태를 쓰는 14곳이 잠그고, 다시 읽고, 쓰는 과정을 각자 반복했습니다. 락 안에서 다시 읽는 한 줄이 유일한 방어였는데, 그 줄을 지워도 실패하는 테스트가 없었습니다
-- 반대로 칩 계산 및 탈락 정산은 락을 너무 오래 쥐었습니다. 리바인 응답을 최대 15초 기다리는 동안 테이블 전체가 멈췄습니다
 
 **선택** — 상태를 쓰는 길은 함수 하나로 모으고, 사람과 DB를 기다리는 구간은 락 밖으로 뺐습니다.
-- **쓰는 길**: \`mutateSnapshot\` 하나가 락 획득, 다시 읽기, 쓰기를 맡습니다. 호출하는 쪽은 바꿀 내용만 넘기므로 다시 읽기를 빠뜨릴 자리가 없습니다. 실제 쓰기 함수는 비공개입니다
-- **락 없이 쓰는 예외**: 부팅 복구와 방금 만든 테이블 두 곳뿐입니다. 락 없이 쓰려면 미리 정해 둔 이유 중 하나를 인자로 넘겨야 합니다. 예외를 늘리려면 그 이유 목록을 고쳐야 해서 PR 본문이나 커밋 기록에 남아 나중에 참조할 수 있습니다
-- **락 밖으로 뺀 구간**: 정산을 다섯으로 나눠 리바인 대기와 핸드 결과 DB 저장만 락 밖에 뒀습니다. 락은 5초 뒤 저절로 풀리는데, 두 구간은 그보다 길어질 수 있습니다
-- **그 사이를 지키는 것**: 핸드 시작은 \`WAITING\`에서만 되고 정산 중에는 \`HAND_END\`라 락이 없는 동안에도 다음 핸드가 끼어들 수 없습니다
-- **리바인**: 대상자끼리 서로 기다리지 않도록 전원에게 동시에 묻고, 수락한 순간에만 짧게 락을 잡아 칩을 반영합니다. 탈락을 확정할 때는 스냅샷을 다시 읽습니다
-- **걸지 않은 곳**: 락은 테이블 단위라 다른 테이블끼리는 서로 기다리지 않습니다. 대회 전체가 함께 보는 블라인드 레벨에는 락을 걸지 않았습니다. 걸면 한 테이블이 다른 테이블의 시작을 막습니다
+- **쓰기 경로**: 14곳이 잠그고, 다시 읽고, 쓰는 과정을 각자 구현하고 있었습니다. \`mutateSnapshot\` 하나가 셋을 맡고 실제 쓰기 함수는 비공개라, 다시 읽기를 빠뜨릴 자리가 없습니다
+- **락 없는 쓰기**: 부팅 복구와 방금 만든 테이블 두 곳만 허용하고, 미리 정해 둔 이유를 인자로 넘겨야 통과합니다
+- **정산**: 리바인 응답을 최대 15초 기다리는 동안 락을 잡아 테이블 전체가 멈췄습니다. 리바인 대기와 핸드 결과 DB 저장을 락 밖으로 뺐고, 그동안 테이블은 \`HAND_END\` 상태라 다음 핸드가 끼어들지 못합니다
+- **리바인**: 전원에게 동시에 묻고, 수락한 순간에만 짧게 락을 잡습니다
+- **블라인드 레벨**: 대회 전체가 함께 보는 값이라, 락을 걸면 한 테이블이 다른 테이블의 시작을 막아 걸지 않았습니다
 
-**결과** — 상태를 쓰는 길이 함수 하나로 모였고, 리바인 응답을 기다리는 15초 동안 테이블이 멈추지 않습니다.
-- 락과 트랜잭션은 실제 Redis·PostgreSQL 컨테이너를 띄워 검증했습니다
+**결과** — 락과 트랜잭션은 실제 Redis, PostgreSQL 컨테이너를 띄워 검증했습니다.
 
-**한계** — 정산 다섯 구간 중 둘은 락 밖이고, 그 틈은 상태 검사로만 지킵니다.
+---
 
-<details class="more">
-<summary>나머지 항목</summary>
+## 재시작 뒤 대회 정지 해제 시간의 원인별 단축
+
+**문제** — 재시작 뒤 5분 안에 대회가 다시 진행되는 것을 합격선으로 잡았는데, 667테이블에서 정지 해제까지 407초가 걸렸습니다.
+
+**원인** — 서버는 2분째부터 부하가 거의 없는데 기기가 늦게 재접속하고 있었습니다.
+
+**선택** — 원인마다 하나씩 고치고 같은 측정을 반복했습니다.
+- **재접속 대기**: 실패할 때마다 대기를 두 배(80, 160, 320초)로 늘려, 가장 늦은 한 대를 대회 전체가 기다렸습니다. 5, 10, 20, 40초 간격으로 바꿔 407초가 198초로 줄었습니다
+- **접속을 받는 속도**: Node는 이벤트 루프 한 바퀴에 접속을 하나만 받아, 접속 티켓이 초당 200장 나가도 57대만 접속했습니다. 같은 포트에 리스너를 16개 두어 198초가 104초로 줄었습니다
+- **DB 조회**: 기기마다 좌석 토큰 세대를 세 번 조회했습니다. 실행 중인 조회에 뒤따라온 조회를 쿼리 하나로 묶어 DB 연결 대기가 1,246건에서 102건으로 줄었습니다
+- **사람이 기다리는 시간**: 옆자리 태블릿은 접속됐는데 "40초 후 재시도"를 보며 기다릴 사람은 없어, 재접속 안내 줄에 "지금 다시 연결" 버튼을 넣었습니다
+
+**결과** — \`407초 → 104초\` 667테이블에서 서버를 종료했다 재시작한 뒤 대회 정지가 해제되기까지 걸린 시간입니다.
+
+---
+
+## 참가 OTP 탈취 시 대응 경로와 입장 요청 상한 기준
+
+**문제** — 참가 OTP에 횟수 제한을 두지 않기로 한 결정의 허점을 다시 따졌습니다. OTP가 탈취된 뒤 접속을 끊을 방법이 없었고, 피하려던 "대회가 멈춘다"가 요청 상한을 통해 다시 생겼습니다.
+
+**대안** — 요청을 IP로 구분하는 안은 택하지 않았습니다. \`X-Forwarded-For\`는 위조할 수 있고, 매장 와이파이에 접속한 공격자는 태블릿과 주소가 같습니다.
+
+**선택** — 횟수 제한 없음은 그대로 두고, 탈취된 뒤에 접속을 끊을 수단과 입력할 수 있는 기기의 범위를 정했습니다.
+- **같은 OTP로 재입장**: OTP를 알아내면 앉아 있는 사람의 자리에 들어가, 두 기기가 같은 명의로 액션을 보낼 수 있었습니다. 입장할 때마다 좌석 토큰 세대를 올려 마지막 입장만 유효하게 하고, 이전 기기의 소켓은 서버가 닫습니다
+- **좌석 해제 뒤 복귀**: 해제해도 좌석 토큰과 열린 소켓이 남아, 피해자가 다시 앉으면 공격자도 함께 돌아왔습니다. 해제할 때도 세대를 올리고, 탈취가 의심되면 OTP를 새로 발급합니다
+- **틀린 OTP 600번**: 한 대가 틀린 OTP를 계속 보내자 모든 대회의 태블릿이 30초 동안 재입장하지 못했습니다. 태블릿은 매장이 관리하는 기기라, 상점이 등록한 태블릿에만 기기 토큰을 발급하고 요청 상한을 기기 단위로 적용했습니다
+
+**결과** — 탈취부터 피해자 복귀까지를 스텁 없는 시나리오 테스트 하나로 이어 돌립니다.
+
+---
 
 ## 동시 접속 한계의 원인 규명과 수용 인원 기준 재정의
 
 **문제** — 1코어 512MB 인스턴스에서 부하 테스트로 인원을 늘려 가자 동시 착석이 11,790명에서 막혔고, 더 늘리면 서버가 죽었습니다.
 
-**원인** — 인원을 막은 것은 CPU도 컨테이너 메모리도 아니었습니다. 컨테이너 메모리는 남았는데 Node가 자기 기본 힙 상한에 걸려 스스로 종료했습니다.
-- 컨테이너 512MB 중 114MB가 남아 있었고 \`OOMKilled=false\`였습니다. 커널이 아니라 V8이 기본 힙 상한 259MB에서 abort한 것입니다
+**원인** — 인원을 막은 것은 CPU도 컨테이너 메모리도 아니었습니다. 컨테이너 512MB 중 114MB가 남았고 \`OOMKilled=false\`였는데, Node(V8)가 기본 힙 상한 259MB에서 스스로 종료했습니다.
 
-**대안** — 인스턴스 증설과 코드 메모리 최적화는 택하지 않았습니다.
-- 인스턴스 증설: 가장 저렴한 인스턴스에서 돌린다는 기준을 벗어납니다
-- 코드 메모리 최적화: 범위가 크고 효과가 불확실합니다
+**대안** — 인스턴스 증설은 가장 저렴한 인스턴스에서 돌린다는 기준을 벗어나고, 코드 메모리 최적화는 범위가 크고 효과가 불확실해 택하지 않았습니다.
 
-**선택** — Node의 힙 상한을 컨테이너 여유 안쪽까지 올렸습니다.
-- \`--max-old-space-size=340\`: 512MB에서 OS와 힙 밖 메모리 몫을 뺀 값입니다
+**선택** — Node의 힙 상한을 340MB로 올렸습니다(\`--max-old-space-size=340\`). 512MB에서 OS와 힙 밖 메모리 몫을 뺀 값입니다.
 
 **결과** — \`11,790명 → 12,420명\` 예정한 최대 인원인 1,380테이블 전원이 착석했습니다.
-- 실행 전체: 누른 조작이 내 화면에 반영되기까지 p95 221ms, 서버 이벤트 루프 지연 중앙값 2.34ms, CPU 51.6%, 메모리 449MB
 - **게임 로직은 가볍습니다**: CPU를 12코어에서 1코어로 줄여도 서버 지연은 그대로였고, 594명이 핸드를 돌리는 동안 1코어 CPU는 6%였습니다
-- **CPU 부하는 로그인에서 생깁니다**: 테이블 하나를 세우는 비용 737ms 중 523ms(71%)가 로그인 bcrypt였습니다
-- bcrypt의 동시 처리 수는 CPU 코어가 아니라 Node 내부 스레드 수(기본 4)가 정해서, 로그인 요청에 상한을 뒀습니다
+- **CPU 부하는 로그인에서 생깁니다**: 테이블 하나를 세우는 비용 737ms 중 523ms(71%)가 로그인 bcrypt였습니다. 그래서 로그인 요청에 상한을 뒀습니다
 - **수용 인원 기준 재정의**: 수용 인원은 동시 접속자 수가 아니라 초당 입장 수와 메모리 여유가 정합니다. 초당 5명은 여유 있고, 초당 9~10명이면 4분 만에 응답이 느려집니다
-
-**한계** — 측정한 것은 접속과 조작의 한계이고, 탈락과 리바인까지 포함한 대회 전체의 한계는 아닙니다.
+- **1코어로만 다시 측정한 값**: 위 실행은 착석 구간에만 코어를 빌렸습니다. 로그인 비용을 낮추고(bcrypt 4) 처음부터 1코어로 측정해 대회 하나에 12,600명까지 받았습니다
+- **응답 기준별 인원**: 그 측정에서 누른 조작이 내 화면에 반영되기까지 p95가 200ms 안쪽인 선은 약 800테이블 7,200명, 1초 안쪽인 선은 약 1,360테이블 12,300명입니다
 
 ---
 
 ## 부하 측정 도구의 지연 집계 오류 수정
 
-**문제** — 부하가 거의 없는 구간에서도 응답 지연이 튀어 p95 임계값을 넘었고 k6가 테스트를 멈췄습니다. 착석 부하 시나리오에 턴 타임아웃을 넘기는 자리비움·장고 상황을 넣은 뒤였습니다.
+**문제** — 부하가 거의 없는 구간에서도 응답 지연이 튀어 p95 임계값을 넘었고 k6가 테스트를 멈췄습니다. 착석 부하 시나리오에 턴 타임아웃을 넘기는 자리비움, 장고 상황을 넣은 뒤였습니다.
 
 **대안** — 일정 시간 안에 여러 번 튈 때만 멈추도록 조건을 바꿨지만 또 중단됐습니다.
 
 **선택** — 두 번째 중단 뒤에는 조건을 더 풀지 않았습니다. 부하가 없는데 지연이 튀는 것은 서버보다 측정 쪽 문제라고 보고, 직전에 넣은 변화부터 의심했습니다.
-- 의심한 변화는 생각 시간을 30.3초까지 늘려 타임아웃 뒤에 늦게 누르는 사람을 재현한 것입니다. 에이전트에게 그 코드 흐름을 따라가 보게 했습니다
-- 테이블 하나짜리 유휴 서버에서 늦게 누르는 비율만 올려 재현했습니다. 늦게 누르는 사람이 없을 때 응답은 11.1ms, 늦은 액션 6건을 넣자 2,585.6ms였습니다
-
-**원인** — 측정기의 결함이었습니다.
-- 타임아웃 뒤에 도착한 액션에는 서버가 응답하지 않는데, 측정기는 응답을 기다리며 시간을 재기 시작했습니다. 다음 사람의 응답이 와야 멈춰, 그 사람이 생각한 시간이 서버 지연으로 기록됐습니다
+- **지연 집계**: 타임아웃 뒤에 도착한 액션에는 서버가 응답하지 않는데 측정기가 시간을 재기 시작해, 다음 사람이 생각한 시간이 서버 지연으로 기록됐습니다. 유휴 서버에서 11.1ms가 2,585.6ms로 재현됐고, 고친 뒤 점증 부하 테스트를 완주했습니다(p95 14ms)
+- **재접속 재시도**: 측정기의 재시도 대기가 제품보다 길어, 9,000명 재접속 측정에서 1,000테이블 중 8테이블이 합격선 5분을 넘겼습니다. 제품과 같은 공식으로 맞추자 모두 복구됐고 가장 늦은 테이블이 109초였습니다
+- **장애 방식**: 소켓만 끊으면 전원이 한꺼번에 재접속할 이유가 없어, 백엔드를 \`docker kill\`로 실제 종료했다 재시작하는 방식으로 바꿨습니다
 
 **결과** — 제품 코드는 그대로 두고 측정기만 고쳐 부하 테스트를 끝까지 돌릴 수 있게 됐습니다.
-- 타임아웃 뒤에 도착한 액션에는 시간을 재지 않게 했습니다
-- 고친 뒤 늦은 액션 62건이 섞인 점증 부하 테스트를 중단 없이 완주했고, 누른 조작이 내 화면에 반영되기까지 p95는 14ms였습니다
 
 ---
 
 ## 테스트 계층 설계와 실제 장애 검증
 
 **문제** — mock이나 단위 테스트보다 실제 환경에서 결함이 생길 거라고 생각했습니다.
-- mock으로 테스트하면 검증 대상인 락·트랜잭션의 원자성 자체가 사라집니다
-- 부품이 각각 옳아도 조립이 틀린 경우는 단위 테스트로는 잡을 수 없습니다
-- 흉내 낸 장애로는 부팅 과정과 남아 있던 타이머의 실제 동작을 확인할 수 없습니다
 
-**선택** — 각 계층이 잡을 수 있는 결함에 맞춰 테스트를 나눴습니다(통합 725 · 백엔드 단위 445 · 프론트 331 · contract 85 · e2e 13 · 부하 도구 39 · 실제 kill 26).
-- **통합**: 개발용과 분리된 진짜 Redis·PostgreSQL 컨테이너로 락과 트랜잭션을 검증합니다
-- **시나리오**: 대회 한 판을 이야기처럼 이어 돌리며 칩 총량, 사이드팟 합 같은 불변식을 확인합니다. 사람이 읽을 수 있어 테스트가 맞는지 사람이 판단합니다
-- **실제 kill**: \`docker kill\`로 Redis와 백엔드를 실제로 죽였다 살립니다
-- **전체 흐름**: 대회 한 판을 시작부터 세 가지 마무리(최후 1인 · 합의 분배 · 중단 환불)까지 실제 백엔드 위에서 돌립니다
-- **처음부터 통과하는 새 테스트는 의심**: 고친 코드를 되돌려 빨간불부터 확인합니다. 되돌려도 통과한 테스트는 다른 장치가 이미 막고 있었거나 테스트 자체가 틀린 경우였습니다
+**선택** — 각 계층이 잡을 수 있는 결함에 맞춰 테스트를 나눴습니다.
+- **통합**: mock으로는 검증 대상인 락과 트랜잭션의 원자성이 사라져, 개발용과 분리된 진짜 Redis, PostgreSQL 컨테이너로 검증합니다
+- **시나리오**: 부품이 각각 옳아도 조립이 틀릴 수 있습니다. 대회 한 판을 이야기처럼 이어 돌리며 칩 총량, 사이드팟 합 같은 불변식을 확인하고, 테스트가 맞는지는 사람이 읽고 판단합니다
+- **실제 kill**: 흉내 낸 장애로는 부팅 과정과 남아 있던 타이머의 동작을 확인할 수 없어, \`docker kill\`로 Redis와 백엔드를 실제로 종료했다 재시작합니다
+- **전체 흐름**: 대회 한 판을 시작부터 세 가지 마무리(최후 1인, 합의 분배, 중단 환불)까지 실제 백엔드 위에서 실행합니다
+- **새 테스트**: 처음부터 통과하는 새 테스트는 의심하고, 고친 코드를 되돌려 실패부터 확인합니다. 되돌려도 통과한 테스트는 다른 장치가 이미 막고 있었거나 테스트 자체가 틀린 경우였습니다
 
-**결과** — 프로세스를 실제로 죽이는 테스트에서, 흉내 낸 장애로는 보이지 않던 결함 세 개가 나왔습니다.
+**결과** — 프로세스를 실제로 종료하는 테스트에서, 흉내 낸 장애로는 보이지 않던 결함 세 개가 나왔습니다.
 - 장애 중에도 결제는 DB에 남았지만, 전광판의 참가자 수는 에러 없이 오르지 않고 있었습니다
 - 리바인 응답을 기다리는 중에 재시작하면, 칩을 다 잃은 사람이 등수와 상금을 받지 못한 채 좌석에서 사라졌습니다
 - 마지막 탈락이 저장된 직후 연결이 끊기면 우승 상금이 나가지 않아 대회를 끝낼 수 없었습니다
@@ -517,7 +535,7 @@ links:
 
 **선택** — 작업 지침(\`CLAUDE.md\`)에 규칙을 적되, 실제로 일이 틀어진 뒤에만 한 줄씩 더했습니다.
 - **읽을 것과 읽지 않을 것**: 작업 전에 도메인 문서부터 읽게 했습니다. 카드를 사람이 돌려 셔플과 승자 판정은 의도적으로 없습니다. README와 측정 기록은 읽지 않을 문서로 적었습니다. 정확한 문서도 읽히면 컨텍스트만 차지합니다
-- **문서 하나에 주제 하나**: 결함 목록 문서가 이미 고친 항목의 본문까지 품고 4,000줄을 넘겨 나눴습니다
+- **문서 하나에 주제 하나**: 결함 목록 문서가 이미 고친 항목의 본문까지 품고 4,000줄을 넘겨 나눴습니다. 천 줄을 넘긴 도메인 문서도 전제 한 장과 주제별 다섯 장으로 나눠, 작업에 필요한 장만 읽게 했습니다
 - **코드는 이름으로 가리킨다**: 줄 번호는 어긋나도 잡아 줄 장치가 없고, 이름은 바뀌면 검색 0건으로 드러납니다
 - **마지막 전체 리뷰는 가벼운 모델로 바꾸지 않는다**: 중요 결함 3건을 잡은 것은 마지막 전체 리뷰였습니다. 작업을 잘게 쪼개 조각마다 붙인 리뷰 둘은 16분 동안 한 건도 못 찾았습니다
 
@@ -733,8 +751,6 @@ React 전환에서는 Thymeleaf 버전에서 맡았던 아티스트·트랙·앨
 
 **결과** — 잘못 고르더라도 같은 음원이거나 다른 언어 번역 영상에 그칩니다.
 
-**한계** — 무료 쿼터 제한 때문에 테스트를 넉넉히 돌리지 못해 필터링 로직을 충분히 다듬지 못했습니다.
-
 <details class="more">
 <summary>나머지 항목</summary>
 
@@ -849,4 +865,4 @@ ${this.parser.parse(i)}</blockquote>
 ${i}</tr>
 `}tablecell(i){let s=this.parser.parseInline(i.tokens),r=i.header?"th":"td";return(i.align?`<${r} align="${i.align}">`:`<${r}>`)+s+`</${r}>
 `}strong({tokens:i}){return`<strong>${this.parser.parseInline(i)}</strong>`}em({tokens:i}){return`<em>${this.parser.parseInline(i)}</em>`}codespan({text:i}){return`<code>${gt(i,!0)}</code>`}br(i){return"<br>"}del({tokens:i}){return`<del>${this.parser.parseInline(i)}</del>`}link({href:i,title:s,text:r,tokens:c,autolink:o}){let h=o?gt(r,!0):this.parser.parseInline(c),g=qd(i);if(g===null)return h;i=gt(g,o);let p='<a href="'+i+'"';return s&&(p+=' title="'+gt(s)+'"'),p+=">"+h+"</a>",p}image({href:i,title:s,text:r,tokens:c}){c&&(r=this.parser.parseInline(c,this.parser.textRenderer));let o=qd(i);if(o===null)return gt(r);i=o;let h=`<img src="${gt(i)}" alt="${gt(r)}"`;return s&&(h+=` title="${gt(s)}"`),h+=">",h}text(i){return"tokens"in i&&i.tokens?this.parser.parseInline(i.tokens):"escaped"in i&&i.escaped?i.text:gt(i.text)}},Er=class{strong({text:i}){return i}em({text:i}){return i}codespan({text:i}){return i}del({text:i}){return i}html({text:i}){return i}text({text:i}){return i}link({text:i}){return""+i}image({text:i}){return""+i}br(){return""}checkbox({raw:i}){return i}},wt=class nr{options;renderer;textRenderer;constructor(s){this.options=s||Il,this.options.renderer=this.options.renderer||new Ei,this.renderer=this.options.renderer,this.renderer.options=this.options,this.renderer.parser=this,this.textRenderer=new Er}static parse(s,r){return new nr(r).parse(s)}static parseInline(s,r){return new nr(r).parseInline(s)}parse(s){this.renderer.parser=this;let r="";for(let c=0;c<s.length;c++){let o=s[c];if(this.options.extensions?.renderers?.[o.type]){let g=o,p=this.options.extensions.renderers[g.type].call({parser:this},g);if(p!==!1||!["space","hr","heading","code","table","blockquote","list","checkbox","html","def","paragraph","text"].includes(g.type)){r+=p||"";continue}}let h=o;switch(h.type){case"space":{r+=this.renderer.space(h);break}case"hr":{r+=this.renderer.hr(h);break}case"heading":{r+=this.renderer.heading(h);break}case"code":{r+=this.renderer.code(h);break}case"table":{r+=this.renderer.table(h);break}case"blockquote":{r+=this.renderer.blockquote(h);break}case"list":{r+=this.renderer.list(h);break}case"checkbox":{r+=this.renderer.checkbox(h);break}case"html":{r+=this.renderer.html(h);break}case"def":{r+=this.renderer.def(h);break}case"paragraph":{r+=this.renderer.paragraph(h);break}case"text":{r+=this.renderer.text(h);break}default:{let g='Token with "'+h.type+'" type was not found.';if(this.options.silent)return console.error(g),"";throw new Error(g)}}}return r}parseInline(s,r=this.renderer){this.renderer.parser=this;let c="";for(let o=0;o<s.length;o++){let h=s[o];if(this.options.extensions?.renderers?.[h.type]){let p=this.options.extensions.renderers[h.type].call({parser:this},h);if(p!==!1||!["escape","html","link","image","checkbox","strong","em","codespan","br","del","text"].includes(h.type)){c+=p||"";continue}}let g=h;switch(g.type){case"escape":{c+=r.text(g);break}case"html":{c+=r.html(g);break}case"link":{c+=r.link(g);break}case"image":{c+=r.image(g);break}case"checkbox":{c+=r.checkbox(g);break}case"strong":{c+=r.strong(g);break}case"em":{c+=r.em(g);break}case"codespan":{c+=r.codespan(g);break}case"br":{c+=r.br(g);break}case"del":{c+=r.del(g);break}case"text":{c+=r.text(g);break}default:{let p='Token with "'+g.type+'" type was not found.';if(this.options.silent)return console.error(p),"";throw new Error(p)}}}return c}},Vn=class{options;block;constructor(i){this.options=i||Il}static passThroughHooks=new Set(["preprocess","postprocess","processAllTokens","emStrongMask"]);static passThroughHooksRespectAsync=new Set(["preprocess","postprocess","processAllTokens"]);preprocess(i){return i}postprocess(i){return i}processAllTokens(i){return i}emStrongMask(i){return i}provideLexer(i=this.block){return i?Dt.lex:Dt.lexInline}provideParser(i=this.block){return i?wt.parse:wt.parseInline}},Jv=class{defaults=gr();options=this.setOptions;parse=this.parseMarkdown(!0);parseInline=this.parseMarkdown(!1);Parser=wt;Renderer=Ei;TextRenderer=Er;Lexer=Dt;Tokenizer=_i;Hooks=Vn;constructor(...i){this.use(...i)}walkTokens(i,s){let r=[];for(let c of i)switch(r=r.concat(s.call(this,c)),c.type){case"table":{let o=c;for(let h of o.header)r=r.concat(this.walkTokens(h.tokens,s));for(let h of o.rows)for(let g of h)r=r.concat(this.walkTokens(g.tokens,s));break}case"list":{let o=c;r=r.concat(this.walkTokens(o.items,s));break}default:{let o=c;this.defaults.extensions?.childTokens?.[o.type]?this.defaults.extensions.childTokens[o.type].forEach(h=>{let g=o[h].flat(1/0);r=r.concat(this.walkTokens(g,s))}):o.tokens&&(r=r.concat(this.walkTokens(o.tokens,s)))}}return r}use(...i){let s=this.defaults.extensions||{renderers:{},childTokens:{}};return i.forEach(r=>{let c={...r};if(c.async=this.defaults.async||c.async||!1,r.extensions&&(r.extensions.forEach(o=>{if(!o.name)throw new Error("extension name required");if("renderer"in o){let h=s.renderers[o.name];h?s.renderers[o.name]=function(...g){let p=o.renderer.apply(this,g);return p===!1&&(p=h.apply(this,g)),p}:s.renderers[o.name]=o.renderer}if("tokenizer"in o){if(!o.level||o.level!=="block"&&o.level!=="inline")throw new Error("extension level must be 'block' or 'inline'");let h=s[o.level];h?h.unshift(o.tokenizer):s[o.level]=[o.tokenizer],o.start&&(o.level==="block"?s.startBlock?s.startBlock.push(o.start):s.startBlock=[o.start]:o.level==="inline"&&(s.startInline?s.startInline.push(o.start):s.startInline=[o.start]))}"childTokens"in o&&o.childTokens&&(s.childTokens[o.name]=o.childTokens)}),c.extensions=s),r.renderer){let o=this.defaults.renderer||new Ei(this.defaults);for(let h in r.renderer){if(!(h in o))throw new Error(`renderer '${h}' does not exist`);if(["options","parser"].includes(h))continue;let g=h,p=r.renderer[g],y=o[g];o[g]=(...m)=>{let S=p.apply(o,m);return S===!1&&(S=y.apply(o,m)),S||""}}c.renderer=o}if(r.tokenizer){let o=this.defaults.tokenizer||new _i(this.defaults);for(let h in r.tokenizer){if(!(h in o))throw new Error(`tokenizer '${h}' does not exist`);if(["options","rules","lexer"].includes(h))continue;let g=h,p=r.tokenizer[g],y=o[g];o[g]=(...m)=>{let S=p.apply(o,m);return S===!1&&(S=y.apply(o,m)),S}}c.tokenizer=o}if(r.hooks){let o=this.defaults.hooks||new Vn;for(let h in r.hooks){if(!(h in o))throw new Error(`hook '${h}' does not exist`);if(["options","block"].includes(h))continue;let g=h,p=r.hooks[g],y=o[g];Vn.passThroughHooks.has(h)?o[g]=m=>{if(this.defaults.async&&Vn.passThroughHooksRespectAsync.has(h))return(async()=>{let k=await p.call(o,m);return y.call(o,k)})();let S=p.call(o,m);return y.call(o,S)}:o[g]=(...m)=>{if(this.defaults.async)return(async()=>{let k=await p.apply(o,m);return k===!1&&(k=await y.apply(o,m)),k})();let S=p.apply(o,m);return S===!1&&(S=y.apply(o,m)),S}}c.hooks=o}if(r.walkTokens){let o=this.defaults.walkTokens,h=r.walkTokens;c.walkTokens=function(g){let p=[];return p.push(h.call(this,g)),o&&(p=p.concat(o.call(this,g))),p}}this.defaults={...this.defaults,...c}}),this}setOptions(i){return this.defaults={...this.defaults,...i},this}lexer(i,s){return Dt.lex(i,s??this.defaults)}parser(i,s){return wt.parse(i,s??this.defaults)}parseMarkdown(i){return(s,r)=>{let c={...r},o={...this.defaults,...c},h=this.onError(!!o.silent,!!o.async);if(this.defaults.async===!0&&c.async===!1)return h(new Error("marked(): The async option was set to true by an extension. Remove async: false from the parse options object to return a Promise."));if(typeof s>"u"||s===null)return h(new Error("marked(): input parameter is undefined or null"));if(typeof s!="string")return h(new Error("marked(): input parameter is of type "+Object.prototype.toString.call(s)+", string expected"));if(o.hooks&&(o.hooks.options=o,o.hooks.block=i),o.async)return(async()=>{let g=o.hooks?await o.hooks.preprocess(s):s,p=await(o.hooks?await o.hooks.provideLexer(i):i?Dt.lex:Dt.lexInline)(g,o),y=o.hooks?await o.hooks.processAllTokens(p):p;o.walkTokens&&await Promise.all(this.walkTokens(y,o.walkTokens));let m=await(o.hooks?await o.hooks.provideParser(i):i?wt.parse:wt.parseInline)(y,o);return o.hooks?await o.hooks.postprocess(m):m})().catch(h);try{o.hooks&&(s=o.hooks.preprocess(s));let g=(o.hooks?o.hooks.provideLexer(i):i?Dt.lex:Dt.lexInline)(s,o);o.hooks&&(g=o.hooks.processAllTokens(g)),o.walkTokens&&this.walkTokens(g,o.walkTokens);let p=(o.hooks?o.hooks.provideParser(i):i?wt.parse:wt.parseInline)(g,o);return o.hooks&&(p=o.hooks.postprocess(p)),p}catch(g){return h(g)}}}onError(i,s){return r=>{if(r.message+=`
-Please report this to https://github.com/markedjs/marked.`,i){let c="<p>An error occurred:</p><pre>"+gt(r.message+"",!0)+"</pre>";return s?Promise.resolve(c):c}if(s)return Promise.reject(r);throw r}}},Fl=new Jv;function pe(i,s){return Fl.parse(i,s)}pe.options=pe.setOptions=function(i){return Fl.setOptions(i),pe.defaults=Fl.defaults,yp(pe.defaults),pe};pe.getDefaults=gr;pe.defaults=Il;function Wv(...i){return Fl.use(...i),pe.defaults=Fl.defaults,yp(pe.defaults),pe}pe.use=Wv;pe.walkTokens=function(i,s){return Fl.walkTokens(i,s)};pe.parseInline=Fl.parseInline;pe.Parser=wt;pe.parser=wt.parse;pe.Renderer=Ei;pe.TextRenderer=Er;pe.Lexer=Dt;pe.lexer=Dt.lex;pe.Tokenizer=_i;pe.Hooks=Vn;pe.parse=pe;pe.options;pe.setOptions;pe.walkTokens;pe.parseInline;wt.parse;Dt.lex;const Fv=Object.assign({"./article/hhg.md":Ny,"./article/home.md":Uy,"./article/lexi-hub.md":By,"./article/mtechlabs.md":Cy,"./article/playsync-v2.md":Hy,"./article/playsync.md":Ly,"./article/resonos.md":qy}),Pv=Object.assign({"./assets/certificate/ADsP.png":jy,"./assets/certificate/SQLD.png":Yy,"./assets/certificate/webd.png":Gy,"./assets/gunwoo-avatar.jpg":gp,"./assets/gunwoo.jpg":Qy,"./assets/hhg.png":Xy,"./assets/hhg/machineEdit.png":Zy,"./assets/hhg/machines.png":Vy,"./assets/hhg/main.png":Ky,"./assets/hhg/sales.png":$y,"./assets/hhg/salesChartMax.png":Jy,"./assets/hhg/salesChartMin.png":Wy,"./assets/hhg/salesList.png":Fy,"./assets/lexiHub.png":Py,"./assets/lexiHub/EditLongform.gif":Iy,"./assets/lexiHub/addFlashcard.gif":e1,"./assets/lexiHub/addLongform.png":t1,"./assets/lexiHub/doneLongform.png":l1,"./assets/lexiHub/editFlashcard.png":a1,"./assets/lexiHub/editedFlashcard.png":n1,"./assets/lexiHub/mainSearch.gif":u1,"./assets/lexiHub/typingFlashcard.gif":i1,"./assets/lexiHub/typingLongform.gif":s1,"./assets/playsync.png":c1,"./assets/playsync/1playersReady.png":r1,"./assets/playsync/2dashboard.png":o1,"./assets/playsync/3raiseAndRaise.gif":f1,"./assets/playsync/4autoCheck.gif":h1,"./assets/playsync/5sidePotShowdown.gif":d1,"./assets/playsync/6sidePot.png":p1,"./assets/playsync/7goToShowDown.gif":m1,"./assets/playsync/8eliminated.gif":g1,"./assets/playsyncV2/console-dealer-otp.png":y1,"./assets/playsyncV2/dealer-felt.png":v1,"./assets/playsyncV2/dealer-winner.png":b1,"./assets/playsyncV2/s1-join.webp":x1,"./assets/playsyncV2/s2-hand.webp":S1,"./assets/playsyncV2/s3-sidepot.webp":_1,"./assets/playsyncV2/seat-game.png":E1,"./assets/resonos.png":R1,"./assets/resonosReact/album.avif":T1,"./assets/resonosReact/artist.avif":A1,"./assets/resonosReact/comComments.avif":k1,"./assets/resonosReact/comMain.png":M1,"./assets/resonosReact/comNonMember.avif":z1,"./assets/resonosReact/comPost.avif":D1,"./assets/resonosReact/comPostEdit.avif":w1,"./assets/resonosReact/comRefactoring.png":O1,"./assets/resonosReact/comVote.avif":N1,"./assets/resonosReact/comVote.png":U1,"./assets/resonosReact/pagination.avif":B1,"./assets/resonosReact/track.avif":C1,"./assets/resonosReact/welcomDark.avif":H1,"./assets/resonosReact/welcomeLight.png":L1,"./assets/resonosSpring/album.png":q1,"./assets/resonosSpring/albumReview.avif":j1,"./assets/resonosSpring/albumVote.avif":Y1,"./assets/resonosSpring/artist.png":G1,"./assets/resonosSpring/main.png":Q1,"./assets/resonosSpring/resonosAdmin.avif":X1,"./assets/resonosSpring/resonosStatus.avif":Z1,"./assets/resonosSpring/resonosTrack.avif":V1,"./assets/resonosSpring/track.png":K1,"./assets/resonosSpring/trackmood.png":$1});function Iv(i){const s=i.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?/);if(!s)return{meta:{title:""},body:i};const r={};let c=null;for(const o of s[1].split(/\r?\n/)){const h=o.match(/^(\s*)([\w-]+):\s*(.*)$/);if(!h)continue;const[,g,p,y]=h;g&&c?c[p]=y:!y||y==="{}"?r[p]=c={}:(r[p]=y,c=null)}return{meta:r,body:i.slice(s[0].length)}}const eb=(i="")=>i.startsWith("개인")?"개인":/팀/.test(i)?"팀":"회사",Zd=(i="")=>i.match(/\d{4}\.\d{2}/)?.[0]??"",Rr=Object.entries(Fv).map(([i,s])=>{const r=i.split("/").pop().replace(/\.md$/,""),{meta:c,body:o}=Iv(s);return{slug:r,meta:c,body:o,kind:eb(c.role)}}),ur=Rr.find(i=>i.slug==="home"),Ap=ur?.body.trim()??"",Vd=i=>i.meta.core==="true",kp=i=>i.meta.archive==="true",Mp=Rr.filter(i=>i.slug!=="home").sort((i,s)=>Number(Vd(s))-Number(Vd(i))||Zd(s.meta.period).localeCompare(Zd(i.meta.period))),Tr=Mp.filter(i=>!kp(i)),Kd=Mp.filter(kp),zp=i=>Rr.find(s=>s.slug===i),Dp=i=>i.meta.title.split(" — ")[0],ir=i=>i.replace(/\*\*|`|\[|\]\([^)]*\)/g,""),tb=i=>i.meta.summary??ir(i.body.trim().split(/\r?\n\r?\n/)[0].replace(/\r?\n/g," ")),lb=i=>i.trim().toLowerCase().replace(/[^\p{L}\p{N}\s-]/gu,"").replace(/\s+/g,"-"),ll=i=>i.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");pe.use({renderer:{link({href:i,tokens:s}){const r=this.parser.parseInline(s),c=i.match(/^\.\/([\w-]+)\.md(#.*)?$/);if(c){const o=zp(c[1]),h=c[2]?`?h=${c[2].slice(1)}`:"",g=o?`<span class="pv" role="tooltip"><b>${ll(o.meta.title)}</b><i>${ll([o.meta.period,o.meta.role].filter(Boolean).join(" · "))}</i>${ll(tb(o))}</span>`:"";return`<a class="int" href="#/docs/${c[1]}${h}">${r}${g}</a>`}return`<a class="ext" href="${ll(i)}" target="_blank" rel="noopener noreferrer">${r}</a>`},image({href:i,text:s,title:r}){const c=Pv[`./assets/${i}`]??i;return`<button type="button" class="${r==="대표"?"fig featured":"fig"}" data-src="${ll(c)}" data-cap="${ll(s)}"><img src="${ll(c)}" alt="${ll(s)}" loading="lazy"><span>${ll(s)}</span></button>`}}});const ab=["문제","원인","대안","선택","결과","한계"],Wc=new RegExp(`^\\*\\*(${ab.join("|")})\\*\\* — `),$d=new Map;function Kn(i,s=!1){const r=$d.get(i);if(r)return r;const c=pe.lexer(i),o=z=>pe.parser(Object.assign(z,{links:c.links})),h=[],g=[];let p=0,y=null,m=!1;const S=()=>{y&&(h.push('<dl class="judge">'+y.map(({label:z,html:q})=>{const H=z==="결과"?q.replace(/^<p><code>([^<]*→[^<]*)<\/code>\s*/,'<p><span class="delta">$1</span>'):q;return`<dt data-l="${z}"${z==="한계"?' class="limit"':""}>${z}</dt><dd>${H}</dd>`}).join("")+"</dl>"),y=null)};c.forEach((z,q)=>{if((z.type==="heading"||z.type==="hr")&&S(),z.type==="html"&&/^<\/?details/.test(z.raw)&&(S(),m=z.raw.startsWith('<details class="more"')),z.type==="heading"&&z.depth===2){const j=z.text,B=lb(ir(j));let C=s;for(let fe=q+1;fe<c.length;fe++){const $=c[fe];if($.type==="hr"||$.type==="heading"&&$.depth<=2)break;if($.type==="paragraph"&&Wc.test($.raw)){C=!0;break}}const P=C?String(++p).padStart(2,"0"):void 0;m||g.push({id:B,text:ir(j),no:P});const K=pe.parseInline(j);h.push(P?`<h2 id="${B}" class="jh"><span class="no">${P}</span><span>${K}</span></h2>`:`<h2 id="${B}">${K}</h2>`);return}const H=z.type==="paragraph"?z.raw.match(Wc)?.[1]:void 0;H?(y??=[],y.push({label:H,html:pe.parse(z.raw.replace(Wc,""))})):y&&z.type!=="space"?y[y.length-1].html+=o([z]):y||h.push(o([z]))}),S();const k={html:h.join(""),toc:g};return $d.set(i,k),k}const nb=i=>{if(!i)return Kn(Ap).toc;const s=zp(i);return s?Kn(s.body,s.kind==="회사").toc:[]},ub=()=>{const i=document.documentElement.dataset.theme;return i==="dark"||i==="light"?i:matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"},ib=i=>{document.documentElement.dataset.theme=i;try{localStorage.setItem("theme",i)}catch{}};function sb({item:i,onClose:s}){return D.useEffect(()=>{const r=c=>{c.key==="Escape"&&s()};return window.addEventListener("keydown",r),()=>window.removeEventListener("keydown",r)},[s]),Q.jsxs("div",{className:"lightbox",role:"dialog","aria-modal":"true","aria-label":i.title,children:[Q.jsx("button",{type:"button",className:"lightbox-scrim","aria-label":"닫기",onClick:s}),Q.jsxs("figure",{className:"lightbox-card",children:[Q.jsxs("figcaption",{children:[Q.jsxs("span",{children:[Q.jsx("b",{children:i.title}),i.sub&&Q.jsx("i",{children:i.sub})]}),Q.jsx("button",{type:"button",onClick:s,"aria-label":"닫기",autoFocus:!0,children:"✕"})]}),Q.jsx("img",{src:i.src,alt:i.title})]})]})}function cb(){return Q.jsxs("div",{className:"byline",children:[Q.jsx("div",{className:"photo",children:Q.jsx("img",{src:gp,alt:"고건우 프로필 사진"})}),Q.jsxs("div",{className:"byline-text",children:[Q.jsx("div",{className:"name",children:"고건우"}),Q.jsx("div",{className:"role",children:"풀스택 웹 개발자 · Spring Boot · NestJS · Next.js · React"}),Q.jsxs("div",{className:"links",children:[Q.jsx("a",{className:"ext",href:"https://github.com/GUNW-O-O",target:"_blank",rel:"noopener noreferrer",children:"GitHub"}),Q.jsx("a",{href:"mailto:go971230@gmail.com",children:"Email"})]})]})]})}function Jd({doc:i}){const{title:s,summary:r,period:c,role:o,visibility:h,links:g={}}=i.meta;return Q.jsxs(Q.Fragment,{children:[Q.jsx("h1",{children:s}),r&&Q.jsx("p",{className:"lede",children:r}),Q.jsxs("div",{className:"meta",children:[c&&Q.jsx("span",{className:"mono",children:c}),o&&Q.jsx("span",{children:o}),h&&Q.jsx("span",{children:h}),Object.entries(g).map(([p,y])=>Q.jsx("a",{className:"ext",href:y,target:"_blank",rel:"noopener noreferrer",children:p==="repo"?"GitHub 리포지토리":`GitHub 리포지토리 · ${p}`},p))]})]})}function Wd(){const[i,s]=D.useState(null),{slug:r}=ip(),[c]=ky(),{key:o}=jt(),h=c.get("h");D.useEffect(()=>{const p=h&&document.getElementById(h)||r&&document.getElementById(`doc-${r}`);if(p){for(let y=p.closest("details");y;y=y.parentElement?.closest("details")??null)y.open=!0;p.scrollIntoView()}else window.scrollTo(0,0)},[r,h,o]);const g=p=>{const y=p.target.closest(".fig");y&&s({src:y.dataset.src,title:y.dataset.cap??""})};return Q.jsxs("main",{className:"main",onClick:g,children:[Q.jsxs("article",{className:"doc home",id:"doc-home",children:[Q.jsx(cb,{}),ur?.meta.title&&Q.jsx("h1",{children:ur.meta.title}),Q.jsx("div",{className:"md",dangerouslySetInnerHTML:{__html:Kn(Ap).html}})]}),Tr.map(p=>Q.jsxs("article",{id:`doc-${p.slug}`,className:"doc page",children:[Q.jsx(Jd,{doc:p}),Q.jsx("div",{className:"md",dangerouslySetInnerHTML:{__html:Kn(p.body,p.kind==="회사").html}})]},p.slug)),Kd.length>0&&Q.jsx("article",{className:"doc",children:Kd.map(p=>Q.jsxs("details",{id:`doc-${p.slug}`,className:"more",children:[Q.jsxs("summary",{children:[Dp(p)," · ",p.meta.period]}),Q.jsx(Jd,{doc:p}),Q.jsx("div",{className:"md",dangerouslySetInnerHTML:{__html:Kn(p.body,p.kind==="회사").html}})]},p.slug))}),i&&Q.jsx(sb,{item:i,onClose:()=>s(null)})]})}const Fc=["home",...Tr.map(i=>i.slug)],Pc=Tr.map(i=>({title:Dp(i),toc:nb(i.slug)})),rb=.35,Fd=180,Pd=36;function ob(){const i=D.useRef(null),[s,r]=D.useState(ub),c=()=>{const o=s==="dark"?"light":"dark";ib(o),r(o)};return D.useEffect(()=>{const o=i.current,h=o.querySelector(".gtrack-wrap"),g=h.firstElementChild,p=o.querySelector(".gindex"),y=o.querySelector(".gprog"),m=ae=>document.getElementById(`doc-${Fc[ae]}`);let S=[],k=window.scrollY,z=0,q=!1,H=!1,j=!1,B=null;const C=()=>{if(!S.length)return;const ae=window.scrollY,ie=ae-k;k=ae,!j&&ie&&(Math.sign(ie)!==Math.sign(z)&&(z=0),z+=ie,z<-Pd&&(q=!0),z>Pd&&(q=H=!1));const re=ae<S[0].y;o.classList.toggle("nav",re||q||H);let _e=0;for(;_e+1<S.length&&S[_e+1].y<=ae;)_e++;const Ue=S[_e],Te=S[_e+1],ut=Te?Math.min(1,Math.max(0,(ae-(Te.y-Fd))/Fd)):0;h.scrollLeft=Ue.x+(Te?(Te.x-Ue.x)*ut*ut*(3-2*ut):0),g.querySelector(".on")?.classList.remove("on"),Ue.btn?.classList.add("on");const qe=re?0:Ue.s,we=qe?S.find(L=>L.s===qe).y:0,M=S.find(L=>L.s===qe+1),Y=document.documentElement.scrollHeight-window.innerHeight,J=M?M.y:Y,ge=Math.min(1,Math.max(0,(ae-we)/(J-we||1)));[...p.children].forEach((L,Z)=>{L.classList.toggle("on",Z===qe),Z===qe&&L.style.setProperty("--p",String(ge))});const b=L=>{const Z=p.children[L];return Z?Z.offsetLeft-(p.clientWidth-Z.offsetWidth)/2:0};p.scrollLeft=b(qe)+(qe+1<p.children.length?(b(qe+1)-b(qe))*ge:0);const U=g.children[Ue.s],G=U?.firstElementChild;if(B&&B!==G&&(B.style.transform="",B.classList.remove("wait"),B=null),h.classList.toggle("last",!U),U&&G){const L=U.offsetLeft-h.scrollLeft+G.offsetWidth-h.clientWidth;G.style.transform=L>0?`translateX(${-L}px)`:"",G.classList.toggle("wait",L>0),B=G}y.style.transform=`scaleX(${Y>0?ae/Y:0})`},P=()=>{const ae=window.innerHeight*rb,ie=re=>re.getBoundingClientRect().top+window.scrollY-ae;S=[],[...g.children].forEach((re,_e)=>{const Ue=m(_e+1);if(!Ue)return;const Te=re.children,ut=Te[0].offsetWidth+6;S.push({y:ie(Ue),x:re.offsetLeft,s:_e+1}),Pc[_e].toc.forEach((qe,we)=>{const M=document.getElementById(qe.id);M&&S.push({y:ie(M),x:Te[we+1].offsetLeft-ut,s:_e+1,btn:Te[we+1]})})}),C()},K=()=>{j&&(j=!1,q=H=!1,z=0,k=window.scrollY,C())},fe=ae=>{j=!0,ae(),setTimeout(K,900)},$=ae=>{const ie=ae.target.closest("button");if(!ie)return;const{s:re,h:_e}=ie.dataset;if(_e)return fe(()=>document.getElementById(_e)?.scrollIntoView({behavior:"smooth"}));if(re&&(!ie.classList.contains("glbl")||ie.classList.contains("wait")))return fe(()=>+re?m(+re)?.scrollIntoView({behavior:"smooth"}):window.scrollTo({top:0,behavior:"smooth"}));ie.classList.contains("glbl")&&(H=!0,C())},ze=new ResizeObserver(P);return ze.observe(document.body),window.addEventListener("scroll",C,{passive:!0}),window.addEventListener("resize",P),document.addEventListener("scrollend",K),o.addEventListener("click",$),()=>{ze.disconnect(),window.removeEventListener("scroll",C),window.removeEventListener("resize",P),document.removeEventListener("scrollend",K),o.removeEventListener("click",$)}},[]),Q.jsxs("header",{className:"gbar nav",ref:i,children:[Q.jsxs("div",{className:"gfaces",children:[Q.jsxs("nav",{className:"gindex","aria-label":"문서",children:[Q.jsx("button",{type:"button","data-s":"0",children:"Home"}),Pc.map((o,h)=>Q.jsxs("button",{type:"button","data-s":h+1,children:[Q.jsx("span",{className:"no",children:String(h+1).padStart(2,"0")}),o.title]},Fc[h+1]))]}),Q.jsx("nav",{className:"gtrack-wrap","aria-label":"목차",children:Q.jsx("div",{className:"gtrack",children:Pc.map((o,h)=>Q.jsxs("div",{className:"ggrp",children:[Q.jsx("button",{type:"button",className:"glbl","data-s":h+1,children:o.title}),o.toc.map(g=>Q.jsxs("button",{type:"button","data-h":g.id,children:[g.no&&Q.jsx("span",{className:"no",children:g.no}),g.text]},g.id))]},Fc[h+1]))})})]}),Q.jsx("button",{type:"button",className:"gtool",onClick:c,"aria-label":s==="dark"?"라이트 모드로 전환":"다크 모드로 전환",children:s==="dark"?"☀️":"🌙"}),Q.jsx("button",{type:"button",className:"gtool gprint",onClick:()=>window.print(),children:"인쇄"}),Q.jsx("span",{className:"gprog"})]})}function fb(){const{slug:i}=ip();return Q.jsx(rp,{to:`/docs/${i}`,replace:!0})}function hb(){return Q.jsxs(_y,{children:[Q.jsx(ob,{}),Q.jsxs(P0,{children:[Q.jsx(Zn,{path:"/",element:Q.jsx(Wd,{})}),Q.jsx(Zn,{path:"/docs/:slug",element:Q.jsx(Wd,{})}),Q.jsx(Zn,{path:"/projects/:slug",element:Q.jsx(fb,{})}),Q.jsx(Zn,{path:"*",element:Q.jsx(rp,{to:"/",replace:!0})})]})]})}let Ri=[];window.addEventListener("beforeprint",()=>{Ri=[...document.querySelectorAll("details.shots:not([open])")],Ri.forEach(i=>{i.open=!0})});window.addEventListener("afterprint",()=>{Ri.forEach(i=>{i.open=!1}),Ri=[]});c0.createRoot(document.getElementById("root")).render(Q.jsx(D.StrictMode,{children:Q.jsx(hb,{})}));
+Please report this to https://github.com/markedjs/marked.`,i){let c="<p>An error occurred:</p><pre>"+gt(r.message+"",!0)+"</pre>";return s?Promise.resolve(c):c}if(s)return Promise.reject(r);throw r}}},Fl=new Jv;function pe(i,s){return Fl.parse(i,s)}pe.options=pe.setOptions=function(i){return Fl.setOptions(i),pe.defaults=Fl.defaults,yp(pe.defaults),pe};pe.getDefaults=gr;pe.defaults=Il;function Wv(...i){return Fl.use(...i),pe.defaults=Fl.defaults,yp(pe.defaults),pe}pe.use=Wv;pe.walkTokens=function(i,s){return Fl.walkTokens(i,s)};pe.parseInline=Fl.parseInline;pe.Parser=wt;pe.parser=wt.parse;pe.Renderer=Ei;pe.TextRenderer=Er;pe.Lexer=Dt;pe.lexer=Dt.lex;pe.Tokenizer=_i;pe.Hooks=Vn;pe.parse=pe;pe.options;pe.setOptions;pe.walkTokens;pe.parseInline;wt.parse;Dt.lex;const Fv=Object.assign({"./article/hhg.md":Ny,"./article/home.md":Uy,"./article/lexi-hub.md":By,"./article/mtechlabs.md":Cy,"./article/playsync-v2.md":Hy,"./article/playsync.md":Ly,"./article/resonos.md":qy}),Pv=Object.assign({"./assets/certificate/ADsP.png":jy,"./assets/certificate/SQLD.png":Yy,"./assets/certificate/webd.png":Gy,"./assets/gunwoo-avatar.jpg":gp,"./assets/gunwoo.jpg":Qy,"./assets/hhg.png":Xy,"./assets/hhg/machineEdit.png":Zy,"./assets/hhg/machines.png":Vy,"./assets/hhg/main.png":Ky,"./assets/hhg/sales.png":$y,"./assets/hhg/salesChartMax.png":Jy,"./assets/hhg/salesChartMin.png":Wy,"./assets/hhg/salesList.png":Fy,"./assets/lexiHub.png":Py,"./assets/lexiHub/EditLongform.gif":Iy,"./assets/lexiHub/addFlashcard.gif":e1,"./assets/lexiHub/addLongform.png":t1,"./assets/lexiHub/doneLongform.png":l1,"./assets/lexiHub/editFlashcard.png":a1,"./assets/lexiHub/editedFlashcard.png":n1,"./assets/lexiHub/mainSearch.gif":u1,"./assets/lexiHub/typingFlashcard.gif":i1,"./assets/lexiHub/typingLongform.gif":s1,"./assets/playsync.png":c1,"./assets/playsync/1playersReady.png":r1,"./assets/playsync/2dashboard.png":o1,"./assets/playsync/3raiseAndRaise.gif":f1,"./assets/playsync/4autoCheck.gif":h1,"./assets/playsync/5sidePotShowdown.gif":d1,"./assets/playsync/6sidePot.png":p1,"./assets/playsync/7goToShowDown.gif":m1,"./assets/playsync/8eliminated.gif":g1,"./assets/playsyncV2/console-dealer-otp.png":y1,"./assets/playsyncV2/dealer-felt.png":v1,"./assets/playsyncV2/dealer-winner.png":b1,"./assets/playsyncV2/s1-join.webp":x1,"./assets/playsyncV2/s2-hand.webp":S1,"./assets/playsyncV2/s3-sidepot.webp":_1,"./assets/playsyncV2/seat-game.png":E1,"./assets/resonos.png":R1,"./assets/resonosReact/album.avif":T1,"./assets/resonosReact/artist.avif":A1,"./assets/resonosReact/comComments.avif":k1,"./assets/resonosReact/comMain.png":M1,"./assets/resonosReact/comNonMember.avif":z1,"./assets/resonosReact/comPost.avif":D1,"./assets/resonosReact/comPostEdit.avif":w1,"./assets/resonosReact/comRefactoring.png":O1,"./assets/resonosReact/comVote.avif":N1,"./assets/resonosReact/comVote.png":U1,"./assets/resonosReact/pagination.avif":B1,"./assets/resonosReact/track.avif":C1,"./assets/resonosReact/welcomDark.avif":H1,"./assets/resonosReact/welcomeLight.png":L1,"./assets/resonosSpring/album.png":q1,"./assets/resonosSpring/albumReview.avif":j1,"./assets/resonosSpring/albumVote.avif":Y1,"./assets/resonosSpring/artist.png":G1,"./assets/resonosSpring/main.png":Q1,"./assets/resonosSpring/resonosAdmin.avif":X1,"./assets/resonosSpring/resonosStatus.avif":Z1,"./assets/resonosSpring/resonosTrack.avif":V1,"./assets/resonosSpring/track.png":K1,"./assets/resonosSpring/trackmood.png":$1});function Iv(i){const s=i.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?/);if(!s)return{meta:{title:""},body:i};const r={};let c=null;for(const o of s[1].split(/\r?\n/)){const h=o.match(/^(\s*)([\w-]+):\s*(.*)$/);if(!h)continue;const[,g,p,y]=h;g&&c?c[p]=y:!y||y==="{}"?r[p]=c={}:(r[p]=y,c=null)}return{meta:r,body:i.slice(s[0].length)}}const eb=(i="")=>i.startsWith("개인")?"개인":/팀/.test(i)?"팀":"회사",Zd=(i="")=>i.match(/\d{4}\.\d{2}/)?.[0]??"",Rr=Object.entries(Fv).map(([i,s])=>{const r=i.split("/").pop().replace(/\.md$/,""),{meta:c,body:o}=Iv(s);return{slug:r,meta:c,body:o,kind:eb(c.role)}}),ur=Rr.find(i=>i.slug==="home"),Ap=ur?.body.trim()??"",Vd=i=>i.meta.core==="true",kp=i=>i.meta.archive==="true",Mp=Rr.filter(i=>i.slug!=="home").sort((i,s)=>Number(Vd(s))-Number(Vd(i))||Zd(s.meta.period).localeCompare(Zd(i.meta.period))),Tr=Mp.filter(i=>!kp(i)),Kd=Mp.filter(kp),zp=i=>Rr.find(s=>s.slug===i),Dp=i=>i.meta.title.split(" — ")[0],ir=i=>i.replace(/\*\*|`|\[|\]\([^)]*\)/g,""),tb=i=>i.meta.summary??ir(i.body.trim().split(/\r?\n\r?\n/)[0].replace(/\r?\n/g," ")),lb=i=>i.trim().toLowerCase().replace(/[^\p{L}\p{N}\s-]/gu,"").replace(/\s+/g,"-"),ll=i=>i.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");pe.use({renderer:{link({href:i,tokens:s}){const r=this.parser.parseInline(s),c=i.match(/^\.\/([\w-]+)\.md(#.*)?$/);if(c){const o=zp(c[1]),h=c[2]?`?h=${c[2].slice(1)}`:"",g=o?`<span class="pv" role="tooltip"><b>${ll(o.meta.title)}</b><i>${ll([o.meta.period,o.meta.role].filter(Boolean).join(" · "))}</i>${ll(tb(o))}</span>`:"";return`<a class="int" href="#/docs/${c[1]}${h}">${r}${g}</a>`}return`<a class="ext" href="${ll(i)}" target="_blank" rel="noopener noreferrer">${r}</a>`},image({href:i,text:s,title:r}){const c=Pv[`./assets/${i}`]??i;return`<button type="button" class="${r==="대표"?"fig featured":"fig"}" data-src="${ll(c)}" data-cap="${ll(s)}"><img src="${ll(c)}" alt="${ll(s)}" loading="lazy"><span>${ll(s)}</span></button>`}}});const ab=["문제","원인","대안","선택","결과","한계"],Wc=new RegExp(`^\\*\\*(${ab.join("|")})\\*\\* — `),$d=new Map;function Kn(i,s=!1){const r=$d.get(i);if(r)return r;const c=pe.lexer(i),o=z=>pe.parser(Object.assign(z,{links:c.links})),h=[],g=[];let p=0,y=null,m=!1;const S=()=>{y&&(h.push('<dl class="judge">'+y.map(({label:z,html:q})=>{const H=z==="결과"?q.replace(/^<p><code>([^<]*→[^<]*)<\/code>\s*/,'<p><span class="delta">$1</span>'):q;return`<dt data-l="${z}"${z==="한계"?' class="limit"':""}>${z}</dt><dd>${H}</dd>`}).join("")+"</dl>"),y=null)};c.forEach((z,q)=>{if((z.type==="heading"||z.type==="hr")&&S(),z.type==="html"&&/^<\/?details/.test(z.raw)&&(S(),m=z.raw.startsWith('<details class="more"')),z.type==="heading"&&z.depth===2){const j=z.text,B=lb(ir(j));let C=s;for(let fe=q+1;fe<c.length;fe++){const $=c[fe];if($.type==="hr"||$.type==="heading"&&$.depth<=2)break;if($.type==="paragraph"&&Wc.test($.raw)){C=!0;break}}const P=C?String(++p).padStart(2,"0"):void 0;m||g.push({id:B,text:ir(j),no:P});const K=pe.parseInline(j);h.push(P?`<h2 id="${B}" class="jh"><span class="no">${P}</span><span>${K}</span></h2>`:`<h2 id="${B}">${K}</h2>`);return}const H=z.type==="paragraph"?z.raw.match(Wc)?.[1]:void 0;H?(y??=[],y.push({label:H,html:pe.parse(z.raw.replace(Wc,""))})):y&&z.type!=="space"?y[y.length-1].html+=o([z]):y||h.push(o([z]))}),S();const k={html:h.join(""),toc:g};return $d.set(i,k),k}const nb=i=>{if(!i)return Kn(Ap).toc;const s=zp(i);return s?Kn(s.body,s.kind==="회사").toc:[]},ub=()=>{const i=document.documentElement.dataset.theme;return i==="dark"||i==="light"?i:matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"},ib=i=>{document.documentElement.dataset.theme=i;try{localStorage.setItem("theme",i)}catch{}};function sb({item:i,onClose:s}){return D.useEffect(()=>{const r=c=>{c.key==="Escape"&&s()};return window.addEventListener("keydown",r),()=>window.removeEventListener("keydown",r)},[s]),Q.jsxs("div",{className:"lightbox",role:"dialog","aria-modal":"true","aria-label":i.title,children:[Q.jsx("button",{type:"button",className:"lightbox-scrim","aria-label":"닫기",onClick:s}),Q.jsxs("figure",{className:"lightbox-card",children:[Q.jsxs("figcaption",{children:[Q.jsxs("span",{children:[Q.jsx("b",{children:i.title}),i.sub&&Q.jsx("i",{children:i.sub})]}),Q.jsx("button",{type:"button",onClick:s,"aria-label":"닫기",autoFocus:!0,children:"✕"})]}),Q.jsx("img",{src:i.src,alt:i.title})]})]})}function cb(){return Q.jsxs("div",{className:"byline",children:[Q.jsx("div",{className:"photo",children:Q.jsx("img",{src:gp,alt:"고건우 프로필 사진"})}),Q.jsxs("div",{className:"byline-text",children:[Q.jsx("div",{className:"name",children:"고건우"}),Q.jsx("p",{className:"intro",children:"문제의 해결 방안이 떠오르면 그 방안이 통하지 않는 상황부터 찾습니다. 대안을 세워 비교하고, 고른 하나는 그 상황을 실제로 만들어 확인합니다. 적용한 뒤에는 그 방안 때문에 새로 생긴 문제가 없는지 다시 봅니다."}),Q.jsxs("div",{className:"links",children:[Q.jsx("a",{className:"ext",href:"https://github.com/GUNW-O-O",target:"_blank",rel:"noopener noreferrer",children:"GitHub"}),Q.jsx("a",{href:"mailto:go971230@gmail.com",children:"Email"})]})]})]})}function Jd({doc:i}){const{title:s,summary:r,period:c,role:o,visibility:h,links:g={}}=i.meta;return Q.jsxs(Q.Fragment,{children:[Q.jsx("h1",{children:s}),r&&Q.jsx("p",{className:"lede",children:r}),Q.jsxs("div",{className:"meta",children:[c&&Q.jsx("span",{className:"mono",children:c}),o&&Q.jsx("span",{children:o}),h&&Q.jsx("span",{children:h}),Object.entries(g).map(([p,y])=>Q.jsx("a",{className:"ext",href:y,target:"_blank",rel:"noopener noreferrer",children:p==="repo"?"GitHub 리포지토리":`GitHub 리포지토리 · ${p}`},p))]})]})}function Wd(){const[i,s]=D.useState(null),{slug:r}=ip(),[c]=ky(),{key:o}=jt(),h=c.get("h");D.useEffect(()=>{const p=h&&document.getElementById(h)||r&&document.getElementById(`doc-${r}`);if(p){for(let y=p.closest("details");y;y=y.parentElement?.closest("details")??null)y.open=!0;p.scrollIntoView()}else window.scrollTo(0,0)},[r,h,o]);const g=p=>{const y=p.target.closest(".fig");y&&s({src:y.dataset.src,title:y.dataset.cap??""})};return Q.jsxs("main",{className:"main",onClick:g,children:[Q.jsxs("article",{className:"doc home",id:"doc-home",children:[Q.jsx(cb,{}),ur?.meta.title&&Q.jsx("h1",{children:ur.meta.title}),Q.jsx("div",{className:"md",dangerouslySetInnerHTML:{__html:Kn(Ap).html}})]}),Tr.map(p=>Q.jsxs("article",{id:`doc-${p.slug}`,className:"doc page",children:[Q.jsx(Jd,{doc:p}),Q.jsx("div",{className:"md",dangerouslySetInnerHTML:{__html:Kn(p.body,p.kind==="회사").html}})]},p.slug)),Kd.length>0&&Q.jsx("article",{className:"doc",children:Kd.map(p=>Q.jsxs("details",{id:`doc-${p.slug}`,className:"more",children:[Q.jsxs("summary",{children:[Dp(p)," · ",p.meta.period]}),Q.jsx(Jd,{doc:p}),Q.jsx("div",{className:"md",dangerouslySetInnerHTML:{__html:Kn(p.body,p.kind==="회사").html}})]},p.slug))}),i&&Q.jsx(sb,{item:i,onClose:()=>s(null)})]})}const Fc=["home",...Tr.map(i=>i.slug)],Pc=Tr.map(i=>({title:Dp(i),toc:nb(i.slug)})),rb=.35,Fd=180,Pd=36;function ob(){const i=D.useRef(null),[s,r]=D.useState(ub),c=()=>{const o=s==="dark"?"light":"dark";ib(o),r(o)};return D.useEffect(()=>{const o=i.current,h=o.querySelector(".gtrack-wrap"),g=h.firstElementChild,p=o.querySelector(".gindex"),y=o.querySelector(".gprog"),m=ae=>document.getElementById(`doc-${Fc[ae]}`);let S=[],k=window.scrollY,z=0,q=!1,H=!1,j=!1,B=null;const C=()=>{if(!S.length)return;const ae=window.scrollY,ie=ae-k;k=ae,!j&&ie&&(Math.sign(ie)!==Math.sign(z)&&(z=0),z+=ie,z<-Pd&&(q=!0),z>Pd&&(q=H=!1));const re=ae<S[0].y;o.classList.toggle("nav",re||q||H);let _e=0;for(;_e+1<S.length&&S[_e+1].y<=ae;)_e++;const Ue=S[_e],Te=S[_e+1],ut=Te?Math.min(1,Math.max(0,(ae-(Te.y-Fd))/Fd)):0;h.scrollLeft=Ue.x+(Te?(Te.x-Ue.x)*ut*ut*(3-2*ut):0),g.querySelector(".on")?.classList.remove("on"),Ue.btn?.classList.add("on");const qe=re?0:Ue.s,we=qe?S.find(L=>L.s===qe).y:0,M=S.find(L=>L.s===qe+1),Y=document.documentElement.scrollHeight-window.innerHeight,J=M?M.y:Y,ge=Math.min(1,Math.max(0,(ae-we)/(J-we||1)));[...p.children].forEach((L,Z)=>{L.classList.toggle("on",Z===qe),Z===qe&&L.style.setProperty("--p",String(ge))});const b=L=>{const Z=p.children[L];return Z?Z.offsetLeft-(p.clientWidth-Z.offsetWidth)/2:0};p.scrollLeft=b(qe)+(qe+1<p.children.length?(b(qe+1)-b(qe))*ge:0);const U=g.children[Ue.s],G=U?.firstElementChild;if(B&&B!==G&&(B.style.transform="",B.classList.remove("wait"),B=null),h.classList.toggle("last",!U),U&&G){const L=U.offsetLeft-h.scrollLeft+G.offsetWidth-h.clientWidth;G.style.transform=L>0?`translateX(${-L}px)`:"",G.classList.toggle("wait",L>0),B=G}y.style.transform=`scaleX(${Y>0?ae/Y:0})`},P=()=>{const ae=window.innerHeight*rb,ie=re=>re.getBoundingClientRect().top+window.scrollY-ae;S=[],[...g.children].forEach((re,_e)=>{const Ue=m(_e+1);if(!Ue)return;const Te=re.children,ut=Te[0].offsetWidth+6;S.push({y:ie(Ue),x:re.offsetLeft,s:_e+1}),Pc[_e].toc.forEach((qe,we)=>{const M=document.getElementById(qe.id);M&&S.push({y:ie(M),x:Te[we+1].offsetLeft-ut,s:_e+1,btn:Te[we+1]})})}),C()},K=()=>{j&&(j=!1,q=H=!1,z=0,k=window.scrollY,C())},fe=ae=>{j=!0,ae(),setTimeout(K,900)},$=ae=>{const ie=ae.target.closest("button");if(!ie)return;const{s:re,h:_e}=ie.dataset;if(_e)return fe(()=>document.getElementById(_e)?.scrollIntoView({behavior:"smooth"}));if(re&&(!ie.classList.contains("glbl")||ie.classList.contains("wait")))return fe(()=>+re?m(+re)?.scrollIntoView({behavior:"smooth"}):window.scrollTo({top:0,behavior:"smooth"}));ie.classList.contains("glbl")&&(H=!0,C())},ze=new ResizeObserver(P);return ze.observe(document.body),window.addEventListener("scroll",C,{passive:!0}),window.addEventListener("resize",P),document.addEventListener("scrollend",K),o.addEventListener("click",$),()=>{ze.disconnect(),window.removeEventListener("scroll",C),window.removeEventListener("resize",P),document.removeEventListener("scrollend",K),o.removeEventListener("click",$)}},[]),Q.jsxs("header",{className:"gbar nav",ref:i,children:[Q.jsxs("div",{className:"gfaces",children:[Q.jsxs("nav",{className:"gindex","aria-label":"문서",children:[Q.jsx("button",{type:"button","data-s":"0",children:"Home"}),Pc.map((o,h)=>Q.jsxs("button",{type:"button","data-s":h+1,children:[Q.jsx("span",{className:"no",children:String(h+1).padStart(2,"0")}),o.title]},Fc[h+1]))]}),Q.jsx("nav",{className:"gtrack-wrap","aria-label":"목차",children:Q.jsx("div",{className:"gtrack",children:Pc.map((o,h)=>Q.jsxs("div",{className:"ggrp",children:[Q.jsx("button",{type:"button",className:"glbl","data-s":h+1,children:o.title}),o.toc.map(g=>Q.jsxs("button",{type:"button","data-h":g.id,children:[g.no&&Q.jsx("span",{className:"no",children:g.no}),g.text]},g.id))]},Fc[h+1]))})})]}),Q.jsx("button",{type:"button",className:"gtool",onClick:c,"aria-label":s==="dark"?"라이트 모드로 전환":"다크 모드로 전환",children:s==="dark"?"☀️":"🌙"}),Q.jsx("button",{type:"button",className:"gtool gprint",onClick:()=>window.print(),children:"인쇄"}),Q.jsx("span",{className:"gprog"})]})}function fb(){const{slug:i}=ip();return Q.jsx(rp,{to:`/docs/${i}`,replace:!0})}function hb(){return Q.jsxs(_y,{children:[Q.jsx(ob,{}),Q.jsxs(P0,{children:[Q.jsx(Zn,{path:"/",element:Q.jsx(Wd,{})}),Q.jsx(Zn,{path:"/docs/:slug",element:Q.jsx(Wd,{})}),Q.jsx(Zn,{path:"/projects/:slug",element:Q.jsx(fb,{})}),Q.jsx(Zn,{path:"*",element:Q.jsx(rp,{to:"/",replace:!0})})]})]})}let Ri=[];window.addEventListener("beforeprint",()=>{Ri=[...document.querySelectorAll("details.shots:not([open])")],Ri.forEach(i=>{i.open=!0})});window.addEventListener("afterprint",()=>{Ri.forEach(i=>{i.open=!1}),Ri=[]});c0.createRoot(document.getElementById("root")).render(Q.jsx(D.StrictMode,{children:Q.jsx(hb,{})}));
