@@ -10,7 +10,11 @@ function Byline() {
       <div className="photo"><img src={photo} alt="고건우 프로필 사진" /></div>
       <div className="byline-text">
         <div className="name">고건우</div>
-        <div className="role">풀스택 웹 개발자 · Spring Boot · NestJS · Next.js · React</div>
+        <p className="intro">
+          문제의 해결 방안이 떠오르면 그 방안이 통하지 않는 상황부터 찾습니다.
+          대안을 세워 비교하고, 고른 하나는 그 상황을 실제로 만들어 확인합니다.
+          적용한 뒤에는 그 방안 때문에 새로 생긴 문제가 없는지 다시 봅니다.
+        </p>
         <div className="links">
           <a className="ext" href="https://github.com/GUNW-O-O" target="_blank" rel="noopener noreferrer">GitHub</a>
           <a href="mailto:go971230@gmail.com">Email</a>
